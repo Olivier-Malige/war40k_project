@@ -8,7 +8,7 @@ export interface IUserLocal {
 export interface IUser extends Document {
   username: string;
   local: IUserLocal;
-  admin: boolean;
+  isAdmin: boolean;
   avatar?: string;
   comparePassword: (
     password: string,
