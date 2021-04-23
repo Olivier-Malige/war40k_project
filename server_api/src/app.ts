@@ -1,5 +1,6 @@
 import express, { Application, Response, Request } from 'express';
 import morgan from 'morgan';
+import httpStatusCodes from "http-status-codes";
 import path from 'path';
 import index from './routes';
 import errorHandler from 'errorhandler';
@@ -9,6 +10,8 @@ export const app: Application = express();
 
 import './config/session.config';
 import './config/passport.config';
+
+const {INTERNAL_SERVER_ERROR, getStatusText} = httpStatusCodes
 
 app.use(morgan('short'));
 app.use(express.static(path.join(__dirname, '../public')));
@@ -20,10 +23,10 @@ if (process.env.NODE_ENV === 'development') {
   app.use(errorHandler());
 } else {
   app.use((err: any, _: Request, res: Response) => {
-    const code = err.code || 500;
+    const code = err.code || INTERNAL_SERVER_ERROR;
     res.status(code).json({
       code: code,
-      message: code === 500 ? null : err.message,
+      message: code === INTERNAL_SERVER_ERROR ? getStatusText(INTERNAL_SERVER_ERROR) : err.message,
     });
   });
 }

@@ -8,7 +8,7 @@ import multer from 'multer';
 import { Request, Response, NextFunction } from 'express';
 
 import StatusCodes  from 'http-status-codes';
-const { OK, NOT_ACCEPTABLE } = StatusCodes;
+const { CREATED, NOT_ACCEPTABLE } = StatusCodes;
 
 type File = Express.Multer.File;
 
@@ -59,7 +59,7 @@ export const signup = async (req: Request, res: Response) => {
   const body = req.body;
   try {
     await createUser(body);
-    res.status(OK).end();
+    res.status(CREATED).end();
   } catch (e) {
     res.status(NOT_ACCEPTABLE).json({
       error: e,

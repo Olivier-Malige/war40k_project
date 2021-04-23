@@ -1,11 +1,9 @@
 import passport from 'passport';
 import { Request, Response, NextFunction } from 'express';
-import StatusCodes  from 'http-status-codes';
-
-const { OK, UNAUTHORIZED } = StatusCodes;
+import httpStatusCodes  from 'http-status-codes';
+const { OK, UNAUTHORIZED } = httpStatusCodes;
 
 export const login = (req: Request, res: Response, next: NextFunction) => {
-  console.log("toto")
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       next(err);

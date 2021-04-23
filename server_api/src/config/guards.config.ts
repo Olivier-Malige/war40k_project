@@ -1,4 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
+import StatusCodes  from 'http-status-codes';
+
+const { UNAUTHORIZED, getStatusText } = StatusCodes;
 
 export const ensureAuthenticated = (
   req: Request,
@@ -8,6 +11,8 @@ export const ensureAuthenticated = (
   if (req.isAuthenticated()) {
     next();
   } else {
-    res.redirect('/auth/signin/form');
+    res.status(UNAUTHORIZED).json({
+      error: getStatusText(UNAUTHORIZED)
+    });
   }
 };
