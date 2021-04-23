@@ -8,7 +8,7 @@ const users_queries_1 = require("../queries/users.queries");
 const path_1 = __importDefault(require("path"));
 const multer_1 = __importDefault(require("multer"));
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
-const { OK, NOT_ACCEPTABLE } = http_status_codes_1.default;
+const { CREATED, NOT_ACCEPTABLE } = http_status_codes_1.default;
 const upload = multer_1.default({
     storage: multer_1.default.diskStorage({
         destination: (_, __, cb) => {
@@ -48,7 +48,7 @@ const signup = async (req, res) => {
     const body = req.body;
     try {
         await users_queries_1.createUser(body);
-        res.status(OK).end();
+        res.status(CREATED).end();
     }
     catch (e) {
         res.status(NOT_ACCEPTABLE).json({

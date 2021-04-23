@@ -7,8 +7,10 @@ const app_1 = require("../app");
 const express_session_1 = __importDefault(require("express-session"));
 const database_1 = require("../database");
 const connect_mongo_1 = __importDefault(require("connect-mongo"));
+const environment_1 = __importDefault(require("../environment"));
+const env = environment_1.default[process.env.NODE_ENV];
 app_1.app.use(express_session_1.default({
-    secret: 'je suis un secret',
+    secret: env.sessionSecret,
     resave: false,
     saveUninitialized: false,
     cookie: {

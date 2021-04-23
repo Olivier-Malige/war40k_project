@@ -6,4 +6,5 @@ export default {
   key: path.join(__dirname, '../../ssl/local.key'),
   portHttp: 5000,
   portHttps: 5001,
+  sessionSecret : '142ce4ad-3269-4592-9169-d39e87aabaa2'
 };

@@ -6,4 +6,5 @@ exports.default = {
     key: '',
     portHttp: 80,
     portHttps: 443,
+    sessionSecret: ''
 };

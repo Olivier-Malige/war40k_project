@@ -8,7 +8,6 @@ const passport_1 = __importDefault(require("passport"));
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const { OK, UNAUTHORIZED } = http_status_codes_1.default;
 const login = (req, res, next) => {
-    console.log("toto");
     passport_1.default.authenticate('local', (err, user, info) => {
         if (err) {
             next(err);
