@@ -13,14 +13,13 @@ import LoginForm from "@/components/LoginForm.vue";
     LoginForm,
   },
 })
-
 export default class Login extends Vue {}
 </script>
 
 <style lang="scss" scoped>
 .container {
-    background-image: url("https://wallpaperaccess.com/full/1656157.jpg");
-    background-position: center;
-    background-size: cover;
-  }
+  background-image: url("https://wallpaperaccess.com/full/1656157.jpg");
+  background-position: center;
+  background-size: cover;
+}
 </style>
