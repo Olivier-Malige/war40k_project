@@ -25,6 +25,7 @@
     "@types/passport-local": "^1.0.33",
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.4.1",
+    "cors": "^2.8.5",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
@@ -38,6 +39,7 @@
     "typescript": "^4.2.4"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.10",
     "ts-node": "^9.1.1",
     "tsc-watch": "^4.2.9"
   }

@@ -541,6 +541,11 @@
         "signature": "6e7017e8cae95bd987696671fdafdf130ac0166b57bcdf70f502758ea26e24b7",
         "affectsGlobalScope": false
       },
+      "../node_modules/@types/cors/index.d.ts": {
+        "version": "a68969f643e0cb091046a9437b64cb1880a081fc07c70a4717b0edef2a38bc85",
+        "signature": "a68969f643e0cb091046a9437b64cb1880a081fc07c70a4717b0edef2a38bc85",
+        "affectsGlobalScope": false
+      },
       "../node_modules/http-status-codes/build/cjs/utils-functions.d.ts": {
         "version": "1bc146fb8f5cf8f67d0bb651c2237196ab42d7bae6eff9c079f254c3a4b2dc9f",
         "signature": "1bc146fb8f5cf8f67d0bb651c2237196ab42d7bae6eff9c079f254c3a4b2dc9f",
@@ -707,7 +712,7 @@
         "affectsGlobalScope": false
       },
       "../src/app.ts": {
-        "version": "ed38e93727ac3a1d1bd0ba3e26a2f3d9e341395fe9c19332ff38e9489c8d95f4",
+        "version": "d2a89805a4368dce73f1ad619c57024395c2884c3db440487bb447166d264804",
         "signature": "d09fbc630fbb54b03962501c991b4970e86bf4e965f457782b24d8aadfdd24a2",
         "affectsGlobalScope": false
       },
@@ -761,9 +766,6 @@
       "paths": {
         "@shared/*": [
           "src/shared/*"
-        ],
-        "@environment": [
-          "src/environment/index.ts"
         ]
       },
       "esModuleInterop": true,
@@ -827,6 +829,17 @@
         "../node_modules/@types/node/ts3.2/process.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/ts3.7/index.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/mongoose/index.d.ts"
+      ],
+      "../node_modules/@types/cors/index.d.ts": [
+        "../node_modules/@types/mongoose/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/http.d.ts",
+        "../node_modules/@types/node/process.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/process.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/mongoose/index.d.ts"
       ],
@@ -2199,6 +2212,7 @@
         "../node_modules/mongoose/index.d.ts"
       ],
       "../src/app.ts": [
+        "../node_modules/@types/cors/index.d.ts",
         "../node_modules/@types/errorhandler/index.d.ts",
         "../node_modules/@types/express/index.d.ts",
         "../node_modules/@types/mongoose/index.d.ts",
@@ -2514,6 +2528,17 @@
         "../node_modules/@types/node/ts3.2/process.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/ts3.7/index.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/mongoose/index.d.ts"
+      ],
+      "../node_modules/@types/cors/index.d.ts": [
+        "../node_modules/@types/mongoose/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/http.d.ts",
+        "../node_modules/@types/node/process.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/process.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/mongoose/index.d.ts"
       ],
@@ -3945,6 +3970,7 @@
       "../node_modules/@types/bson/index.d.ts",
       "../node_modules/@types/color-name/index.d.ts",
       "../node_modules/@types/connect/index.d.ts",
+      "../node_modules/@types/cors/index.d.ts",
       "../node_modules/@types/errorhandler/index.d.ts",
       "../node_modules/@types/express-serve-static-core/index.d.ts",
       "../node_modules/@types/express-session/index.d.ts",

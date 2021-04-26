@@ -1,5 +1,7 @@
 import express, { Application, Response, Request } from 'express';
 import morgan from 'morgan';
+import cors from 'cors';
+
 import httpStatusCodes from "http-status-codes";
 import path from 'path';
 import index from './routes';
@@ -13,6 +15,7 @@ import './config/passport.config';
 
 const {INTERNAL_SERVER_ERROR, getStatusText} = httpStatusCodes
 
+app.use(cors());
 app.use(morgan('short'));
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.json());
