@@ -9,7 +9,10 @@
     "reset": "npm run stop && npm run clean && docker-compose build && npm run start",
     "restart": "npm run stop && npm run start",
     "start": "docker-compose up -d",
-    "stop": "docker-compose kill"
+    "stop": "docker-compose kill",
+    "format": "prettier --write './**/*.js' './**/*.ts'"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.2"
   }
-
 }

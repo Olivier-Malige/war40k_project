@@ -16,9 +16,9 @@ services:
   api:
     build:
       dockerfile: Dockerfile
-      context: ./server
+      context: ./server-api
     volumes:
-      - ./server:/app
+      - ./server-api:/app
 
   client:
     stdin_open: true
@@ -26,7 +26,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
     build:
       dockerfile: Dockerfile
-      context: ./client
+      context: ./web-client
     volumes:
-      - ./client:/app
+      - ./web-client:/app
 
