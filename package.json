@@ -10,5 +10,8 @@
     "restart": "npm run stop && npm run start",
     "start": "docker-compose up -d",
     "stop": "docker-compose kill"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.2"
   }
 }

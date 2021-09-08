@@ -8,7 +8,8 @@
     "start": "tsc -w & NODE_ENV=development node ./build/app.js",
     "start:debug": "tsc -w & NODE_ENV=development node ./src/app.ts",
     "start:prod": "tsc - w & NODE_ENV=production node ./src/app.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write './**/*.js' './**/*.ts'"
   },
   "author": "",
   "license": "ISC",
@@ -35,12 +36,16 @@
     "multer": "^1.4.2",
     "nodemon": "^2.0.7",
     "passport": "^0.4.1",
-    "passport-local": "^1.0.0",
-    "typescript": "^4.2.4"
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",
+    "eslint": "^7.19.0",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
+    "prettier": "^2.3.2",
     "ts-node": "^9.1.1",
-    "tsc-watch": "^4.2.9"
+    "tsc-watch": "^4.2.9",
+    "typescript": "^4.4.2"
   }
 }
