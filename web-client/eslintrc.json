@@ -5,9 +5,7 @@
   "extends": [
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint",
-    "plugin:react-hooks/recommended",
-    "plugin:prettier/recommended"
+    "plugin:react-hooks/recommended"
   ],
   "parserOptions": {
     "ecmaFeatures": {

@@ -5,6 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.app = void 0;
 const express_1 = __importDefault(require("express"));
+const apollo_server_1 = require("apollo-server");
+const books_1 = require("./GqlTypes/books");
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
@@ -34,6 +36,10 @@ else {
         });
     });
 }
-exports.app.listen('3001', () => {
-    console.log('Listen: 3001');
+const server = new apollo_server_1.ApolloServer({ typeDefs: books_1.typeDefs, resolvers: books_1.resolvers });
+server.listen({ port: 3001 }).then(({ url }) => {
+    console.log(`🚀  Server ready at ${url}`);
 });
+// app.listen('3001', () => {
+//   console.log('Server started on port 3001');
+// });

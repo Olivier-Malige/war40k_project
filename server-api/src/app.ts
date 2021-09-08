@@ -1,4 +1,6 @@
 import express, { Application, Response, Request } from 'express';
+import { ApolloServer } from 'apollo-server';
+import { typeDefs, resolvers } from './GqlTypes/books';
 import morgan from 'morgan';
 import cors from 'cors';
 
@@ -32,6 +34,12 @@ if (process.env.NODE_ENV === 'development') {
   });
 }
 
-app.listen('3001', () => {
-  console.log('Listen: 3001');
+const server = new ApolloServer({ typeDefs, resolvers });
+
+server.listen({ port: 3001 }).then(({ url }) => {
+  console.log(`🚀  Server ready at ${url}`);
 });
+
+// app.listen('3001', () => {
+//   console.log('Server started on port 3001');
+// });
