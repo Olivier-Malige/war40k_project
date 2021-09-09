@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Link, LinkProps } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 
@@ -19,4 +19,3 @@ export const LinkRoute = (
     </Link>
   );
 };
-

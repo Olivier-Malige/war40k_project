@@ -8,19 +8,18 @@ import Dashboard from 'src/pages/Dashboard';
 
 const RouterConfig: React.FC = () => {
   return (
-      <>
-          <Switch>
-              <Route exact path={routeNames.ROOT} component={Home} />
-              <Route exact path={routeNames.DASHBOARD} component={Dashboard} />
-              <Route path={routeNames.LOGIN}>
-                  <Authentication />
-              </Route>
-              <Route path="*">
-                  <NotFound />
-              </Route>
-          </Switch>
-      </>
-
+    <>
+      <Switch>
+        <Route exact path={routeNames.ROOT} component={Home} />
+        <Route exact path={routeNames.DASHBOARD} component={Dashboard} />
+        <Route path={routeNames.LOGIN}>
+          <Authentication />
+        </Route>
+        <Route path="*">
+          <NotFound />
+        </Route>
+      </Switch>
+    </>
   );
 };
 
