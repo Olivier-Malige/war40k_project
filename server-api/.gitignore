@@ -1,5 +1,5 @@
 .idea/
 
-./build/
+server-api/build
 
 node_modules/
