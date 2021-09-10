@@ -5,20 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.uploadImage = exports.signup = exports.userProfile = exports.userList = void 0;
 const users_queries_1 = require("../queries/users.queries");
-const path_1 = __importDefault(require("path"));
-const multer_1 = __importDefault(require("multer"));
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const { CREATED, NOT_ACCEPTABLE } = http_status_codes_1.default;
-const upload = (0, multer_1.default)({
-    storage: multer_1.default.diskStorage({
-        destination: (_, __, cb) => {
-            cb(null, path_1.default.join(__dirname, '../../public/images/avatars'));
-        },
-        filename: (_, file, cb) => {
-            cb(null, `${Date.now()}-${file.originalname}`);
-        },
-    }),
-});
 const userList = async (req, res, next) => {
     try {
         const search = req.query.search;
