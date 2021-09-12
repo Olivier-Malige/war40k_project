@@ -3,3 +3,5 @@
 server-api/build
 
 node_modules/
+
+/build/

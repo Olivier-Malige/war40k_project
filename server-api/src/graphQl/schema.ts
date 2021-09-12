@@ -1,60 +1,135 @@
 import { gql } from 'apollo-server';
 
 export const typeDefs = gql`
-  type Unit {
-    #    id: ID!
-    name: String!
-    description: String
-    power: Int!
-    #    characteristics: UnitCharacteristics!
-    battleField: String!
-    #    weapons: [Weapon]
-    wargearOptions: [String]
-    abilities: [String]
-    factionKeywords: [String!]!
-    keywords: [String!]!
+  enum Lang {
+    fr_FR
+    en_GB
   }
 
-  type UnitCharacteristics {
-    move: String!
-    weaponSkill: String!
-    ballisticSkill: String!
-    strength: String!
-    toughness: String!
-    wounds: String!
-    attacks: String!
-    leadership: String!
-    save: String!
+  enum BattlefieldRoles {
+    HQs
+    Troops
+    Elites
+    Flyers
+    FastAttacks
+    HeavySupports
+    DedicatedTransports
+    LordOfWars
+  }
+
+  type Unit {
+    id: ID
+    name: String!
+    description: String
+    lang: Lang
+    detail: String
+    battlefieldRole: BattlefieldRoles
+    version: String
+    powerRating: Int
+    commandPoints: Int
+    profiles: [UnitProfile]
+    profilesDetail: String
+    weapons: [Weapons]
+    wargearOptions: [String]
+    abilities: [Abilities]
+    factionKeywords: [String]
+    keywords: [String]
+  }
+
+  type UnitProfile {
+    numbers: [Int!]
+    name: String
+    move: Int
+    weaponSkill: Int
+    ballisticSkill: Int
+    strength: Int
+    toughness: Int
+    wounds: Int
+    attacks: Int
+    leadership: Int
+    save: Int
   }
 
   type Weapon {
-    id: ID!
+    name: String
+    range: Int
+    type: String
+    strength: Int
+    armourPenetration: Int
+    damage: Int
+    abilities: String
+  }
+
+  type Weapons {
+    specialRule: String
+    weapons: [Weapon]
+  }
+
+  type Abilities {
+    name: String!
+    rule: String!
+  }
+
+  input AbilitiesInput {
+    name: String!
+    rule: String!
+  }
+
+  input UnitInput {
+    name: String!
+    lang: Lang!
+    description: String
+    detail: String
+    profiles: UnitProfileInput!
+    profilesDetail: String
+    powerRating: Int!
+    commandPoints: Int
+    battlefieldRole: BattlefieldRoles!
+    wargearOptions: [String]
+    abilities: [AbilitiesInput]
+    factionKeywords: [String!]!
+    keywords: [String!]!
+    weapons: [WeaponsInput]
+  }
+
+  input WeaponInput {
     name: String!
     range: Int!
     type: String!
     strength: Int!
     armourPenetration: Int!
     damage: Int!
+    abilities: String
   }
 
-  input UnitInput {
+  input WeaponsInput {
+    rule: String
+    weapon: [WeaponInput]
+  }
+
+  input UnitProfileInput {
     name: String!
-    description: String
-    power: Int!
-    battleField: String!
-    wargearOptions: [String]
-    abilities: [String]
-    factionKeywords: [String!]!
-    keywords: [String!]!
+    numbers: [Int!]!
+    move: Int!
+    weaponSkill: Int!
+    ballisticSkill: Int!
+    strength: Int!
+    toughness: Int!
+    wounds: Int!
+    attacks: Int!
+    leadership: Int!
+    save: Int!
   }
 
   type Query {
     units: [Unit]
-    unit(name: String!): Unit
+    unit(name: String, id: String): Unit
     searchUnitsByName(name: String!): Unit
   }
 
   type Mutation {
-    createUnit(input: UnitInput): Unit
+    createUnit(input: UnitInput!): Unit
+    updateUnit(input: UnitInput!, id: String!): Unit
+    deleteUnit(id: String!): Unit
   }
 `;
