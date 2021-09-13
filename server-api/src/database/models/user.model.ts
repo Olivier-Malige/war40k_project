@@ -1,7 +1,7 @@
 import mongoose, { Model } from 'mongoose';
 const Schema = mongoose.Schema;
 import bcrypt from 'bcrypt';
-import { IUser } from '../../interfaces';
+import { User } from '../../interfaces';
 
 const userSchema = new Schema({
   username: { type: String, required: true, unique: true },
@@ -20,8 +20,8 @@ userSchema.methods.comparePassword = (password: string, hashedPassword: string) 
   return bcrypt.compare(password, hashedPassword);
 };
 
-interface IUserModel extends Model<IUser> {
+interface UserModel extends Model<User> {
   hashPassword: (password: string) => string;
 }
 
-export const User = mongoose.model<IUser, IUserModel>('user', userSchema);
+export const UserModel = mongoose.model<User, UserModel>('user', userSchema);

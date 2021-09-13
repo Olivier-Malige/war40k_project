@@ -1,20 +1,21 @@
-import { connect, connection, model } from 'mongoose';
+import { connect, model } from 'mongoose';
 import conf from '../environment';
 import { unitSchema } from './models/unit.model';
-import { IUnit } from '../interfaces';
+import { Unit } from '../interfaces';
 
 const env = conf[process.env.NODE_ENV as 'development' | 'production'];
 
-connect(env.dbUrl, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-});
+try {
+  connect(env.dbUrl,() => {
+    console.log("Connection to database OK")
+  })
 
-connection.on('error', () => {
+} catch (e) {
   console.error('Error while connecting to DB');
-});
+}
 
-const Units = model<IUnit>('Units', unitSchema);
+
+
+const Units = model<Unit>('Units', unitSchema);
 
 export { Units };

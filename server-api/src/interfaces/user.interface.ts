@@ -1,13 +1,13 @@
 import { Document } from 'mongoose';
 
-export interface IUserLocal {
+export interface UserLocal {
   email: string;
   password: string;
 }
 
-export interface IUser extends Document {
+export interface User extends Document {
   username: string;
-  local: IUserLocal;
+  local: UserLocal;
   isAdmin: boolean;
   avatar?: string;
   comparePassword: (password: string, hashedPassword: string) => Promise<boolean>;
