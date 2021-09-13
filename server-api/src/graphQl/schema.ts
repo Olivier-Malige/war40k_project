@@ -17,8 +17,8 @@ export const typeDefs = gql`
     LordOfWars
   }
 
-  type Unit {
-    id: ID
+  type W40kUnit {
+    id: ID!
     name: String!
     description: String
     lang: Lang
@@ -27,7 +27,7 @@ export const typeDefs = gql`
     version: String
     powerRating: Int
     commandPoints: Int
-    profiles: [UnitProfile]
+    profiles: [W40kUnitProfile]
     profilesDetail: String
     weapons: [Weapons]
     wargearOptions: [String]
@@ -36,7 +36,7 @@ export const typeDefs = gql`
     keywords: [String]
   }
 
-  type UnitProfile {
+  type W40kUnitProfile {
     numbers: [Int!]
     name: String
     move: Int
@@ -75,12 +75,13 @@ export const typeDefs = gql`
     rule: String!
   }
 
-  input UnitInput {
+  input W40kUnitInput {
     name: String!
     lang: Lang!
+    version: String!
     description: String
     detail: String
-    profiles: UnitProfileInput!
+    profiles: W40kUnitProfileInput!
     profilesDetail: String
     powerRating: Int!
     commandPoints: Int
@@ -107,7 +108,7 @@ export const typeDefs = gql`
     weapon: [WeaponInput]
   }
 
-  input UnitProfileInput {
+  input W40kUnitProfileInput {
     name: String!
     numbers: [Int!]!
     move: Int!
@@ -122,14 +123,14 @@ export const typeDefs = gql`
   }
 
   type Query {
-    units: [Unit]
-    unit(name: String, id: String): Unit
-    searchUnitsByName(name: String!): Unit
+    w40kUnits: [W40kUnit]
+    w40kUnit(name: String, id: String): W40kUnit
+    searchW40kUnitsByName(name: String!): W40kUnit
   }
 
   type Mutation {
-    createUnit(input: UnitInput!): Unit
-    updateUnit(input: UnitInput!, id: String!): Unit
-    deleteUnit(id: String!): Unit
+    createW40kUnit(input: W40kUnitInput!): W40kUnit
+    updateW40kUnit(input: W40kUnitInput!, id: String!): W40kUnit
+    removeW40kUnit(id: String!): Boolean
   }
 `;
