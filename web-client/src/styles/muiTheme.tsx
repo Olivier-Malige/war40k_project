@@ -24,7 +24,7 @@ export const light: Theme = createTheme({
       main: purple[500],
     },
     secondary: {
-      main: amber[500],
+      main: amber['700'],
     },
   },
 });

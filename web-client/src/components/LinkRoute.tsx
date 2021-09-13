@@ -2,10 +2,9 @@ import React from 'react';
 import { Link, LinkProps } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   linkWrapper: {
-    margin: theme.spacing(2),
-    display: 'inline-block',
+    textDecoration: 'none',
   },
 }));
 

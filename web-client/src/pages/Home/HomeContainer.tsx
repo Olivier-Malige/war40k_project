@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
+import React from 'react';
+
 import { HomeView } from 'src/pages/Home/HomeView';
 
-export const HomeContainer: FC = () => {
+export const HomeContainer: () => JSX.Element = () => {
   return (
     <div>
       <HomeView />

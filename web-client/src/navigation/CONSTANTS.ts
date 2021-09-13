@@ -1,5 +1,5 @@
 export const routeNames = {
   ROOT: '/',
   LOGIN: '/login',
-  DASHBOARD: '/dashboard',
+  UNITS_EDITOR: '/units-editor',
 };

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
 
-export const DashboardView: React.FC = () => {
+export const UnitsEditorView: React.FC = () => {
   return (
     <div>
-      <Typography variant="h2">Dashboard Page</Typography>
+      <Typography variant="h2">Units editor page</Typography>
     </div>
   );
 };

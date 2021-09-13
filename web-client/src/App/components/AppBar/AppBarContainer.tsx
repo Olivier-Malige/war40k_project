@@ -1,11 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Home, ImageAspectRatio } from '@material-ui/icons';
+
+import { routeNames } from '../../../navigation/CONSTANTS';
 import { AppBarView } from './AppBarView';
+import { DrawerListItem } from './types';
+
 type Props = {
   darkMode: boolean;
   setDarkMode: (value: boolean) => void;
 };
+
+const drawerListItems: DrawerListItem[] = [
+  {
+    name: 'Home',
+    routeName: routeNames.ROOT,
+    icon: <Home color={'primary'} />,
+  },
+  {
+    name: 'Units builder',
+    routeName: routeNames.UNITS_EDITOR,
+    icon: <ImageAspectRatio color={'secondary'} />,
+  },
+];
+
 export const AppBarContainer: React.FC<Props> = ({ darkMode, setDarkMode }) => {
+  const [openDrawer, setOpenDrawer] = useState(false);
+
   return (
-    <AppBarView title={'Warhammer API builder'} darkMode={darkMode} setDarkMode={setDarkMode} />
+    <AppBarView
+      title={'Warhammer API builder'}
+      version={'Aplha development'}
+      darkMode={darkMode}
+      setDarkMode={setDarkMode}
+      openDrawer={openDrawer}
+      setOpenDrawer={setOpenDrawer}
+      drawerListItems={drawerListItems}
+    />
   );
 };
