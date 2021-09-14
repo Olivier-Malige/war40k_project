@@ -17,7 +17,7 @@ const drawerListItems: DrawerListItem[] = [
     icon: <Home color={'primary'} />,
   },
   {
-    name: 'Units builder',
+    name: 'Units editor',
     routeName: routeNames.UNITS_EDITOR,
     icon: <ImageAspectRatio color={'secondary'} />,
   },
