@@ -29,7 +29,7 @@ export const AppBarContainer: React.FC<Props> = ({ darkMode, setDarkMode }) => {
   return (
     <AppBarView
       title={'Warhammer API builder'}
-      version={'Aplha development'}
+      version={'Alpha dev'}
       darkMode={darkMode}
       setDarkMode={setDarkMode}
       openDrawer={openDrawer}
