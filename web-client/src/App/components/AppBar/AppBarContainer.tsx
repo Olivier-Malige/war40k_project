@@ -14,12 +14,12 @@ const drawerListItems: DrawerListItem[] = [
   {
     name: 'Home',
     routeName: routeNames.ROOT,
-    icon: <Home color={'primary'} />,
+    icon: <Home />,
   },
   {
     name: 'Units editor',
     routeName: routeNames.UNITS_EDITOR,
-    icon: <ImageAspectRatio color={'secondary'} />,
+    icon: <ImageAspectRatio />,
   },
 ];
 

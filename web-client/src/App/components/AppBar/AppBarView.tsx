@@ -44,7 +44,7 @@ export const AppBarView: FC<Props> = ({
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" elevation={4} className={classes.appbar}>
+      <AppBar position="static" elevation={5} className={classes.appbar}>
         <Toolbar>
           <IconButton
             onClick={() => setOpenDrawer(true)}
@@ -79,7 +79,7 @@ export const AppBarView: FC<Props> = ({
                 <ListItem>
                   <ListItemIcon>{listItem.icon}</ListItemIcon>
                   <ListItemText>
-                    <Typography variant="h6" color={'primary'}>
+                    <Typography variant="h6" color={'textPrimary'}>
                       {listItem.name}
                     </Typography>
                   </ListItemText>
@@ -106,7 +106,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   list: {
     width: 300,
     height: '100%',
-    backgroundColor: `${theme.palette.background.default}`,
   },
   appbar: {
     height: 70,
