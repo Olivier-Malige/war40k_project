@@ -3,6 +3,7 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 
 import { RowData } from './types';
 import { UnitTableView } from './UnitTableView';
+import { W40KUpsertForm } from '../W40kUpsertForm';
 
 export const War40kUnitsTableContainer: React.FC = () => {
   const GET_W40K_UNITS = gql`
@@ -51,6 +52,7 @@ export const War40kUnitsTableContainer: React.FC = () => {
       onDeleteRow={id =>
         deleteUnits({ variables: { unitID: id }, refetchQueries: [GET_W40K_UNITS] })
       }
+      upsertModalContent={<W40KUpsertForm />}
     />
   );
 };

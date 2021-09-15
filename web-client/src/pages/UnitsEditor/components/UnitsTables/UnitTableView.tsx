@@ -1,6 +1,6 @@
-import React, { FC, useState } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -19,43 +19,22 @@ import { UnitTableHead } from './components/UnitTableHead';
 import { Order, RowData } from './types';
 import { Fab, Grid } from '@material-ui/core';
 import { Add as AddIcon } from '@material-ui/icons';
-
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator<Key extends keyof RowData>(
-  order: Order,
-  orderBy: Key,
-): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort<T>(array: RowData[], comparator: (a: T, b: T) => number) {
-  const stabilizedThis = array.map((el, index) => [el, index] as unknown as [T, number]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map(el => el[0]);
-}
+import { StyledModal } from '../../../../components/StyledModal';
+import { getComparator, stableSort } from '../../../../utils/sort';
 
 type Props = {
   tableTitle: string;
   rowsData: RowData[];
   onDeleteRow: (id: string) => any;
+  upsertModalContent: ReactElement;
 };
 
-export const UnitTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow }) => {
+export const UnitTableView: FC<Props> = ({
+  tableTitle,
+  rowsData,
+  onDeleteRow,
+  upsertModalContent,
+}) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof RowData>('name');
@@ -63,6 +42,7 @@ export const UnitTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow }) 
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [openUpsertModal, setOpenUpsertModal] = React.useState(false);
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof RowData) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -114,6 +94,13 @@ export const UnitTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow }) 
     setDense(event.target.checked);
   };
 
+  const handleOpenUpsertModal = () => {
+    setOpenUpsertModal(true);
+  };
+
+  const handleCloseUpsertModal = () => {
+    setOpenUpsertModal(false);
+  };
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -192,31 +179,42 @@ export const UnitTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow }) 
           </TableContainer>
         </div>
         <div>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 20]}
-            component="div"
-            count={rowsData.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+          <Grid container justifyContent={'flex-end'}>
+            <Fab
+              onClick={handleOpenUpsertModal}
+              color="secondary"
+              size={'large'}
+              aria-label="add"
+              className={classes.addIcon}
+            >
+              <AddIcon />
+            </Fab>
+          </Grid>
           <Grid container justifyContent={'space-between'} className={classes.bottomTools}>
             <FormControlLabel
               control={<Switch checked={dense} onChange={handleChangeDense} />}
               label="Dense padding"
             />
-            <Fab color="secondary" size={'large'} aria-label="add">
-              <AddIcon />
-            </Fab>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 20]}
+              component="div"
+              count={rowsData.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
           </Grid>
         </div>
       </Paper>
+      <StyledModal handleClose={handleCloseUpsertModal} open={openUpsertModal}>
+        {upsertModalContent}
+      </StyledModal>
     </div>
   );
 };
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       paddingTop: 20,
@@ -239,6 +237,9 @@ const useStyles = makeStyles((theme: Theme) =>
       minWidth: 750,
       height: '100%',
       overflowY: 'scroll',
+    },
+    addIcon: {
+      marginRight: 30,
     },
     bottomTools: {
       padding: 10,
