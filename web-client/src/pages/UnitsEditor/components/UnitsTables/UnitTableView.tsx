@@ -17,6 +17,8 @@ import Switch from '@material-ui/core/Switch';
 import { UnitTableToolbar } from './components/UnitTableToolbar';
 import { UnitTableHead } from './components/UnitTableHead';
 import { Order, RowData } from './types';
+import { Fab, Grid } from '@material-ui/core';
+import { Add as AddIcon } from '@material-ui/icons';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -46,21 +48,6 @@ function stableSort<T>(array: RowData[], comparator: (a: T, b: T) => number) {
   });
   return stabilizedThis.map(el => el[0]);
 }
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-    },
-    paper: {
-      width: '100%',
-      marginBottom: theme.spacing(2),
-    },
-    table: {
-      minWidth: 750,
-    },
-  }),
-);
 
 type Props = {
   tableTitle: string;
@@ -130,92 +117,131 @@ export const UnitTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow }) 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <UnitTableToolbar
-          numSelected={selected.length}
-          tableTitle={tableTitle}
-          onDeleteRow={() => onDeleteRow(selected[0])}
-        />
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
-            aria-label="enhanced table"
-          >
-            <UnitTableHead
-              numSelected={selected.length}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rowsData.length}
-              order={order}
-              orderBy={orderBy}
-            />
-            <TableBody>
-              {stableSort(rowsData, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(row => {
-                  const isItemSelected = isSelected(row.id as string);
-                  const labelId = row.id;
+        <div>
+          <UnitTableToolbar
+            numSelected={selected.length}
+            tableTitle={tableTitle}
+            onDeleteRow={() => onDeleteRow(selected[0])}
+          />
+          <TableContainer className={classes.tableContainer}>
+            <Table
+              className={classes.table}
+              aria-labelledby="tableTitle"
+              size={dense ? 'small' : 'medium'}
+              aria-label="enhanced table"
+            >
+              <UnitTableHead
+                numSelected={selected.length}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={rowsData.length}
+                order={order}
+                orderBy={orderBy}
+              />
+              <TableBody>
+                {stableSort(rowsData, getComparator(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(row => {
+                    const isItemSelected = isSelected(row.id as string);
+                    const labelId = row.id;
 
-                  return (
-                    <TableRow
-                      hover
-                      onClick={event => handleClick(event, row.id as string)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId as string }}
-                        />
-                      </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
-                        {row.name}
-                      </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
-                        {row.id}
-                      </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
-                        {row.lang}
-                      </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
-                        {row.version}
-                      </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
-                        {row.keywords.toString()}
-                      </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
-                        {row.factionKeywords.toString()}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rowsData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+                    return (
+                      <TableRow
+                        hover
+                        onClick={event => handleClick(event, row.id as string)}
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row.id}
+                        selected={isItemSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            checked={isItemSelected}
+                            inputProps={{ 'aria-labelledby': labelId as string }}
+                          />
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          {row.name}
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          {row.id}
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          {row.lang}
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          {row.version}
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          {row.keywords.toString()}
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          {row.factionKeywords.toString()}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+        <div>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 20]}
+            component="div"
+            count={rowsData.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+          <Grid container justifyContent={'space-between'} className={classes.bottomTools}>
+            <FormControlLabel
+              control={<Switch checked={dense} onChange={handleChangeDense} />}
+              label="Dense padding"
+            />
+            <Fab color="secondary" size={'large'} aria-label="add">
+              <AddIcon />
+            </Fab>
+          </Grid>
+        </div>
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </div>
   );
 };
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      paddingTop: 20,
+      paddingBottom: 20,
+      height: '100%',
+      overflowY: 'hidden',
+    },
+    paper: {
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+    },
+    tableContainer: {
+      height: '100%',
+      maxHeight: '65vh',
+    },
+    table: {
+      minWidth: 750,
+      height: '100%',
+      overflowY: 'scroll',
+    },
+    bottomTools: {
+      padding: 10,
+    },
+  }),
+);

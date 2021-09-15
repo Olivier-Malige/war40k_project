@@ -13,9 +13,7 @@ export const UnitsEditorView: React.FC = () => {
 };
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    paddingTop: 20,
     height: 'calc(100vh - 70px)',
-    overflowY: 'auto',
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: theme.palette.background.default,

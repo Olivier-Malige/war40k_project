@@ -1,5 +1,5 @@
 import { createTheme, Theme } from '@material-ui/core';
-import { blueGrey, purple, amber, grey } from '@material-ui/core/colors';
+import { blueGrey, purple, grey, lightBlue } from '@material-ui/core/colors';
 
 export const dark: Theme = createTheme({
   palette: {
@@ -24,7 +24,7 @@ export const light: Theme = createTheme({
       main: purple[500],
     },
     secondary: {
-      main: amber[800],
+      main: lightBlue[700],
     },
   },
 });
