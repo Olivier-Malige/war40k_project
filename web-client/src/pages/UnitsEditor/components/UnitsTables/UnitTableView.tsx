@@ -14,8 +14,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import { EnhancedTableToolbar } from './components/EnhancedTableToolbar';
-import EnhancedTableHead from './components/EnhancedTableHead';
+import { UnitTableToolbar } from './components/UnitTableToolbar';
+import { UnitTableHead } from './components/UnitTableHead';
 import { Order, RowData } from './types';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -65,9 +65,10 @@ const useStyles = makeStyles((theme: Theme) =>
 type Props = {
   tableTitle: string;
   rowsData: RowData[];
+  onDeleteRow: (id: string) => any;
 };
 
-export const EnhancedTable: FC<Props> = ({ tableTitle, rowsData }) => {
+export const UnitTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow }) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof RowData>('name');
@@ -129,7 +130,11 @@ export const EnhancedTable: FC<Props> = ({ tableTitle, rowsData }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} tableTitle={tableTitle} />
+        <UnitTableToolbar
+          numSelected={selected.length}
+          tableTitle={tableTitle}
+          onDeleteRow={() => onDeleteRow(selected[0])}
+        />
         <TableContainer>
           <Table
             className={classes.table}
@@ -137,7 +142,7 @@ export const EnhancedTable: FC<Props> = ({ tableTitle, rowsData }) => {
             size={dense ? 'small' : 'medium'}
             aria-label="enhanced table"
           >
-            <EnhancedTableHead
+            <UnitTableHead
               numSelected={selected.length}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}

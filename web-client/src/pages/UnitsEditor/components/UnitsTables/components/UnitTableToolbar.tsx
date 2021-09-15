@@ -1,3 +1,4 @@
+import React from 'react';
 import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import clsx from 'clsx';
@@ -6,8 +7,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import React from 'react';
-import { Card, CardContent, CardMedia } from '@material-ui/core';
 
 const useToolbarStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,14 +30,18 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-interface EnhancedTableToolbarProps {
+type EnhancedTableToolbarProps = {
   numSelected: number;
   tableTitle: string;
-}
+  onDeleteRow: () => any;
+};
 
-export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
+export const UnitTableToolbar = ({
+  numSelected,
+  tableTitle,
+  onDeleteRow,
+}: EnhancedTableToolbarProps) => {
   const classes = useToolbarStyles();
-  const { numSelected, tableTitle } = props;
 
   return (
     <Toolbar
@@ -60,7 +63,7 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton aria-label="delete">
-            <DeleteIcon />
+            <DeleteIcon onClick={onDeleteRow} />
           </IconButton>
         </Tooltip>
       ) : (

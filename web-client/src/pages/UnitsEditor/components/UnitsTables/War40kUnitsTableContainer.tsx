@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 
-import { War40kUnitsTableView } from './War40kUnitsTableView';
-import { RowData } from '../../../../components/EnhancedTable/types';
+import { RowData } from './types';
+import { UnitTableView } from './UnitTableView';
 
 export const War40kUnitsTableContainer: React.FC = () => {
   const GET_W40K_UNITS = gql`
@@ -17,7 +17,16 @@ export const War40kUnitsTableContainer: React.FC = () => {
       }
     }
   `;
+
+  const DELETE_UNITS = gql`
+    mutation DeleteUnits($unitID: String!) {
+      removeW40kUnit(id: $unitID)
+    }
+  `;
+
   const { loading, error, data } = useQuery(GET_W40K_UNITS);
+  const [deleteUnits] = useMutation(DELETE_UNITS);
+
   const [rowsData, setRowsData] = useState<RowData[]>([]);
   useEffect(() => {
     setRowsData(
@@ -32,5 +41,16 @@ export const War40kUnitsTableContainer: React.FC = () => {
     );
   }, [data]);
 
-  return <War40kUnitsTableView loading={loading} error={error} rowsData={rowsData} />;
+  if (loading) return <div>loading</div>;
+  if (error) return <div>Errors : {error}</div>;
+
+  return (
+    <UnitTableView
+      tableTitle="Warhammer 4000 units"
+      rowsData={rowsData}
+      onDeleteRow={id =>
+        deleteUnits({ variables: { unitID: id }, refetchQueries: [GET_W40K_UNITS] })
+      }
+    />
+  );
 };
