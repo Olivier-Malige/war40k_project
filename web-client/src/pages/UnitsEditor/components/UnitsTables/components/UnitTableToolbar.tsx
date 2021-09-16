@@ -6,8 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import CopyIcon from '@material-ui/icons/FileCopy';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import { ConfirmDialog } from '../../../../../components/ConfirmDialog';
+import { ConfirmDialog } from 'src/components/ConfirmDialog';
 
 const useToolbarStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,13 +36,17 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
 type EnhancedTableToolbarProps = {
   numSelected: number;
   tableTitle: string;
-  onDeleteRow: () => any;
+  onDelete: () => void;
+  onEdit: () => void;
+  onCopy: () => void;
 };
 
 export const UnitTableToolbar = ({
   numSelected,
   tableTitle,
-  onDeleteRow,
+  onDelete,
+  onEdit,
+  onCopy,
 }: EnhancedTableToolbarProps) => {
   const classes = useToolbarStyles();
   const [openDeleteConfirm, setOpenDeleteConfirm] = useState(false);
@@ -54,7 +60,7 @@ export const UnitTableToolbar = ({
 
   const handleConfirmDelete = () => {
     handleCloseConfirmDelete();
-    onDeleteRow();
+    onDelete();
   };
   return (
     <>
@@ -75,11 +81,27 @@ export const UnitTableToolbar = ({
           </>
         )}
         {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton aria-label="delete">
-              <DeleteIcon onClick={handleOpenConfirmDelete} />
-            </IconButton>
-          </Tooltip>
+          <>
+            {numSelected === 1 && (
+              <>
+                <Tooltip title="Edit">
+                  <IconButton aria-label="Edit">
+                    <EditIcon onClick={onEdit} />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Copy">
+                  <IconButton aria-label="Copy">
+                    <CopyIcon onClick={onCopy} />
+                  </IconButton>
+                </Tooltip>
+              </>
+            )}
+            <Tooltip title="Delete">
+              <IconButton aria-label="delete">
+                <DeleteIcon onClick={handleOpenConfirmDelete} />
+              </IconButton>
+            </Tooltip>
+          </>
         ) : (
           <Tooltip title="Filter list">
             <IconButton aria-label="filter list">

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Button, Container, Grid, MenuItem, TextField, Theme } from '@material-ui/core';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -10,12 +10,18 @@ const validationSchema = yup.object({
   powerRating: yup.number().required('Power is required').nullable(),
 });
 
-type Props = {
+export type W40KUpsertFormProps = {
   onSubmit: (values: any) => void;
+  getUnitById: (id: string) => any;
+  id?: string;
 };
 
-export const W40KUpsertForm: FC<Props> = ({ onSubmit }) => {
+export const W40KUpsertForm: FC<W40KUpsertFormProps> = ({ onSubmit, getUnitById, id }) => {
   const classes = useStyles();
+
+  useEffect(() => {
+    getUnitById(id);
+  }, [id, getUnitById]);
 
   const formik = useFormik({
     initialValues: {

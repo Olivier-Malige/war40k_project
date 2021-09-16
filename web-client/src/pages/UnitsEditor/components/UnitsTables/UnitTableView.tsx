@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useState } from 'react';
+import React, { cloneElement, FC, ReactElement, useState } from 'react';
 
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -36,13 +36,14 @@ export const UnitTableView: FC<Props> = ({
   upsertModalContent,
 }) => {
   const classes = useStyles();
-  const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof RowData>('name');
+  const [order, setOrder] = useState<Order>('asc');
+  const [orderBy, setOrderBy] = useState<keyof RowData>('name');
   const [selected, setSelected] = useState<string[]>([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [openUpsertModal, setOpenUpsertModal] = React.useState(false);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [openUpsertModal, setOpenUpsertModal] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof RowData) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -100,11 +101,17 @@ export const UnitTableView: FC<Props> = ({
 
   const handleCloseUpsertModal = () => {
     setOpenUpsertModal(false);
+    setIsUpdate(false);
   };
 
   const handleDeleteRow = () => {
     onDeleteRow(selected);
     setSelected([]);
+  };
+
+  const handleEdit = () => {
+    setOpenUpsertModal(true);
+    setIsUpdate(true);
   };
 
   return (
@@ -114,7 +121,9 @@ export const UnitTableView: FC<Props> = ({
           <UnitTableToolbar
             numSelected={selected.length}
             tableTitle={tableTitle}
-            onDeleteRow={handleDeleteRow}
+            onDelete={handleDeleteRow}
+            onEdit={handleEdit}
+            onCopy={handleEdit}
           />
           <TableContainer className={classes.tableContainer}>
             <Table
@@ -220,7 +229,7 @@ export const UnitTableView: FC<Props> = ({
         </div>
       </Paper>
       <StyledModal handleClose={handleCloseUpsertModal} open={openUpsertModal}>
-        {upsertModalContent}
+        {cloneElement(upsertModalContent, { id: isUpdate ? selected[0] : undefined }, null)}
       </StyledModal>
     </div>
   );

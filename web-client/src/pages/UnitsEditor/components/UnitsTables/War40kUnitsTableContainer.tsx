@@ -20,6 +20,24 @@ const GET_W40K_UNITS = gql`
   }
 `;
 
+const GET_W40K_UNIT = gql`
+  query GetW40kUnit($unitId: String!) {
+    w40kUnit(id: $unitId) {
+      id
+      battlefieldRole
+      creationDate
+      lastUpdateDate
+      detail
+      description
+      name
+      version
+      lang
+      factionKeywords
+      keywords
+    }
+  }
+`;
+
 const DELETE_UNITS = gql`
   mutation DeleteUnits($unitsID: [String!]!) {
     removeW40kUnits(id: $unitsID)
@@ -36,6 +54,7 @@ const CREATE_W40K_UNIT = gql`
 
 export const War40kUnitsTableContainer: React.FC = () => {
   const { loading, error, data } = useQuery(GET_W40K_UNITS);
+  // const { loading as unitLoading, data as unitData } = useQuery(GET_W40K_UNIT);
   const [deleteUnits] = useMutation(DELETE_UNITS);
   const [createUnit] = useMutation(CREATE_W40K_UNIT);
   const [rowsData, setRowsData] = useState<RowData[]>([]);
@@ -72,7 +91,12 @@ export const War40kUnitsTableContainer: React.FC = () => {
       onDeleteRow={id =>
         deleteUnits({ variables: { unitsID: id }, refetchQueries: [GET_W40K_UNITS] })
       }
-      upsertModalContent={<W40KUpsertForm onSubmit={handleCreateUnitSubmit} />}
+      upsertModalContent={
+        <W40KUpsertForm
+          getUnitById={id => console.log('get' + id)}
+          onSubmit={handleCreateUnitSubmit}
+        />
+      }
     />
   );
 };
