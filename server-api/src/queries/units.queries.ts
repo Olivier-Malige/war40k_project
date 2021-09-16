@@ -35,7 +35,9 @@ export const updateW40kUnit = async (id: string, input: W40KUnit): Promise<W40KU
   return W40kUnits.findOne({ id }).exec();
 };
 
-export const removeW40hUnit = async (id: string): Promise<boolean> => {
-  const res = await W40kUnits.deleteOne({ id }).exec();
+export const removeW40kUnits = async (id: [string]): Promise<boolean> => {
+  const res = await W40kUnits.deleteMany({
+    id: { $in: id },
+  }).exec();
   return res.ok === 1;
 };

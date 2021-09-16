@@ -21,11 +21,11 @@ export const typeDefs = gql`
     id: ID!
     name: String!
     description: String
-    lang: Lang
+    lang: Lang!
     detail: String
     battlefieldRole: BattlefieldRoles
     version: String
-    powerRating: Int
+    powerRating: Int!
     commandPoints: Int
     profiles: [W40kUnitProfile]
     profilesDetail: String
@@ -81,15 +81,15 @@ export const typeDefs = gql`
     version: String!
     description: String
     detail: String
-    profiles: W40kUnitProfileInput!
+    profiles: W40kUnitProfileInput
     profilesDetail: String
     powerRating: Int!
     commandPoints: Int
-    battlefieldRole: BattlefieldRoles!
+    battlefieldRole: BattlefieldRoles
     wargearOptions: [String]
     abilities: [AbilitiesInput]
-    factionKeywords: [String!]!
-    keywords: [String!]!
+    factionKeywords: [String]
+    keywords: [String]
     weapons: [WeaponsInput]
   }
 
@@ -109,17 +109,17 @@ export const typeDefs = gql`
   }
 
   input W40kUnitProfileInput {
-    name: String!
-    numbers: [Int!]!
-    move: Int!
-    weaponSkill: Int!
-    ballisticSkill: Int!
-    strength: Int!
-    toughness: Int!
-    wounds: Int!
-    attacks: Int!
-    leadership: Int!
-    save: Int!
+    name: String
+    numbers: [Int]
+    move: Int
+    weaponSkill: Int
+    ballisticSkill: Int
+    strength: Int
+    toughness: Int
+    wounds: Int
+    attacks: Int
+    leadership: Int
+    save: Int
   }
 
   type Query {
@@ -131,6 +131,6 @@ export const typeDefs = gql`
   type Mutation {
     createW40kUnit(input: W40kUnitInput!): W40kUnit
     updateW40kUnit(input: W40kUnitInput!, id: String!): W40kUnit
-    removeW40kUnit(id: String!): Boolean
+    removeW40kUnits(id: [String!]!): Boolean
   }
 `;

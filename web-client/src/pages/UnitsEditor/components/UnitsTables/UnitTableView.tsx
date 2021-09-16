@@ -25,7 +25,7 @@ import { getComparator, stableSort } from '../../../../utils/sort';
 type Props = {
   tableTitle: string;
   rowsData: RowData[];
-  onDeleteRow: (id: string) => any;
+  onDeleteRow: (id: string[]) => void;
   upsertModalContent: ReactElement;
 };
 
@@ -41,7 +41,7 @@ export const UnitTableView: FC<Props> = ({
   const [selected, setSelected] = useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [openUpsertModal, setOpenUpsertModal] = React.useState(false);
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof RowData) => {
@@ -101,6 +101,12 @@ export const UnitTableView: FC<Props> = ({
   const handleCloseUpsertModal = () => {
     setOpenUpsertModal(false);
   };
+
+  const handleDeleteRow = () => {
+    onDeleteRow(selected);
+    setSelected([]);
+  };
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -108,7 +114,7 @@ export const UnitTableView: FC<Props> = ({
           <UnitTableToolbar
             numSelected={selected.length}
             tableTitle={tableTitle}
-            onDeleteRow={() => onDeleteRow(selected[0])}
+            onDeleteRow={handleDeleteRow}
           />
           <TableContainer className={classes.tableContainer}>
             <Table
@@ -161,10 +167,10 @@ export const UnitTableView: FC<Props> = ({
                           {row.version}
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
-                          {row.keywords.toString()}
+                          {row.keywords?.toString()}
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
-                          {row.factionKeywords.toString()}
+                          {row.factionKeywords?.toString()}
                         </TableCell>
                       </TableRow>
                     );
@@ -196,7 +202,7 @@ export const UnitTableView: FC<Props> = ({
               label="Dense padding"
             />
             <TablePagination
-              rowsPerPageOptions={[5, 10, 20]}
+              rowsPerPageOptions={[5, 10, 20, 40]}
               component="div"
               count={rowsData.length}
               rowsPerPage={rowsPerPage}

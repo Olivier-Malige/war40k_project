@@ -5,30 +5,39 @@ import { RowData } from './types';
 import { UnitTableView } from './UnitTableView';
 import { W40KUpsertForm } from '../W40kUpsertForm';
 
+const GET_W40K_UNITS = gql`
+  query GetW40kUnits {
+    w40kUnits {
+      id
+      name
+      version
+      lang
+      factionKeywords
+      keywords
+    }
+  }
+`;
+
+const DELETE_UNITS = gql`
+  mutation DeleteUnits($unitsID: [String!]!) {
+    removeW40kUnits(id: $unitsID)
+  }
+`;
+
+const CREATE_W40K_UNIT = gql`
+  mutation ($unitInput: W40kUnitInput!) {
+    createW40kUnit(input: $unitInput) {
+      id
+    }
+  }
+`;
+
 export const War40kUnitsTableContainer: React.FC = () => {
-  const GET_W40K_UNITS = gql`
-    query GetW40kUnits {
-      w40kUnits {
-        id
-        name
-        version
-        lang
-        factionKeywords
-        keywords
-      }
-    }
-  `;
-
-  const DELETE_UNITS = gql`
-    mutation DeleteUnits($unitID: String!) {
-      removeW40kUnit(id: $unitID)
-    }
-  `;
-
   const { loading, error, data } = useQuery(GET_W40K_UNITS);
   const [deleteUnits] = useMutation(DELETE_UNITS);
-
+  const [createUnit] = useMutation(CREATE_W40K_UNIT);
   const [rowsData, setRowsData] = useState<RowData[]>([]);
+
   useEffect(() => {
     setRowsData(
       data?.w40kUnits.map(unit => ({
@@ -42,6 +51,13 @@ export const War40kUnitsTableContainer: React.FC = () => {
     );
   }, [data]);
 
+  const handleCreateUnitSubmit = async values => {
+    await createUnit({
+      variables: { unitInput: values },
+      refetchQueries: [GET_W40K_UNITS],
+    });
+  };
+
   if (loading) return <div>loading</div>;
   if (error) return <div>Errors : {error}</div>;
 
@@ -50,9 +66,9 @@ export const War40kUnitsTableContainer: React.FC = () => {
       tableTitle="Warhammer 4000 units"
       rowsData={rowsData}
       onDeleteRow={id =>
-        deleteUnits({ variables: { unitID: id }, refetchQueries: [GET_W40K_UNITS] })
+        deleteUnits({ variables: { unitsID: id }, refetchQueries: [GET_W40K_UNITS] })
       }
-      upsertModalContent={<W40KUpsertForm />}
+      upsertModalContent={<W40KUpsertForm onSubmit={handleCreateUnitSubmit} />}
     />
   );
 };

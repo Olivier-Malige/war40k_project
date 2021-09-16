@@ -4,7 +4,7 @@ import {
   searchW40kUnits,
   findW40kUnit,
   updateW40kUnit,
-  removeW40hUnit,
+  removeW40kUnits,
 } from '../queries/units.queries';
 import { W40KUnit } from '../interfaces';
 
@@ -27,8 +27,8 @@ export const resolvers = {
     updateW40kUnit: (_, { id, input }) => {
       return updateW40kUnit(id, input as W40KUnit);
     },
-    removeW40kUnit: (_, { id }) => {
-      return removeW40hUnit(id);
+    removeW40kUnits: (_, { id }) => {
+      return removeW40kUnits(id);
     },
   },
 };
