@@ -9,6 +9,8 @@ const GET_W40K_UNITS = gql`
   query GetW40kUnits {
     w40kUnits {
       id
+      creationDate
+      lastUpdateDate
       name
       version
       lang
@@ -47,6 +49,8 @@ export const War40kUnitsTableContainer: React.FC = () => {
         version: unit.version,
         keywords: unit.keywords,
         factionKeywords: unit.factionKeywords,
+        creationDate: unit.creationDate,
+        lastUpdateDate: unit.lastUpdateDate,
       })) ?? [],
     );
   }, [data]);

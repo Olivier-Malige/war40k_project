@@ -167,6 +167,12 @@ export const UnitTableView: FC<Props> = ({
                           {row.version}
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
+                          {new Date(row.creationDate).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          {row.lastUpdateDate && new Date(row.lastUpdateDate).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
                           {row.keywords?.toString()}
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">

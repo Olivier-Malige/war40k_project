@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { TableSortLabel } from '@material-ui/core';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
@@ -17,12 +17,14 @@ type EnhancedTableProps = {
 };
 
 const headCells: HeadCell[] = [
-  { id: 'name', numeric: false, label: 'Unit name' },
-  { id: 'id', numeric: false, label: 'Id' },
-  { id: 'lang', numeric: false, label: 'Lang' },
-  { id: 'version', numeric: false, label: 'Version' },
-  { id: 'Keywords', numeric: false, label: 'Keywords' },
-  { id: 'factionKeywords', numeric: false, label: 'Faction keywords' },
+  { id: 'name', label: 'Unit name' },
+  { id: 'id', label: 'Id' },
+  { id: 'lang', label: 'Lang' },
+  { id: 'version', label: 'Version' },
+  { id: 'creationDate', label: 'Creation date' },
+  { id: 'lastUpdateDate', label: 'Last update date' },
+  { id: 'Keywords', label: 'Keywords' },
+  { id: 'factionKeywords', label: 'Faction keywords' },
 ];
 
 export const UnitTableHead = (props: EnhancedTableProps) => {
@@ -45,7 +47,6 @@ export const UnitTableHead = (props: EnhancedTableProps) => {
         {headCells.map(headCell => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
             padding={'none'}
             sortDirection={orderBy === headCell.id ? order : false}
           >

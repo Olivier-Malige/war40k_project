@@ -3,7 +3,6 @@ export type Order = 'asc' | 'desc';
 export type HeadCell = {
   id: string;
   label: string;
-  numeric: boolean;
 };
 
 export type RowData = {
@@ -13,4 +12,6 @@ export type RowData = {
   version: string;
   keywords: string[];
   factionKeywords: string[];
+  creationDate: Date;
+  lastUpdateDate: Date;
 };

@@ -1,10 +1,11 @@
-import { W40KUnit } from '../interfaces';
+import { W40KUnit, W40KUnitInput } from '../interfaces';
 import { W40kUnits } from '../database';
 
-export const createW40kUnit = async (input: W40KUnit): Promise<W40KUnit> => {
+export const createW40kUnit = async (input: W40KUnitInput): Promise<W40KUnit> => {
   try {
     const newW40kUnit = new W40kUnits({ ...input });
     newW40kUnit.id = newW40kUnit._id;
+    newW40kUnit.creationDate = new Date();
     await newW40kUnit.save();
     return newW40kUnit;
   } catch (e) {
@@ -30,8 +31,8 @@ export const searchW40kUnits = (search: string): Promise<Array<W40KUnit>> => {
   return W40kUnits.find({ name: { $regex: reg } }).exec();
 };
 
-export const updateW40kUnit = async (id: string, input: W40KUnit): Promise<W40KUnit> => {
-  await W40kUnits.updateOne({ id }, { ...input }).exec();
+export const updateW40kUnit = async (id: string, input: W40KUnitInput): Promise<W40KUnit> => {
+  await W40kUnits.updateOne({ id }, { ...input, lastUpdateDate: new Date() }).exec();
   return W40kUnits.findOne({ id }).exec();
 };
 

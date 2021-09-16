@@ -1,6 +1,8 @@
 import { gql } from 'apollo-server';
 
 export const typeDefs = gql`
+  scalar Date
+
   enum Lang {
     fr_FR
     en_GB
@@ -19,6 +21,8 @@ export const typeDefs = gql`
 
   type W40kUnit {
     id: ID!
+    creationDate: Date!
+    lastUpdateDate: Date
     name: String!
     description: String
     lang: Lang!
