@@ -3,6 +3,7 @@ import React, { FC, useEffect } from 'react';
 import { W40kUpsertFormView } from './W40kUpsertFormView';
 import { gql, useMutation, useLazyQuery } from '@apollo/client';
 import { GET_W40K_UNITS } from '../UnitsTables/War40kUnitsTableContainer';
+import { LoadingSpinner } from '../../../../components/LoadingSpinner';
 
 export type Props = {
   id?: string;
@@ -75,7 +76,7 @@ export const W40KUpsertFormContainer: FC<Props> = ({ id, handleClose, isCopy }) 
     handleClose && handleClose();
   };
 
-  if (loading) return <div>loading</div>;
+  if (loading) return <LoadingSpinner />;
   if (error) return <div>Errors : {error}</div>;
   return <W40kUpsertFormView onSubmit={handleSubmit} data={data?.w40kUnit} />;
 };

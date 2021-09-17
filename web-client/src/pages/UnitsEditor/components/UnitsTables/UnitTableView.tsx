@@ -19,8 +19,8 @@ import { UnitTableHead } from './components/UnitTableHead';
 import { Order, RowData } from './types';
 import { Fab, Grid } from '@material-ui/core';
 import { Add as AddIcon } from '@material-ui/icons';
-import { StyledModal } from '../../../../components/StyledModal';
-import { getComparator, stableSort } from '../../../../utils/sort';
+import { StyledModal } from 'src/components/StyledModal';
+import { getComparator, stableSort } from 'src/utils/sort';
 
 type Props = {
   tableTitle: string;

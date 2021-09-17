@@ -4,6 +4,7 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { RowData } from './types';
 import { UnitTableView } from './UnitTableView';
 import W40kUpsertForm from '../W40kUpsertForm/';
+import { LoadingSpinner } from '../../../../components/LoadingSpinner';
 
 export const GET_W40K_UNITS = gql`
   query GetW40kUnits {
@@ -47,7 +48,7 @@ export const War40kUnitsTableContainer: React.FC = () => {
     );
   }, [data]);
 
-  if (loading) return <div>loading</div>;
+  if (loading) return <LoadingSpinner />;
   if (error) return <div>Errors : {error}</div>;
 
   return (

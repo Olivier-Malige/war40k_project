@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: 'calc(100vh - 70px)',
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'center',
     backgroundColor: theme.palette.background.default,
   },
 }));
