@@ -44,6 +44,7 @@ export const UnitTableView: FC<Props> = ({
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openUpsertModal, setOpenUpsertModal] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
+  const [isCopy, setIsCopy] = useState(false);
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof RowData) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -102,6 +103,7 @@ export const UnitTableView: FC<Props> = ({
   const handleCloseUpsertModal = () => {
     setOpenUpsertModal(false);
     setIsUpdate(false);
+    setIsCopy(false);
   };
 
   const handleDeleteRow = () => {
@@ -112,6 +114,12 @@ export const UnitTableView: FC<Props> = ({
   const handleEdit = () => {
     setOpenUpsertModal(true);
     setIsUpdate(true);
+    setIsCopy(false);
+  };
+
+  const handleCopy = () => {
+    setOpenUpsertModal(true);
+    setIsCopy(true);
   };
 
   return (
@@ -123,7 +131,7 @@ export const UnitTableView: FC<Props> = ({
             tableTitle={tableTitle}
             onDelete={handleDeleteRow}
             onEdit={handleEdit}
-            onCopy={handleEdit}
+            onCopy={handleCopy}
           />
           <TableContainer className={classes.tableContainer}>
             <Table
@@ -229,7 +237,15 @@ export const UnitTableView: FC<Props> = ({
         </div>
       </Paper>
       <StyledModal handleClose={handleCloseUpsertModal} open={openUpsertModal}>
-        {cloneElement(upsertModalContent, { id: isUpdate ? selected[0] : undefined }, null)}
+        {cloneElement(
+          upsertModalContent,
+          {
+            isCopy,
+            id: isUpdate || isCopy ? selected[0] : undefined,
+            handleClose: handleCloseUpsertModal,
+          },
+          null,
+        )}
       </StyledModal>
     </div>
   );

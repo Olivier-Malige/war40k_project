@@ -12,29 +12,23 @@ const validationSchema = yup.object({
 
 export type W40KUpsertFormProps = {
   onSubmit: (values: any) => void;
-  getUnitById: (id: string) => any;
-  id?: string;
+  data?: any;
 };
 
-export const W40KUpsertForm: FC<W40KUpsertFormProps> = ({ onSubmit, getUnitById, id }) => {
+export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) => {
   const classes = useStyles();
-
-  useEffect(() => {
-    getUnitById(id);
-  }, [id, getUnitById]);
 
   const formik = useFormik({
     initialValues: {
-      lang: 'fr_FR',
-      name: null,
-      powerRating: null,
-      commandPoints: null,
-      version: 'v9',
-      detail: null,
-      description: null,
-      keywords: null,
-      factionKeywords: null,
-      battlefieldRole: 'Troops',
+      lang: data?.lang || 'fr_FR',
+      name: data?.name || null,
+      powerRating: data?.powerRating || null,
+      commandPoints: data?.commandPoints || null,
+      version: data?.version || 'v9',
+      detail: data?.detail || null,
+      description: data?.description || null,
+      keywords: data?.keywords || null,
+      factionKeywords: data?.factionKeywords || null,
     },
     validationSchema: validationSchema,
     onSubmit: values => {
@@ -42,6 +36,11 @@ export const W40KUpsertForm: FC<W40KUpsertFormProps> = ({ onSubmit, getUnitById,
     },
   });
 
+  useEffect(() => {
+    formik.values = {
+      ...data,
+    };
+  }, [data, formik]);
   return (
     <Container>
       <form onSubmit={formik.handleSubmit}>
@@ -75,7 +74,7 @@ export const W40KUpsertForm: FC<W40KUpsertFormProps> = ({ onSubmit, getUnitById,
                 value={formik.values.powerRating}
                 name={'powerRating'}
                 onChange={formik.handleChange}
-                error={formik.touched.powerRating && Boolean(formik.errors.powerRating)}
+                error={Boolean(formik.errors.powerRating)}
                 helperText={formik.touched.powerRating && formik.errors.powerRating}
                 color={'secondary'}
                 margin={'dense'}

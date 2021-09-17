@@ -3,32 +3,14 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 
 import { RowData } from './types';
 import { UnitTableView } from './UnitTableView';
-import { W40KUpsertForm } from '../W40kUpsertForm';
+import W40kUpsertForm from '../W40kUpsertForm/';
 
-const GET_W40K_UNITS = gql`
+export const GET_W40K_UNITS = gql`
   query GetW40kUnits {
     w40kUnits {
       id
       creationDate
       lastUpdateDate
-      name
-      version
-      lang
-      factionKeywords
-      keywords
-    }
-  }
-`;
-
-const GET_W40K_UNIT = gql`
-  query GetW40kUnit($unitId: String!) {
-    w40kUnit(id: $unitId) {
-      id
-      battlefieldRole
-      creationDate
-      lastUpdateDate
-      detail
-      description
       name
       version
       lang
@@ -44,19 +26,10 @@ const DELETE_UNITS = gql`
   }
 `;
 
-const CREATE_W40K_UNIT = gql`
-  mutation ($unitInput: W40kUnitInput!) {
-    createW40kUnit(input: $unitInput) {
-      id
-    }
-  }
-`;
-
 export const War40kUnitsTableContainer: React.FC = () => {
   const { loading, error, data } = useQuery(GET_W40K_UNITS);
-  // const { loading as unitLoading, data as unitData } = useQuery(GET_W40K_UNIT);
   const [deleteUnits] = useMutation(DELETE_UNITS);
-  const [createUnit] = useMutation(CREATE_W40K_UNIT);
+
   const [rowsData, setRowsData] = useState<RowData[]>([]);
 
   useEffect(() => {
@@ -74,13 +47,6 @@ export const War40kUnitsTableContainer: React.FC = () => {
     );
   }, [data]);
 
-  const handleCreateUnitSubmit = async values => {
-    await createUnit({
-      variables: { unitInput: values },
-      refetchQueries: [GET_W40K_UNITS],
-    });
-  };
-
   if (loading) return <div>loading</div>;
   if (error) return <div>Errors : {error}</div>;
 
@@ -91,12 +57,7 @@ export const War40kUnitsTableContainer: React.FC = () => {
       onDeleteRow={id =>
         deleteUnits({ variables: { unitsID: id }, refetchQueries: [GET_W40K_UNITS] })
       }
-      upsertModalContent={
-        <W40KUpsertForm
-          getUnitById={id => console.log('get' + id)}
-          onSubmit={handleCreateUnitSubmit}
-        />
-      }
+      upsertModalContent={<W40kUpsertForm />}
     />
   );
 };

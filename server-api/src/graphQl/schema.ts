@@ -128,7 +128,7 @@ export const typeDefs = gql`
 
   type Query {
     w40kUnits: [W40kUnit]
-    w40kUnit(name: String, id: String): W40kUnit
+    w40kUnit(id: String): W40kUnit
     searchW40kUnitsByName(name: String!): W40kUnit
   }
 
