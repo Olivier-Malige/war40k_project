@@ -77,6 +77,5 @@ export const W40KUpsertFormContainer: FC<Props> = ({ id, handleClose, isCopy }) 
 
   if (loading) return <div>loading</div>;
   if (error) return <div>Errors : {error}</div>;
-
   return <W40kUpsertFormView onSubmit={handleSubmit} data={data?.w40kUnit} />;
 };

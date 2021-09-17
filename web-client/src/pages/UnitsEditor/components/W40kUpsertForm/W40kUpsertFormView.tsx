@@ -10,14 +10,25 @@ const validationSchema = yup.object({
   powerRating: yup.number().required('Power is required').nullable(),
 });
 
+type W40KUnit = {
+  lang: string;
+  name: string;
+  powerRating: number;
+  commandPoints: number;
+  version: string;
+  detail: string;
+  description: string;
+  keywords: string;
+  factionKeywords: string;
+};
+
 export type W40KUpsertFormProps = {
-  onSubmit: (values: any) => void;
-  data?: any;
+  onSubmit: (values: W40KUnit) => void;
+  data?: W40KUnit;
 };
 
 export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) => {
   const classes = useStyles();
-
   const formik = useFormik({
     initialValues: {
       lang: data?.lang || 'fr_FR',
@@ -30,17 +41,13 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
       keywords: data?.keywords || null,
       factionKeywords: data?.factionKeywords || null,
     },
+    enableReinitialize: true,
     validationSchema: validationSchema,
     onSubmit: values => {
       onSubmit(values);
     },
   });
 
-  useEffect(() => {
-    formik.values = {
-      ...data,
-    };
-  }, [data, formik]);
   return (
     <Container>
       <form onSubmit={formik.handleSubmit}>
@@ -74,7 +81,7 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
                 value={formik.values.powerRating}
                 name={'powerRating'}
                 onChange={formik.handleChange}
-                error={Boolean(formik.errors.powerRating)}
+                error={formik.touched.powerRating && Boolean(formik.errors.powerRating)}
                 helperText={formik.touched.powerRating && formik.errors.powerRating}
                 color={'secondary'}
                 margin={'dense'}
