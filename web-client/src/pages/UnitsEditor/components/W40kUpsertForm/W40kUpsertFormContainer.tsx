@@ -4,6 +4,7 @@ import { W40kUpsertFormView } from './W40kUpsertFormView';
 import { gql, useMutation, useLazyQuery } from '@apollo/client';
 import { GET_W40K_UNITS } from '../UnitsTables/War40kUnitsTableContainer';
 import { LoadingSpinner } from '../../../../components/LoadingSpinner';
+import { openSuccessMessage, openErrorMessage } from '../../../../App/cache';
 
 export type Props = {
   id?: string;
@@ -48,9 +49,9 @@ const GET_W40K_UNIT = gql`
 `;
 
 export const W40KUpsertFormContainer: FC<Props> = ({ id, handleClose, isCopy }) => {
-  const [createUnit] = useMutation(CREATE_W40K_UNIT);
-  const [updateUnit] = useMutation(UPDATE_W40K_UNIT);
-  const [getUnit, { loading, data, error }] = useLazyQuery(GET_W40K_UNIT);
+  const [createUnit, { error: createError }] = useMutation(CREATE_W40K_UNIT);
+  const [updateUnit, { error: updateError }] = useMutation(UPDATE_W40K_UNIT);
+  const [getUnit, { loading, data, error: getUnitError }] = useLazyQuery(GET_W40K_UNIT);
 
   useEffect(() => {
     if (id) {
@@ -72,11 +73,14 @@ export const W40KUpsertFormContainer: FC<Props> = ({ id, handleClose, isCopy }) 
         refetchQueries: [GET_W40K_UNITS],
       });
     }
-
-    handleClose && handleClose();
+    if (!createError && !updateError) {
+      handleClose && handleClose();
+      openSuccessMessage(true);
+    } else {
+      openErrorMessage(true);
+    }
   };
 
   if (loading) return <LoadingSpinner />;
-  if (error) return <div>Errors : {error}</div>;
   return <W40kUpsertFormView onSubmit={handleSubmit} data={data?.w40kUnit} />;
 };
