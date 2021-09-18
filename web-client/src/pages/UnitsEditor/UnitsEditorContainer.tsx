@@ -21,8 +21,8 @@ export const UnitsEditorContainer: React.FC = () => {
     <UnitsEditorView
       openSuccessMessage={successData.openSuccessMessage}
       openErrorMessage={errorData.openSuccessMessage}
-      handleCloseErrorMessage={() => openSuccessMessage(false)}
-      handleCloseSuccessMessage={() => openErrorMessage(false)}
+      handleCloseErrorMessage={() => openErrorMessage(false)}
+      handleCloseSuccessMessage={() => openSuccessMessage(false)}
     />
   );
 };
