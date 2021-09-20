@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, ImageAspectRatio } from '@material-ui/icons';
+import { Home, ImageAspectRatio } from '@mui/icons-material';
 
 import { routeNames } from '../../../navigation/CONSTANTS';
 import { AppBarView } from './AppBarView';

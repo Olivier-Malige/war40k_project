@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { Container, Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+import { Container } from '@mui/material';
 import { War40kUnitsTable } from './components/UnitsTables';
 import { SnackBarAlert } from '../../components/SnackBarAlert';
+import { Box } from '@mui/system';
 
 type Props = {
   openSuccessMessage: boolean;
@@ -16,9 +16,15 @@ export const UnitsEditorView: FC<Props> = ({
   handleCloseSuccessMessage,
   handleCloseErrorMessage,
 }) => {
-  const classes = useStyles();
   return (
-    <Container maxWidth={'xl'} className={classes.root}>
+    <Box
+      sx={{
+        height: 'calc(100vh - 70px)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+      }}
+    >
       <War40kUnitsTable />
       <SnackBarAlert
         open={openSuccessMessage}
@@ -34,14 +40,6 @@ export const UnitsEditorView: FC<Props> = ({
       >
         <span>An error has occurred </span>
       </SnackBarAlert>
-    </Container>
+    </Box>
   );
 };
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    height: 'calc(100vh - 70px)',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-}));

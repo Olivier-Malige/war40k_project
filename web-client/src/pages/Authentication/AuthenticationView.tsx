@@ -1,26 +1,32 @@
 import React, { FC } from 'react';
-import {
-  Button,
-  Container,
-  Grid,
-  InputAdornment,
-  Paper,
-  TextField,
-  Theme,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
-import { AccountCircle, Lock } from '@material-ui/icons';
+import { Button, Container, Grid, InputAdornment, Paper, TextField, Box } from '@mui/material';
+
+import { AccountCircle, Lock } from '@mui/icons-material';
 
 export const AuthenticationView: FC = () => {
-  const classes = useStyles();
   return (
-    <div className={classes.root}>
+    <Box
+      sx={{
+        minHeight: 'calc(100vh - 70px)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        backgroundColor: theme => theme.palette.background.default,
+      }}
+    >
       <Container maxWidth="xs">
-        <Paper className={classes.paper} elevation={4}>
+        <Paper
+          sx={{
+            padding: theme => theme.spacing(4),
+          }}
+          elevation={4}
+        >
           <form>
             <Grid container direction="column" alignItems="stretch">
               <TextField
-                className={classes.input}
+                sx={{
+                  marginTop: theme => theme.spacing(1),
+                }}
                 label="Name"
                 variant="standard"
                 InputProps={{
@@ -32,7 +38,6 @@ export const AuthenticationView: FC = () => {
                 }}
               />
               <TextField
-                className={classes.input}
                 label="password"
                 variant="standard"
                 type="password"
@@ -44,33 +49,19 @@ export const AuthenticationView: FC = () => {
                   ),
                 }}
               />
-              <Button className={classes.button} variant="contained" color="primary">
+              <Button
+                sx={{
+                  marginTop: theme => theme.spacing(3),
+                }}
+                variant="contained"
+                color="primary"
+              >
                 SignIn
               </Button>
             </Grid>
           </form>
         </Paper>
       </Container>
-    </div>
+    </Box>
   );
 };
-
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    minHeight: 'calc(100vh - 70px)',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    backgroundColor: theme.palette.background.default,
-  },
-  title: {},
-  paper: {
-    padding: theme.spacing(4),
-  },
-  input: {
-    marginTop: theme.spacing(1),
-  },
-  button: {
-    marginTop: theme.spacing(3),
-  },
-}));

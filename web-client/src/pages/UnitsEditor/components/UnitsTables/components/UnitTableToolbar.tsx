@@ -1,39 +1,17 @@
 import React, { useState } from 'react';
-import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import clsx from 'clsx';
-import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import CopyIcon from '@material-ui/icons/FileCopy';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import Toolbar from '@mui/material/Toolbar';
+
+import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import CopyIcon from '@mui/icons-material/FileCopy';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import { ConfirmDialog } from 'src/components/ConfirmDialog';
+import { alpha } from '@mui/material';
 
-const useToolbarStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(1),
-    },
-    highlight:
-      theme.palette.type === 'light'
-        ? {
-            color: theme.palette.secondary.main,
-            backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-          }
-        : {
-            color: theme.palette.text.primary,
-            backgroundColor: theme.palette.secondary.dark,
-          },
-    title: {
-      flex: '1 1 100%',
-    },
-  }),
-);
-
-type EnhancedTableToolbarProps = {
+type UnitTableToolBarProps = {
   numSelected: number;
   tableTitle: string;
   onDelete: () => void;
@@ -47,8 +25,7 @@ export const UnitTableToolbar = ({
   onDelete,
   onEdit,
   onCopy,
-}: EnhancedTableToolbarProps) => {
-  const classes = useToolbarStyles();
+}: UnitTableToolBarProps) => {
   const [openDeleteConfirm, setOpenDeleteConfirm] = useState(false);
 
   const handleOpenConfirmDelete = () => {
@@ -65,17 +42,22 @@ export const UnitTableToolbar = ({
   return (
     <>
       <Toolbar
-        className={clsx(classes.root, {
-          [classes.highlight]: numSelected > 0,
-        })}
+        sx={{
+          pl: { sm: 2 },
+          pr: { xs: 1, sm: 1 },
+          ...(numSelected > 0 && {
+            bgcolor: theme =>
+              alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+          }),
+        }}
       >
         {numSelected > 0 ? (
-          <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
+          <Typography sx={{ flex: '1 1 100%' }} color="inherit" variant="subtitle1" component="div">
             {numSelected} selected
           </Typography>
         ) : (
           <>
-            <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+            <Typography sx={{ flex: '1 1 100%' }} variant="h6" id="tableTitle" component="div">
               {tableTitle}
             </Typography>
           </>
@@ -85,26 +67,26 @@ export const UnitTableToolbar = ({
             {numSelected === 1 && (
               <>
                 <Tooltip title="Edit">
-                  <IconButton aria-label="Edit">
+                  <IconButton aria-label="Edit" size="large">
                     <EditIcon onClick={onEdit} />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Copy">
-                  <IconButton aria-label="Copy">
+                  <IconButton aria-label="Copy" size="large">
                     <CopyIcon onClick={onCopy} />
                   </IconButton>
                 </Tooltip>
               </>
             )}
             <Tooltip title="Delete">
-              <IconButton aria-label="delete">
+              <IconButton aria-label="delete" size="large">
                 <DeleteIcon onClick={handleOpenConfirmDelete} />
               </IconButton>
             </Tooltip>
           </>
         ) : (
           <Tooltip title="Filter list">
-            <IconButton aria-label="filter list">
+            <IconButton aria-label="filter list" size="large">
               <FilterListIcon />
             </IconButton>
           </Tooltip>

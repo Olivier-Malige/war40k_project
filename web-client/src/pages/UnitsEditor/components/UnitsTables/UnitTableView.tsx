@@ -1,24 +1,26 @@
 import React, { cloneElement, FC, ReactElement, useState } from 'react';
 
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TablePagination,
+  TableRow,
+  Paper,
+  Checkbox,
+  Switch,
+  FormControlLabel,
+  Fab,
+  Grid,
+} from '@mui/material';
+import { Box } from '@mui/system';
+import { Add as AddIcon } from '@mui/icons-material';
 
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import { UnitTableToolbar } from './components/UnitTableToolbar';
 import { UnitTableHead } from './components/UnitTableHead';
 import { Order, RowData } from './types';
-import { Fab, Grid } from '@material-ui/core';
-import { Add as AddIcon } from '@material-ui/icons';
+
 import { StyledModal } from 'src/components/StyledModal';
 import { getComparator, stableSort } from 'src/utils/sort';
 
@@ -35,7 +37,6 @@ export const UnitTableView: FC<Props> = ({
   onDeleteRow,
   upsertModalContent,
 }) => {
-  const classes = useStyles();
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof RowData>('name');
   const [selected, setSelected] = useState<string[]>([]);
@@ -123,8 +124,22 @@ export const UnitTableView: FC<Props> = ({
   };
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
+    <Box
+      sx={{
+        padding: 2,
+        height: '100%',
+        overflowY: 'hidden',
+      }}
+    >
+      <Paper
+        sx={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
         <div>
           <UnitTableToolbar
             numSelected={selected.length}
@@ -133,9 +148,18 @@ export const UnitTableView: FC<Props> = ({
             onEdit={handleEdit}
             onCopy={handleCopy}
           />
-          <TableContainer className={classes.tableContainer}>
+          <TableContainer
+            sx={{
+              height: '100%',
+              maxHeight: '65vh',
+            }}
+          >
             <Table
-              className={classes.table}
+              sx={{
+                minWidth: 750,
+                height: '100%',
+                overflowY: 'scroll',
+              }}
               aria-labelledby="tableTitle"
               size={dense ? 'small' : 'medium'}
               aria-label="enhanced table"
@@ -214,12 +238,20 @@ export const UnitTableView: FC<Props> = ({
               color="secondary"
               size={'large'}
               aria-label="add"
-              className={classes.addIcon}
+              sx={{
+                marginRight: 5,
+              }}
             >
               <AddIcon />
             </Fab>
           </Grid>
-          <Grid container justifyContent={'space-between'} className={classes.bottomTools}>
+          <Grid
+            container
+            justifyContent={'space-between'}
+            sx={{
+              padding: 2,
+            }}
+          >
             <FormControlLabel
               control={<Switch checked={dense} onChange={handleChangeDense} />}
               label="Dense padding"
@@ -247,39 +279,6 @@ export const UnitTableView: FC<Props> = ({
           null,
         )}
       </StyledModal>
-    </div>
+    </Box>
   );
 };
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      paddingTop: 20,
-      paddingBottom: 20,
-      height: '100%',
-      overflowY: 'hidden',
-    },
-    paper: {
-      width: '100%',
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-    },
-    tableContainer: {
-      height: '100%',
-      maxHeight: '65vh',
-    },
-    table: {
-      minWidth: 750,
-      height: '100%',
-      overflowY: 'scroll',
-    },
-    addIcon: {
-      marginRight: 30,
-    },
-    bottomTools: {
-      padding: 10,
-    },
-  }),
-);

@@ -1,9 +1,7 @@
-import React, { FC, useEffect } from 'react';
-import { Button, Container, Grid, MenuItem, TextField, Theme } from '@material-ui/core';
+import React, { FC } from 'react';
+import { Button, Container, Grid, MenuItem, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-
-import { makeStyles } from '@material-ui/styles';
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required').nullable(),
@@ -28,7 +26,6 @@ export type W40KUpsertFormProps = {
 };
 
 export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) => {
-  const classes = useStyles();
   const formik = useFormik({
     initialValues: {
       lang: data?.lang || 'fr_FR',
@@ -159,7 +156,9 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
           <Button
             type={'submit'}
             color={'secondary'}
-            className={classes.button}
+            sx={{
+              marginTop: theme => theme.spacing(3),
+            }}
             variant="contained"
           >
             Submit
@@ -169,9 +168,3 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
     </Container>
   );
 };
-
-const useStyles = makeStyles((theme: Theme) => ({
-  button: {
-    marginTop: theme.spacing(3),
-  },
-}));

@@ -1,29 +1,15 @@
 import React from 'react';
-import { Backdrop, Fade, makeStyles, Modal } from '@material-ui/core';
-import { Theme } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  linkWrapper: {
-    textDecoration: 'none',
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-}));
+import { Backdrop, Fade, Modal } from '@mui/material';
+import { Box } from '@mui/system';
 
 export const StyledModal = ({ children, open, handleClose }) => {
-  const classes = useStyles();
   return (
     <Modal
-      className={classes.modal}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
       open={open}
       onClose={handleClose}
       closeAfterTransition
@@ -33,7 +19,20 @@ export const StyledModal = ({ children, open, handleClose }) => {
       }}
     >
       <Fade in={open}>
-        <div className={classes.paper}>{children}</div>
+        <Box
+          sx={{
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 800,
+            bgcolor: 'background.paper',
+            boxShadow: 10,
+            p: 4,
+            position: 'absolute',
+          }}
+        >
+          {children}
+        </Box>
       </Fade>
     </Modal>
   );

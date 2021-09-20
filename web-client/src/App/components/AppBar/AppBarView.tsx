@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC } from 'react';
 import {
   AppBar,
-  Theme,
+  Box,
   Toolbar,
   Typography,
   Switch,
@@ -12,9 +12,8 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
-} from '@material-ui/core';
-import { Menu } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/styles';
+} from '@mui/material';
+import { Menu } from '@mui/icons-material';
 import { DrawerListItem } from './types';
 import { LinkRoute } from '../../../components/LinkRoute';
 
@@ -37,31 +36,53 @@ export const AppBarView: FC<Props> = ({
   drawerListItems,
   version,
 }) => {
-  const classes = useStyles();
   const handleSetDarkMode = (value: ChangeEvent<HTMLInputElement>) => {
     setDarkMode(value.target.checked);
   };
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static" elevation={5} className={classes.appbar}>
+    <Box
+      sx={{
+        flexGrow: 1,
+      }}
+    >
+      <AppBar
+        position="static"
+        elevation={5}
+        sx={{
+          height: 70,
+        }}
+      >
         <Toolbar>
           <IconButton
+            sx={{
+              marginRight: 2,
+            }}
             onClick={() => setOpenDrawer(true)}
             edge="start"
-            className={classes.menuButton}
             color="inherit"
             aria-label="menu"
+            size="large"
           >
             <Menu />
           </IconButton>
-          <Typography variant="h5" className={classes.title}>
+          <Typography
+            sx={{
+              flexGrow: 1,
+            }}
+            variant="h5"
+          >
             {title}
           </Typography>
           <Switch name="checkedA" checked={darkMode} onChange={handleSetDarkMode} />
         </Toolbar>
         <Drawer anchor={'left'} open={openDrawer} onClose={() => setOpenDrawer(false)}>
-          <List className={classes.list}>
+          <List
+            sx={{
+              width: 300,
+              height: '100%',
+            }}
+          >
             <ListItem>
               <ListItemText secondary={version}>
                 <Typography variant="h5" color={'secondary'}>
@@ -89,25 +110,6 @@ export const AppBarView: FC<Props> = ({
           </List>
         </Drawer>
       </AppBar>
-    </div>
+    </Box>
   );
 };
-
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  title: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  list: {
-    width: 300,
-    height: '100%',
-  },
-  appbar: {
-    height: 70,
-  },
-}));
