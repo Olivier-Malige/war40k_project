@@ -58,7 +58,7 @@ export const War40kUnitsTableContainer: React.FC = () => {
       onDeleteRow={id =>
         deleteUnits({ variables: { unitsID: id }, refetchQueries: [GET_W40K_UNITS] })
       }
-      upsertModalContent={<W40kUpsertForm />}
+      UpsertForm={W40kUpsertForm}
     />
   );
 };

@@ -6,9 +6,9 @@ import { GET_W40K_UNITS } from '../UnitsTables/War40kUnitsTableContainer';
 import { LoadingSpinner } from '../../../../components/LoadingSpinner';
 import { openSuccessMessage, openErrorMessage } from '../../../../App/cache';
 
-export type Props = {
+export type UpsertFormProps = {
   id?: string;
-  handleClose?: () => void;
+  onSubmit: () => void;
   isCopy?: boolean;
 };
 
@@ -48,10 +48,10 @@ const GET_W40K_UNIT = gql`
   }
 `;
 
-export const W40KUpsertFormContainer: FC<Props> = ({ id, handleClose, isCopy }) => {
+export const W40KUpsertFormContainer: FC<UpsertFormProps> = ({ id, onSubmit, isCopy }) => {
   const [createUnit, { error: createError }] = useMutation(CREATE_W40K_UNIT);
   const [updateUnit, { error: updateError }] = useMutation(UPDATE_W40K_UNIT);
-  const [getUnit, { loading, data, error: getUnitError }] = useLazyQuery(GET_W40K_UNIT);
+  const [getUnit, { loading, data }] = useLazyQuery(GET_W40K_UNIT);
 
   useEffect(() => {
     if (id) {
@@ -74,7 +74,7 @@ export const W40KUpsertFormContainer: FC<Props> = ({ id, handleClose, isCopy }) 
       });
     }
     if (!createError && !updateError) {
-      handleClose && handleClose();
+      onSubmit && onSubmit();
       openSuccessMessage(true);
     } else {
       openErrorMessage(true);

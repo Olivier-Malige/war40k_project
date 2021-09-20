@@ -1,4 +1,4 @@
-import React, { cloneElement, FC, ReactElement, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import {
   Table,
@@ -21,22 +21,18 @@ import { UnitTableToolbar } from './components/UnitTableToolbar';
 import { UnitTableHead } from './components/UnitTableHead';
 import { Order, RowData } from './types';
 
-import { StyledModal } from 'src/components/StyledModal';
 import { getComparator, stableSort } from 'src/utils/sort';
+import { FullScreenDialog } from '../../../../components/FullScreenDialog';
+import { UpsertFormProps } from '../W40kUpsertForm/W40kUpsertFormContainer';
 
 type Props = {
   tableTitle: string;
   rowsData: RowData[];
   onDeleteRow: (id: string[]) => void;
-  upsertModalContent: ReactElement;
+  UpsertForm: FC<UpsertFormProps>;
 };
 
-export const UnitTableView: FC<Props> = ({
-  tableTitle,
-  rowsData,
-  onDeleteRow,
-  upsertModalContent,
-}) => {
+export const UnitTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow, UpsertForm }) => {
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof RowData>('name');
   const [selected, setSelected] = useState<string[]>([]);
@@ -97,11 +93,11 @@ export const UnitTableView: FC<Props> = ({
     setDense(event.target.checked);
   };
 
-  const handleOpenUpsertModal = () => {
+  const handleOpenUpsertUnit = () => {
     setOpenUpsertModal(true);
   };
 
-  const handleCloseUpsertModal = () => {
+  const handleCloseUpsertUnit = () => {
     setOpenUpsertModal(false);
     setIsUpdate(false);
     setIsCopy(false);
@@ -234,7 +230,7 @@ export const UnitTableView: FC<Props> = ({
         <div>
           <Grid container justifyContent={'flex-end'}>
             <Fab
-              onClick={handleOpenUpsertModal}
+              onClick={handleOpenUpsertUnit}
               color="secondary"
               size={'large'}
               aria-label="add"
@@ -268,17 +264,17 @@ export const UnitTableView: FC<Props> = ({
           </Grid>
         </div>
       </Paper>
-      <StyledModal handleClose={handleCloseUpsertModal} open={openUpsertModal}>
-        {cloneElement(
-          upsertModalContent,
-          {
-            isCopy,
-            id: isUpdate || isCopy ? selected[0] : undefined,
-            handleClose: handleCloseUpsertModal,
-          },
-          null,
-        )}
-      </StyledModal>
+      <FullScreenDialog
+        title={isUpdate ? 'Update a warhammer 40k unit' : 'Create a new warhammer 40k unit'}
+        handleClose={handleCloseUpsertUnit}
+        open={openUpsertModal}
+      >
+        <UpsertForm
+          onSubmit={handleCloseUpsertUnit}
+          isCopy={isCopy}
+          id={isUpdate || isCopy ? selected[0] : undefined}
+        />
+      </FullScreenDialog>
     </Box>
   );
 };

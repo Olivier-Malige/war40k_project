@@ -67,19 +67,19 @@ export const UnitTableToolbar = ({
             {numSelected === 1 && (
               <>
                 <Tooltip title="Edit">
-                  <IconButton aria-label="Edit" size="large">
+                  <IconButton color={'secondary'} aria-label="Edit" size="large">
                     <EditIcon onClick={onEdit} />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Copy">
-                  <IconButton aria-label="Copy" size="large">
+                  <IconButton color={'secondary'} aria-label="Copy" size="large">
                     <CopyIcon onClick={onCopy} />
                   </IconButton>
                 </Tooltip>
               </>
             )}
             <Tooltip title="Delete">
-              <IconButton aria-label="delete" size="large">
+              <IconButton color={'warning'} aria-label="delete" size="large">
                 <DeleteIcon onClick={handleOpenConfirmDelete} />
               </IconButton>
             </Tooltip>
