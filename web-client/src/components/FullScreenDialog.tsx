@@ -22,7 +22,7 @@ type Props = {
 export const FullScreenDialog: FC<Props> = ({ title, children, open, handleClose }) => {
   return (
     <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-      <AppBar sx={{ position: 'relative' }}>
+      <AppBar sx={{ position: 'fixed' }}>
         <Toolbar>
           <Typography sx={{ flex: 1 }} variant={'h5'}>
             {title}

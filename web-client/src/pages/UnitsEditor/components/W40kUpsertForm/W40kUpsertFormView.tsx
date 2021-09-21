@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import { Box } from '@mui/system';
 import { Save as SaveIcon, AddAPhoto as AddAPhotoIcon } from '@mui/icons-material';
 
-import { AddToChipField } from 'src/components/forms/AddToChipField';
+import { AddToField } from 'src/components/forms/AddToField';
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required').nullable(),
@@ -22,6 +22,8 @@ type W40KUnit = {
   description: string;
   keywords: string[];
   factionKeywords: string[];
+  wargearOptions: string[];
+  abilities: { name: string; rule: string }[];
 };
 
 export type W40KUpsertFormProps = {
@@ -41,6 +43,8 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
       description: data?.description || null,
       keywords: data?.keywords || [],
       factionKeywords: data?.factionKeywords || [],
+      wargearOptions: data?.wargearOptions || [],
+      abilities: data?.abilities || [],
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -52,36 +56,35 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
   return (
     <Box sx={{ padding: 5 }}>
       <form onSubmit={formik.handleSubmit}>
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', mt: 5 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <TextField
+              sx={{ width: '50px' }}
+              select
+              value={formik.values.version}
+              name={'version'}
+              onChange={formik.handleChange}
+              margin={'dense'}
+              label="Version"
+              variant="standard"
+            >
+              <MenuItem value={'v8'}>v8</MenuItem>
+              <MenuItem value={'v9'}>v9</MenuItem>
+            </TextField>
+            <TextField
+              select
+              label={'Lang'}
+              margin={'dense'}
+              name="lang"
+              value={formik.values.lang}
+              onChange={formik.handleChange}
+              variant="standard"
+            >
+              <MenuItem value={'fr_FR'}>French</MenuItem>
+              <MenuItem value={'en_GB'}>English</MenuItem>
+            </TextField>
+          </Box>
           <Grid container direction="column" alignContent={'center'} sx={{ mr: 3 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <TextField
-                sx={{ width: '50px' }}
-                select
-                value={formik.values.version}
-                name={'version'}
-                onChange={formik.handleChange}
-                margin={'dense'}
-                label="Version"
-                variant="standard"
-              >
-                <MenuItem value={'v8'}>v8</MenuItem>
-                <MenuItem value={'v9'}>v9</MenuItem>
-              </TextField>
-              <TextField
-                select
-                label={'Lang'}
-                margin={'dense'}
-                name="lang"
-                value={formik.values.lang}
-                onChange={formik.handleChange}
-                variant="standard"
-              >
-                <MenuItem value={'fr_FR'}>French</MenuItem>
-                <MenuItem value={'en_GB'}>English</MenuItem>
-              </TextField>
-            </Box>
-            <hr />
             <Avatar
               sx={{ width: 300, height: 300, bgcolor: theme => theme.palette.background.default }}
             >
@@ -102,6 +105,7 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
               variant="standard"
             />
           </Grid>
+
           <Grid container direction="column">
             <TextField
               value={formik.values.name}
@@ -145,12 +149,35 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
               label="Detail"
               variant="standard"
             />
-            <AddToChipField
+            <AddToField
+              title={'Wargear options'}
+              formik={formik}
+              fieldName={'wargearOptions'}
+              label={'option'}
+            />
+            <AddToField
+              title={'Abilities'}
+              formik={formik}
+              fieldName={'abilities'}
+              subFieldNames={{ subfield1: 'name', subfield2: 'rule' }}
+              label={'Name'}
+              label2={'Rule'}
+            />
+
+            <AddToField
+              title={'Faction keywords'}
               formik={formik}
               fieldName={'factionKeywords'}
-              label={'Faction keywords'}
+              label={'Keyword name'}
+              display={'chip'}
             />
-            <AddToChipField formik={formik} fieldName={'keywords'} label={'Keywords'} />
+            <AddToField
+              title={'Keywords'}
+              formik={formik}
+              fieldName={'keywords'}
+              label={'Keyword name'}
+              display={'chip'}
+            />
           </Grid>
         </Box>
         <Grid
@@ -166,7 +193,7 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
             size={'large'}
             aria-label="save"
             sx={{
-              position: 'absolute',
+              position: 'fixed',
               padding: 3,
               bottom: '50px',
               right: '50px',
