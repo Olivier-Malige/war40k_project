@@ -32,8 +32,8 @@ export const FullScreenDialog: FC<Props> = ({ title, children, open, handleClose
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Box sx={{ height: '100%', mt: 5 }}>
-        <Paper>{children}</Paper>
+      <Box sx={{ height: 'calc(100% - 80px)', mt: 5 }}>
+        <Paper elevation={3}>{children}</Paper>
       </Box>
     </Dialog>
   );
