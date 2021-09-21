@@ -5,8 +5,8 @@ export const dark: Theme = createTheme({
   palette: {
     mode: 'dark',
     background: {
-      default: blueGrey[800],
-      paper: blueGrey[900],
+      default: blueGrey[900],
+      paper: grey[900],
     },
     primary: {
       main: purple[200],

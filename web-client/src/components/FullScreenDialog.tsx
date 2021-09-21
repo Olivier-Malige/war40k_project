@@ -1,9 +1,9 @@
 import React, { FC, ReactElement } from 'react';
 
-import { Slide, Dialog, AppBar, Typography } from '@mui/material';
+import { Slide, Dialog, AppBar, Typography, Paper } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import { IconButton, Toolbar } from '@mui/material';
-import { Close as CloseIcon } from '@material-ui/icons';
+import { Close as CloseIcon } from '@mui/icons-material/';
 import { Box } from '@mui/system';
 
 const Transition = React.forwardRef(function Transition(
@@ -32,7 +32,9 @@ export const FullScreenDialog: FC<Props> = ({ title, children, open, handleClose
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Box sx={{ height: '100%', mt: 5 }}>{children}</Box>
+      <Box sx={{ height: '100%', mt: 5 }}>
+        <Paper>{children}</Paper>
+      </Box>
     </Dialog>
   );
 };

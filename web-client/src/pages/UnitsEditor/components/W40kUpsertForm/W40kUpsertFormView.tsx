@@ -6,6 +6,7 @@ import { Box } from '@mui/system';
 import { Save as SaveIcon, AddAPhoto as AddAPhotoIcon } from '@mui/icons-material';
 
 import { AddToField } from 'src/components/forms/AddToField';
+import { TableField } from '../../../../components/forms/TableField';
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required').nullable(),
@@ -24,6 +25,8 @@ type W40KUnit = {
   factionKeywords: string[];
   wargearOptions: string[];
   abilities: { name: string; rule: string }[];
+  weapons: string[];
+  profiles: string[];
 };
 
 export type W40KUpsertFormProps = {
@@ -45,6 +48,8 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
       factionKeywords: data?.factionKeywords || [],
       wargearOptions: data?.wargearOptions || [],
       abilities: data?.abilities || [],
+      weapons: data?.weapons || [],
+      profiles: data?.profiles || [],
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -149,6 +154,8 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
               label="Detail"
               variant="standard"
             />
+            <TableField formik={formik} fieldName={'profiles'} title={'Profiles'} />
+            <TableField formik={formik} fieldName={'weapons'} title={'Weapons'} />
             <AddToField
               title={'Wargear options'}
               formik={formik}
