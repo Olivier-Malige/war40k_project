@@ -1,11 +1,7 @@
 import React, { ReactElement, FC } from 'react';
 
 import { Snackbar } from '@mui/material';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
-
-function Alert(props: AlertProps) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+import Alert from '@mui/material/Alert';
 
 type Props = {
   open: boolean;
@@ -17,9 +13,9 @@ type Props = {
 export const SnackBarAlert: FC<Props> = ({ open, handleClose, severity, children }) => {
   return (
     <Snackbar
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       open={open}
-      autoHideDuration={2000}
+      autoHideDuration={5000}
       onClose={handleClose}
     >
       <Alert color={severity} onClose={handleClose} severity={severity}>

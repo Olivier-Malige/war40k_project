@@ -85,7 +85,7 @@ export const AppBarView: FC<Props> = ({
           >
             <ListItem>
               <ListItemText secondary={version}>
-                <Typography variant="h5" color={'secondary'}>
+                <Typography variant="h5" color={'primary'}>
                   {title}
                 </Typography>
               </ListItemText>

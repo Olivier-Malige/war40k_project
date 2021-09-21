@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
-import { Avatar, Container, Fab, Grid, MenuItem, TextField } from '@mui/material';
+import { Avatar, Fab, Grid, MenuItem, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Box } from '@mui/system';
 import { Save as SaveIcon, AddAPhoto as AddAPhotoIcon } from '@mui/icons-material';
+
+import { AddToChipField } from 'src/components/forms/AddToChipField';
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required').nullable(),
@@ -18,8 +20,8 @@ type W40KUnit = {
   version: string;
   detail: string;
   description: string;
-  keywords: string;
-  factionKeywords: string;
+  keywords: string[];
+  factionKeywords: string[];
 };
 
 export type W40KUpsertFormProps = {
@@ -37,8 +39,8 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
       version: data?.version || 'v9',
       detail: data?.detail || null,
       description: data?.description || null,
-      keywords: data?.keywords || null,
-      factionKeywords: data?.factionKeywords || null,
+      keywords: data?.keywords || [],
+      factionKeywords: data?.factionKeywords || [],
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -59,7 +61,6 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
                 value={formik.values.version}
                 name={'version'}
                 onChange={formik.handleChange}
-                color={'secondary'}
                 margin={'dense'}
                 label="Version"
                 variant="standard"
@@ -74,7 +75,6 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
                 name="lang"
                 value={formik.values.lang}
                 onChange={formik.handleChange}
-                color={'secondary'}
                 variant="standard"
               >
                 <MenuItem value={'fr_FR'}>French</MenuItem>
@@ -95,7 +95,6 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
               value={formik.values.description}
               name={'description'}
               onChange={formik.handleChange}
-              color={'secondary'}
               margin={'dense'}
               label="Description"
               multiline
@@ -110,68 +109,48 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
               onChange={formik.handleChange}
               error={formik.touched.name && Boolean(formik.errors.name)}
               helperText={formik.touched.name && formik.errors.name}
-              color={'secondary'}
               margin={'dense'}
               label="Name"
               variant="standard"
             />
-            <Grid container spacing={1}>
-              <Grid item xs={6}>
-                <TextField
-                  value={formik.values.powerRating}
-                  name={'powerRating'}
-                  onChange={formik.handleChange}
-                  error={formik.touched.powerRating && Boolean(formik.errors.powerRating)}
-                  helperText={formik.touched.powerRating && formik.errors.powerRating}
-                  color={'secondary'}
-                  margin={'dense'}
-                  label="Power rating"
-                  variant="standard"
-                  type="number"
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  value={formik.values.commandPoints}
-                  name={'commandPoints'}
-                  onChange={formik.handleChange}
-                  color={'secondary'}
-                  margin={'dense'}
-                  type={'number'}
-                  label="Command points"
-                  variant="standard"
-                />
-              </Grid>
+            <Grid container direction={'row'}>
+              <TextField
+                sx={{ mr: 2 }}
+                value={formik.values.powerRating}
+                name={'powerRating'}
+                onChange={formik.handleChange}
+                error={formik.touched.powerRating && Boolean(formik.errors.powerRating)}
+                helperText={formik.touched.powerRating && formik.errors.powerRating}
+                margin={'dense'}
+                label="Power rating"
+                variant="standard"
+                type="number"
+              />
+              <TextField
+                value={formik.values.commandPoints}
+                name={'commandPoints'}
+                onChange={formik.handleChange}
+                margin={'dense'}
+                type={'number'}
+                label="Command points"
+                variant="standard"
+              />
             </Grid>
 
             <TextField
               value={formik.values.detail}
               name={'detail'}
               onChange={formik.handleChange}
-              color={'secondary'}
               margin={'dense'}
               label="Detail"
               variant="standard"
             />
-
-            <TextField
-              value={formik.values.keywords}
-              name={'keywords'}
-              onChange={formik.handleChange}
-              color={'secondary'}
-              margin={'dense'}
-              label="Keywords"
-              variant="standard"
+            <AddToChipField
+              formik={formik}
+              fieldName={'factionKeywords'}
+              label={'Faction keywords'}
             />
-            <TextField
-              value={formik.values.factionKeywords}
-              name={'factionKeywords'}
-              onChange={formik.handleChange}
-              color={'secondary'}
-              margin={'dense'}
-              label="Faction keywords"
-              variant="standard"
-            />
+            <AddToChipField formik={formik} fieldName={'keywords'} label={'Keywords'} />
           </Grid>
         </Box>
         <Grid
@@ -185,12 +164,12 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
             onClick={formik.submitForm}
             color="secondary"
             size={'large'}
-            aria-label="add"
+            aria-label="save"
             sx={{
               position: 'absolute',
               padding: 3,
-              top: '90%',
-              left: '95%',
+              bottom: '50px',
+              right: '50px',
             }}
           >
             <SaveIcon fontSize={'large'} />

@@ -33,7 +33,7 @@ export const PageLinkCard: React.FC<Props> = ({ linkTo, title, icon, picture }) 
             {icon}
             <Typography
               sx={{
-                marginLeft: 10,
+                marginLeft: 2,
               }}
               variant="h4"
               component="h2"

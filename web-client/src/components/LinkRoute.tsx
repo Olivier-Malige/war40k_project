@@ -6,14 +6,13 @@ export const LinkRoute = (
   props: JSX.IntrinsicAttributes & LinkProps<unknown> & React.RefAttributes<HTMLAnchorElement>,
 ) => {
   return (
-    <Link {...props}>
-      <Box
-        sx={{
-          textDecoration: 'none',
-        }}
-      >
-        {props.children}
-      </Box>
+    <Link
+      {...props}
+      style={{
+        textDecoration: 'none',
+      }}
+    >
+      <Box>{props.children}</Box>
     </Link>
   );
 };

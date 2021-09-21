@@ -19,7 +19,12 @@ export const HomeView: React.FC = () => {
         <PageLinkCard
           linkTo={routeNames.UNITS_EDITOR}
           title={'Units editor'}
-          icon={<ImageAspectRatio fontSize={'large'} color={'secondary'} />}
+          icon={
+            <ImageAspectRatio
+              fontSize={'large'}
+              sx={{ color: theme => theme.palette.secondary.main }}
+            />
+          }
           picture="https://geeko.lesoir.be/wp-content/uploads/2019/07/warhammer.jpg"
         />
       </Container>

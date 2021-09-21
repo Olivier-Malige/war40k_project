@@ -6,13 +6,13 @@ export const dark: Theme = createTheme({
     mode: 'dark',
     background: {
       default: blueGrey[800],
-      paper: grey[900],
+      paper: blueGrey[900],
     },
     primary: {
-      main: purple[500],
+      main: purple[200],
     },
     secondary: {
-      main: teal[300],
+      main: teal[200],
     },
   },
 });
