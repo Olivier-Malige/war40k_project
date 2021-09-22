@@ -6,7 +6,7 @@ import { Box } from '@mui/system';
 import { Save as SaveIcon, AddAPhoto as AddAPhotoIcon } from '@mui/icons-material';
 
 import { AddToField } from 'src/components/forms/AddToField';
-import { TableField } from '../../../../components/forms/TableField';
+import { AddProfilesField } from './components/AddProfilesField';
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required').nullable(),
@@ -154,13 +154,14 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
               label="Detail"
               variant="standard"
             />
-            <TableField formik={formik} fieldName={'profiles'} title={'Profiles'} />
-            <TableField formik={formik} fieldName={'weapons'} title={'Weapons'} />
+            <AddProfilesField fieldName={'profiles'} title={'Profiles'} formik={formik} />
+            {/*<TableField formik={formik} fieldName={'profiles'} title={'Profiles'} />*/}
+            {/*<TableField formik={formik} fieldName={'weapons'} title={'Weapons'} />*/}
             <AddToField
               title={'Wargear options'}
               formik={formik}
               fieldName={'wargearOptions'}
-              label={'option'}
+              label={'Option'}
             />
             <AddToField
               title={'Abilities'}
