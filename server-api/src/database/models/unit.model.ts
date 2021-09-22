@@ -14,7 +14,7 @@ export const unitSchema = new Schema({
   commandPoints: { type: Number },
   profiles: { type: Array },
   profilesDetail: { type: String },
-  weapons: { type: [String || null, [String || Number]] },
+  weapons: { type: Array },
   wargearOptions: { type: [String] },
   abilities: { type: [[String, String]] },
   factionKeywords: { type: [String] },

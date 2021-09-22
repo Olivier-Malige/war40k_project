@@ -44,6 +44,29 @@ const GET_W40K_UNIT = gql`
       lang
       factionKeywords
       keywords
+      weapons {
+        abilities
+        armourPenetration
+        damage
+        name
+        range
+        strength
+        type
+      }
+      profiles {
+        attacks
+        ballisticSkill
+        leadership
+        move
+        name
+        numberMax
+        numberMin
+        save
+        strength
+        toughness
+        weaponSkill
+        wounds
+      }
     }
   }
 `;
@@ -62,6 +85,7 @@ export const W40KUpsertFormContainer: FC<UpsertFormProps> = ({ id, onSubmit, isC
   }, [id, getUnit]);
 
   const handleSubmit = async values => {
+    console.log(values);
     if (id && data && !isCopy) {
       await updateUnit({
         variables: { unitInput: values, id },

@@ -6,33 +6,15 @@ import { Box } from '@mui/system';
 import { Save as SaveIcon, AddAPhoto as AddAPhotoIcon } from '@mui/icons-material';
 
 import { AddToField } from 'src/components/forms/AddToField';
-import { AddProfilesField } from './components/AddProfilesField';
+
+import { W40KUpsertFormProps } from './types';
+import { emptyProfile, emptyWeapon, profileFieldsConfig, weaponFieldsConfig } from './filedsConfig';
+import { AddArrayField } from './components/AddArrayField';
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required').nullable(),
   powerRating: yup.number().required('Power is required').nullable(),
 });
-
-type W40KUnit = {
-  lang: string;
-  name: string;
-  powerRating: number;
-  commandPoints: number;
-  version: string;
-  detail: string;
-  description: string;
-  keywords: string[];
-  factionKeywords: string[];
-  wargearOptions: string[];
-  abilities: { name: string; rule: string }[];
-  weapons: string[];
-  profiles: string[];
-};
-
-export type W40KUpsertFormProps = {
-  onSubmit: (values: W40KUnit) => void;
-  data?: W40KUnit;
-};
 
 export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) => {
   const formik = useFormik({
@@ -49,7 +31,7 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
       wargearOptions: data?.wargearOptions || [],
       abilities: data?.abilities || [],
       weapons: data?.weapons || [],
-      profiles: data?.profiles || [],
+      profiles: data?.profiles || [{ ...emptyProfile }],
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -154,9 +136,20 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
               label="Detail"
               variant="standard"
             />
-            <AddProfilesField fieldName={'profiles'} title={'Profiles'} formik={formik} />
-            {/*<TableField formik={formik} fieldName={'profiles'} title={'Profiles'} />*/}
-            {/*<TableField formik={formik} fieldName={'weapons'} title={'Weapons'} />*/}
+            <AddArrayField
+              fieldName={'profiles'}
+              title={'Profiles'}
+              formik={formik}
+              emptyFieldValues={{ ...emptyProfile }}
+              fieldsConfig={profileFieldsConfig}
+            />
+            <AddArrayField
+              fieldName={'weapons'}
+              title={'Weapons'}
+              formik={formik}
+              emptyFieldValues={{ ...emptyWeapon }}
+              fieldsConfig={weaponFieldsConfig}
+            />
             <AddToField
               title={'Wargear options'}
               formik={formik}

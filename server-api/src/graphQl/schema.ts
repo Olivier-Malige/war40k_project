@@ -33,7 +33,7 @@ export const typeDefs = gql`
     commandPoints: Int
     profiles: [W40kUnitProfile]
     profilesDetail: String
-    weapons: [Weapons]
+    weapons: [Weapon]
     wargearOptions: [String]
     abilities: [Abilities]
     factionKeywords: [String]
@@ -41,7 +41,8 @@ export const typeDefs = gql`
   }
 
   type W40kUnitProfile {
-    numbers: [Int!]
+    numberMin: Int
+    numberMax: Int
     name: String
     move: Int
     weaponSkill: Int
@@ -85,7 +86,7 @@ export const typeDefs = gql`
     version: String!
     description: String
     detail: String
-    profiles: W40kUnitProfileInput
+    profiles: [W40kUnitProfileInput]
     profilesDetail: String
     powerRating: Int!
     commandPoints: Int
@@ -94,16 +95,16 @@ export const typeDefs = gql`
     abilities: [AbilitiesInput]
     factionKeywords: [String]
     keywords: [String]
-    weapons: [WeaponsInput]
+    weapons: [WeaponInput]
   }
 
   input WeaponInput {
-    name: String!
-    range: Int!
-    type: String!
-    strength: Int!
-    armourPenetration: Int!
-    damage: Int!
+    name: String
+    range: Int
+    type: String
+    strength: Int
+    armourPenetration: Int
+    damage: Int
     abilities: String
   }
 
@@ -114,7 +115,8 @@ export const typeDefs = gql`
 
   input W40kUnitProfileInput {
     name: String
-    numbers: [Int]
+    numberMin: Int
+    numberMax: Int
     move: Int
     weaponSkill: Int
     ballisticSkill: Int
