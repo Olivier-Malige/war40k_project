@@ -74,7 +74,9 @@ const GET_W40K_UNIT = gql`
 export const W40KUpsertFormContainer: FC<UpsertFormProps> = ({ id, onSubmit, isCopy }) => {
   const [createUnit, { error: createError }] = useMutation(CREATE_W40K_UNIT);
   const [updateUnit, { error: updateError }] = useMutation(UPDATE_W40K_UNIT);
-  const [getUnit, { loading, data }] = useLazyQuery(GET_W40K_UNIT);
+  const [getUnit, { loading, data }] = useLazyQuery(GET_W40K_UNIT, {
+    fetchPolicy: 'no-cache',
+  });
 
   useEffect(() => {
     if (id) {
@@ -85,7 +87,6 @@ export const W40KUpsertFormContainer: FC<UpsertFormProps> = ({ id, onSubmit, isC
   }, [id, getUnit]);
 
   const handleSubmit = async values => {
-    console.log(values);
     if (id && data && !isCopy) {
       await updateUnit({
         variables: { unitInput: values, id },

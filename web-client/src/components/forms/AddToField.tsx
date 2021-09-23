@@ -1,65 +1,59 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, memo } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { Add, DeleteForever } from '@mui/icons-material';
 import { Button, Chip, Stack, TextField, Typography } from '@mui/material';
-import { FieldArray, FieldArrayRenderProps, FormikContextType, FormikProvider } from 'formik';
+import { FieldArray, FieldArrayRenderProps } from 'formik';
 import { Box } from '@mui/system';
 
 type Props = {
-  formik: FormikContextType<any>;
   fieldName: string;
+  formikFieldValues: Array<any>;
   label: string;
   label2?: string;
   display?: 'chip' | 'li';
   subFieldNames?: { subfield1: string; subfield2: string };
   title?: string;
 };
-export const AddToField: FC<Props> = ({
-  formik,
-  fieldName,
-  label,
-  display,
-  label2,
-  subFieldNames,
-  title,
-}) => {
-  const [fieldValue, setFieldValue] = useState('');
-  const [field2Value, setField2Value] = useState('');
+// eslint-disable-next-line react/display-name
+export const AddToField: FC<Props> = memo(
+  ({ fieldName, formikFieldValues, label, display, label2, subFieldNames, title }) => {
+    const [fieldValue, setFieldValue] = useState('');
+    const [field2Value, setField2Value] = useState('');
+    console.log('AddToField Refresh' + title);
+    const handleAdd = (arrayHelper: FieldArrayRenderProps) => {
+      if (
+        subFieldNames?.subfield1 &&
+        subFieldNames?.subfield2 &&
+        fieldValue.length > 0 &&
+        field2Value.length > 0
+      ) {
+        arrayHelper.push({
+          [subFieldNames.subfield1]: fieldValue,
+          [subFieldNames.subfield2]: field2Value,
+        });
+        setFieldValue('');
+        setField2Value('');
+      } else if (fieldValue.length > 0 && !subFieldNames) {
+        arrayHelper.push(fieldValue);
+        setFieldValue('');
+      }
+    };
+    const handleDelete = (arrayHelper: FieldArrayRenderProps, index: number) => {
+      arrayHelper.remove(index);
+    };
 
-  const handleAdd = (arrayHelper: FieldArrayRenderProps) => {
-    if (
-      subFieldNames?.subfield1 &&
-      subFieldNames?.subfield2 &&
-      fieldValue.length > 0 &&
-      field2Value.length > 0
-    ) {
-      arrayHelper.push({
-        [subFieldNames.subfield1]: fieldValue,
-        [subFieldNames.subfield2]: field2Value,
-      });
-      setFieldValue('');
-      setField2Value('');
-    } else if (fieldValue.length > 0 && !subFieldNames) {
-      arrayHelper.push(fieldValue);
-      setFieldValue('');
-    }
-  };
-  const handleDelete = (arrayHelper: FieldArrayRenderProps, index: number) => {
-    arrayHelper.remove(index);
-  };
-
-  return (
-    <div>
-      {title && (
-        <Typography
-          sx={{
-            mt: 5,
-          }}
-          variant={'h6'}
-        >
-          {title}
-        </Typography>
-      )}
-      <FormikProvider value={formik}>
+    return (
+      <div>
+        {title && (
+          <Typography
+            sx={{
+              mt: 5,
+            }}
+            variant={'h6'}
+          >
+            {title}
+          </Typography>
+        )}
         <FieldArray
           name={fieldName}
           render={arrayHelper => (
@@ -100,10 +94,10 @@ export const AddToField: FC<Props> = ({
                 </Button>
                 {display === 'chip' ? (
                   <>
-                    {formik.values[fieldName].map((value, index) => (
+                    {formikFieldValues.map((value, index) => (
                       <Chip
                         color={'primary'}
-                        key={new Date() + index}
+                        key={uuidv4()}
                         label={
                           subFieldNames
                             ? `${value[subFieldNames.subfield1]} : ${
@@ -118,8 +112,8 @@ export const AddToField: FC<Props> = ({
                   </>
                 ) : (
                   <ul>
-                    {formik.values[fieldName].map((value, index) => (
-                      <li key={new Date() + index} style={{ listStyleType: 'none' }}>
+                    {formikFieldValues.map((value, index) => (
+                      <li key={uuidv4()} style={{ listStyleType: 'none' }}>
                         <Button onClick={() => handleDelete(arrayHelper, index)} sx={{ mr: 1 }}>
                           <DeleteForever color={'warning'} />
                         </Button>
@@ -137,7 +131,7 @@ export const AddToField: FC<Props> = ({
             </>
           )}
         />
-      </FormikProvider>
-    </div>
-  );
-};
+      </div>
+    );
+  },
+);

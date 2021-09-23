@@ -1,41 +1,38 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
-import { FieldArray, FormikContextType, FormikProvider } from 'formik';
+import { FieldArray } from 'formik';
 import { Add, Remove } from '@mui/icons-material';
 import { FieldConfig, W40KProfile, W40KWeapon } from '../types';
 
 type Props = {
-  formik: FormikContextType<any>;
+  formikFieldValues: Array<any>;
+  formikHandleChange: any;
   fieldName: string;
   title: string;
   fieldsConfig: FieldConfig[];
   emptyFieldValues: W40KProfile | W40KWeapon;
 };
 
-export const AddArrayField: FC<Props> = ({
-  title,
-  formik,
-  fieldName,
-  fieldsConfig,
-  emptyFieldValues,
-}) => {
-  return (
-    <div>
-      <Typography sx={{ mt: 5 }} variant={'h6'}>
-        {title}
-      </Typography>
-      <FormikProvider value={formik}>
+// eslint-disable-next-line react/display-name
+export const AddArrayField: FC<Props> = memo(
+  ({ title, formikFieldValues, fieldName, fieldsConfig, emptyFieldValues, formikHandleChange }) => {
+    console.log('addArrayField refresh');
+    return (
+      <div>
+        <Typography sx={{ mt: 5 }} variant={'h6'}>
+          {title}
+        </Typography>
         <FieldArray
           name={fieldName}
           render={arrayHelper => (
             <>
-              {formik.values[fieldName].map((values, index) => (
+              {formikFieldValues.map((values, index) => (
                 <>
                   {fieldsConfig.map(profile => (
                     <>
                       <TextField
-                        value={formik.values[fieldName][index][profile.name]}
-                        onChange={formik.handleChange}
+                        value={formikFieldValues[index][profile.name]}
+                        onChange={formikHandleChange}
                         sx={{ width: profile.width, mr: 1 }}
                         name={`${fieldName}.${index}[${profile.name}]`}
                         margin={'normal'}
@@ -56,7 +53,7 @@ export const AddArrayField: FC<Props> = ({
               >
                 <Add fontSize={'small'} />
               </Button>
-              {formik.values[fieldName].length > 1 && (
+              {formikFieldValues.length > 1 && (
                 <Button
                   sx={{ height: '30px', ml: 2 }}
                   onClick={() => arrayHelper.pop()}
@@ -70,7 +67,7 @@ export const AddArrayField: FC<Props> = ({
             </>
           )}
         />
-      </FormikProvider>
-    </div>
-  );
-};
+      </div>
+    );
+  },
+);
