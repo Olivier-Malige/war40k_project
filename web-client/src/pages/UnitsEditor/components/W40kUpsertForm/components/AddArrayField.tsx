@@ -1,9 +1,9 @@
 import React, { FC, memo } from 'react';
-import { Button, TextField, Typography } from '@mui/material';
+import { Button, Stack, TextField, Typography } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
 import { FieldConfig, W40KProfile, W40KWeapon } from '../types';
 import { useFieldArray, Controller } from 'react-hook-form';
-
+import { v4 as uuidv4 } from 'uuid';
 type Props = {
   control: any;
   fieldName: string;
@@ -26,10 +26,11 @@ export const AddArrayField: FC<Props> = memo(
           {title}
         </Typography>
         {fields.map((values, index) => (
-          <>
-            {fieldsConfig.map(fieldConfig => (
-              <>
+          <Stack key={values.id} spacing={2}>
+            <div>
+              {fieldsConfig.map(fieldConfig => (
                 <Controller
+                  key={uuidv4()}
                   name={`${fieldName}.${index}[${fieldConfig.name}]`}
                   control={control}
                   render={({ field }) => (
@@ -43,10 +44,11 @@ export const AddArrayField: FC<Props> = memo(
                     />
                   )}
                 />
-              </>
-            ))}
-          </>
+              ))}
+            </div>
+          </Stack>
         ))}
+
         <Button
           sx={{ height: '30px' }}
           onClick={() => append(emptyFieldValues)}
