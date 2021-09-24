@@ -12,12 +12,12 @@ export interface W40KUnit extends Document {
   version: string;
   powerRating: number;
   commandPoints?: number;
-  profiles?: Array<string | number>;
-  weapons?: Array<string | null | Array<string | number>>;
-  wargearOptions?: Array<string>;
-  abilities?: Array<string>;
-  factionKeywords?: Array<string>;
-  keywords?: Array<string>;
+  profiles?: Array<any>;
+  weapons?: Array<any>;
+  wargearOptions?: Array<{ value: string }>;
+  abilities?: Array<{ value: string }>;
+  factionKeywords?: Array<{ value: string }>;
+  keywords?: Array<{ value: string }>;
 }
 
 export interface W40KUnitInput {
@@ -29,10 +29,10 @@ export interface W40KUnitInput {
   version: string;
   powerRating: number;
   commandPoints?: number;
-  profiles?: Array<string | number>;
-  weapons?: Array<string | null | Array<string | number>>;
-  wargearOptions?: Array<string>;
-  abilities?: Array<string>;
-  factionKeywords?: Array<string>;
-  keywords?: Array<string>;
+  profiles?: Array<any>;
+  weapons?: Array<any>;
+  wargearOptions?: Array<{ value: string }>;
+  abilities?: Array<{ value: string }>;
+  factionKeywords?: Array<{ value: string }>;
+  keywords?: Array<{ value: string }>;
 }

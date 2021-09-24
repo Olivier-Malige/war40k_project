@@ -39,11 +39,22 @@ const GET_W40K_UNIT = gql`
       commandPoints
       detail
       description
+      wargearOptions {
+        name
+      }
       name
       version
       lang
-      factionKeywords
-      keywords
+      abilities {
+        name
+        rule
+      }
+      factionKeywords {
+        name
+      }
+      keywords {
+        name
+      }
       weapons {
         abilities
         armourPenetration

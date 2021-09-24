@@ -15,8 +15,12 @@ export const GET_W40K_UNITS = gql`
       name
       version
       lang
-      factionKeywords
-      keywords
+      factionKeywords {
+        name
+      }
+      keywords {
+        name
+      }
     }
   }
 `;
@@ -40,8 +44,8 @@ export const War40kUnitsTableContainer: React.FC = () => {
         id: unit.id,
         lang: unit.lang,
         version: unit.version,
-        keywords: unit.keywords,
-        factionKeywords: unit.factionKeywords,
+        keywords: unit.keywords.map(elem => elem.name),
+        factionKeywords: unit.factionKeywords.map(elem => elem.name),
         creationDate: unit.creationDate,
         lastUpdateDate: unit.lastUpdateDate,
       })) ?? [],

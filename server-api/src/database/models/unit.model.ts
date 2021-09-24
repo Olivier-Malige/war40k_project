@@ -15,8 +15,8 @@ export const unitSchema = new Schema({
   profiles: { type: Array },
   profilesDetail: { type: String },
   weapons: { type: Array },
-  wargearOptions: { type: [String] },
-  abilities: { type: [[String, String]] },
-  factionKeywords: { type: [String] },
-  keywords: { type: [String] },
+  wargearOptions: { type: [] },
+  abilities: { type: [] },
+  factionKeywords: { type: [] },
+  keywords: { type: [] },
 });
