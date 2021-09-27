@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react';
 
-import { Add, DeleteForever, Remove } from '@mui/icons-material';
+import { Add, Remove } from '@mui/icons-material';
 import { Button, Chip, Grid, Stack, TextField, Typography } from '@mui/material';
 
 import { Box } from '@mui/system';
@@ -36,7 +36,7 @@ export const AddToField: FC<Props> = memo(
     });
 
     console.log('AddToField Refresh' + title);
-    console.log(fields);
+
     const handleAdd = data => {
       if (
         subFieldNames?.subfield1 &&

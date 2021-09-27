@@ -1,4 +1,4 @@
-import { FieldConfig, W40KProfile, W40KWeapon } from './types';
+import { FieldConfig, W40KProfile, W40KWeapon } from '../types';
 
 export const profileFieldsConfig: FieldConfig[] = [
   {

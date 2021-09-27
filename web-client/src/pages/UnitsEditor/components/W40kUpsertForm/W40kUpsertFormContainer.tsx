@@ -33,6 +33,7 @@ const GET_W40K_UNIT = gql`
     w40kUnit(id: $id) {
       id
       battlefieldRole
+      pictureUrl
       creationDate
       lastUpdateDate
       powerRating

@@ -6,6 +6,7 @@ export type FieldConfig = {
 };
 
 export type W40KUnit = {
+  pictureUrl: string;
   lang: string;
   name: string;
   powerRating: number;

@@ -2,6 +2,7 @@ import { Schema } from 'mongoose';
 
 export const unitSchema = new Schema({
   id: { type: String, required: true },
+  pictureUrl: { type: String },
   creationDate: { type: Date, required: true },
   lastUpdateDate: { type: Date },
   name: { type: String, required: true },

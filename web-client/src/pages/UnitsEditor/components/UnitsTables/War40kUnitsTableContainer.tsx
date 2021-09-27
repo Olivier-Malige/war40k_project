@@ -10,6 +10,7 @@ export const GET_W40K_UNITS = gql`
   query GetW40kUnits {
     w40kUnits {
       id
+      pictureUrl
       creationDate
       lastUpdateDate
       name
@@ -40,6 +41,7 @@ export const War40kUnitsTableContainer: React.FC = () => {
   useEffect(() => {
     setRowsData(
       data?.w40kUnits.map(unit => ({
+        pictureUrl: unit.pictureUrl,
         name: unit.name,
         id: unit.id,
         lang: unit.lang,

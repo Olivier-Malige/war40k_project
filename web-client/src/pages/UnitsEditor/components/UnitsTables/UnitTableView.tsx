@@ -13,6 +13,8 @@ import {
   FormControlLabel,
   Fab,
   Grid,
+  CardMedia,
+  Avatar,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { Add as AddIcon } from '@mui/icons-material';
@@ -190,6 +192,22 @@ export const UnitTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow, Up
                             checked={isItemSelected}
                             inputProps={{ 'aria-labelledby': labelId as string }}
                           />
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          <Avatar
+                            sx={{
+                              ml: 2,
+                              width: 50,
+                              height: 50,
+                              bgcolor: theme => theme.palette.background.default,
+                            }}
+                          >
+                            <CardMedia
+                              component="img"
+                              image={row?.pictureUrl as string}
+                              alt="Picture"
+                            />
+                          </Avatar>
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           {row.name}

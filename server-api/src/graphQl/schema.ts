@@ -21,6 +21,7 @@ export const typeDefs = gql`
 
   type W40kUnit {
     id: ID!
+    pictureUrl: String
     creationDate: Date!
     lastUpdateDate: Date
     name: String!
@@ -90,6 +91,7 @@ export const typeDefs = gql`
 
   input W40kUnitInput {
     name: String!
+    pictureUrl: String
     lang: Lang!
     version: String!
     description: String

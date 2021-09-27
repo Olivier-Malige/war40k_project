@@ -17,6 +17,7 @@ type EnhancedTableProps = {
 };
 
 const headCells: HeadCell[] = [
+  { id: 'pictureUrl', label: 'Picture' },
   { id: 'name', label: 'Unit name' },
   { id: 'id', label: 'Id' },
   { id: 'lang', label: 'Lang' },

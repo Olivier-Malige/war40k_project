@@ -1,16 +1,24 @@
-import React, { FC } from 'react';
-import { Avatar, Fab, Grid, MenuItem, TextField, Paper } from '@mui/material';
+import React, { FC, useEffect } from 'react';
+import { Avatar, Fab, Grid, MenuItem, TextField, Paper, CardMedia } from '@mui/material';
 import * as yup from 'yup';
 import { Box } from '@mui/system';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useDropzone } from 'react-dropzone';
 
 import { Save as SaveIcon, AddAPhoto as AddAPhotoIcon } from '@mui/icons-material';
 
 import { AddToField } from 'src/components/forms/AddToField';
 import { W40KUpsertFormProps } from './types';
-import { emptyProfile, emptyWeapon, profileFieldsConfig, weaponFieldsConfig } from './filedsConfig';
+import {
+  emptyProfile,
+  emptyWeapon,
+  profileFieldsConfig,
+  weaponFieldsConfig,
+} from './config/filedsConfig';
 import { AddArrayField } from './components/AddArrayField';
+import { useUploadImage } from 'src/hooks/useUploadImage';
+import { LoadingSpinner } from 'src/components/LoadingSpinner';
 
 const schema = yup
   .object()
@@ -18,6 +26,7 @@ const schema = yup
     name: yup.string().required('Name is required').nullable(),
     powerRating: yup.number().required('Power is required').nullable(),
     commandPoints: yup.number().nullable(),
+    pictureUrl: yup.string(),
     weapons: yup.array(
       yup.object({
         name: yup.string().nullable(),
@@ -52,10 +61,12 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
   const {
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
+      pictureUrl: data?.pictureUrl || null,
       lang: data?.lang || 'fr_FR',
       name: data?.name || null,
       battlefieldRole: data?.battlefieldRole || null,
@@ -72,6 +83,17 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
       profiles: data?.profiles || [{ ...emptyProfile }],
     },
   });
+  const { uploadedUrl, uploading, upload } = useUploadImage();
+
+  const onDrop = async acceptedFiles => {
+    await upload(acceptedFiles[0]);
+  };
+
+  useEffect(() => {
+    setValue('pictureUrl', uploadedUrl);
+  }, [uploadedUrl, setValue]);
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   console.log('form refresh');
 
@@ -164,12 +186,28 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
           </Grid>
           <Grid container direction="column" alignContent={'center'}>
             <Avatar
+              {...getRootProps()}
               sx={{ width: 300, height: 300, bgcolor: theme => theme.palette.background.default }}
             >
-              <AddAPhotoIcon
-                fontSize={'inherit'}
-                sx={{ color: theme => theme.palette.secondary.main, transform: 'scale(6)' }}
-              />
+              <>
+                <input {...getInputProps()} />
+                {uploading && <LoadingSpinner />}
+                {!uploading && (uploadedUrl || data?.pictureUrl) && (
+                  <CardMedia
+                    component="img"
+                    image={data?.pictureUrl || uploadedUrl}
+                    alt="Picture"
+                  />
+                )}
+                {!uploading && !data?.pictureUrl && !uploadedUrl && (
+                  <>
+                    <AddAPhotoIcon
+                      fontSize={'inherit'}
+                      sx={{ color: theme => theme.palette.secondary.main, transform: 'scale(6)' }}
+                    />
+                  </>
+                )}
+              </>
             </Avatar>
           </Grid>
           <Grid container direction="column">

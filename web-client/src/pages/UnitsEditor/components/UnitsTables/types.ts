@@ -6,6 +6,7 @@ export type HeadCell = {
 };
 
 export type RowData = {
+  pictureUrl: string;
   name: string;
   id: string;
   lang: string;
