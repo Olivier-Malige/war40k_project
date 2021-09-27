@@ -83,8 +83,10 @@ const GET_W40K_UNIT = gql`
 `;
 
 export const W40KUpsertFormContainer: FC<UpsertFormProps> = ({ id, onSubmit, isCopy }) => {
-  const [createUnit, { error: createError }] = useMutation(CREATE_W40K_UNIT);
-  const [updateUnit, { error: updateError }] = useMutation(UPDATE_W40K_UNIT);
+  const [createUnit, { error: createError, loading: createLoading }] =
+    useMutation(CREATE_W40K_UNIT);
+  const [updateUnit, { error: updateError, loading: updateLoading }] =
+    useMutation(UPDATE_W40K_UNIT);
   const [getUnit, { loading, data }] = useLazyQuery(GET_W40K_UNIT, {
     fetchPolicy: 'no-cache',
   });
@@ -117,6 +119,6 @@ export const W40KUpsertFormContainer: FC<UpsertFormProps> = ({ id, onSubmit, isC
     }
   };
 
-  if (loading) return <LoadingSpinner />;
+  if (loading || createLoading || updateLoading) return <LoadingSpinner />;
   return <W40kUpsertFormView onSubmit={handleSubmit} data={data?.w40kUnit} />;
 };

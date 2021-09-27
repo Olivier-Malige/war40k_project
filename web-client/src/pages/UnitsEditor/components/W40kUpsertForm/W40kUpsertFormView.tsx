@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Avatar, Fab, Grid, MenuItem, TextField } from '@mui/material';
+import { Avatar, Fab, Grid, MenuItem, TextField, Paper } from '@mui/material';
 import * as yup from 'yup';
 import { Box } from '@mui/system';
 import { useForm, Controller } from 'react-hook-form';
@@ -49,11 +49,16 @@ const schema = yup
   .required();
 
 export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) => {
-  const { handleSubmit, control } = useForm({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       lang: data?.lang || 'fr_FR',
       name: data?.name || null,
+      battlefieldRole: data?.battlefieldRole || null,
       powerRating: data?.powerRating || null,
       commandPoints: data?.commandPoints || null,
       version: data?.version || 'v9',
@@ -69,8 +74,9 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
   });
 
   console.log('form refresh');
+
   return (
-    <Box sx={{ padding: 5 }}>
+    <Paper sx={{ padding: 5 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ display: 'flex', mt: 5 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -104,6 +110,28 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
           />
         </Box>
         <Grid container direction="column" alignContent={'center'} sx={{ mr: 3 }}>
+          <Controller
+            name="battlefieldRole"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                select
+                label={'Battlefield role'}
+                margin={'dense'}
+                variant="standard"
+                {...field}
+              >
+                <MenuItem value={'HQs'}>HQs</MenuItem>
+                <MenuItem value={'Troops'}>Troops</MenuItem>
+                <MenuItem value={'Elites'}>Elites</MenuItem>
+                <MenuItem value={'Flyers'}>Flyers</MenuItem>
+                <MenuItem value={'FastAttacks'}>Fast attacks</MenuItem>
+                <MenuItem value={'HeavySupports'}>Heavy supports</MenuItem>
+                <MenuItem value={'DedicatedTransports'}>Dedicated transports</MenuItem>
+                <MenuItem value={'LordOfWars'}>Lord of wars</MenuItem>
+              </TextField>
+            )}
+          />
           <Avatar
             sx={{ width: 300, height: 300, bgcolor: theme => theme.palette.background.default }}
           >
@@ -134,7 +162,14 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
             name="name"
             control={control}
             render={({ field }) => (
-              <TextField margin={'dense'} label="Name" variant="standard" {...field} />
+              <TextField
+                margin={'dense'}
+                label="Name"
+                variant="standard"
+                {...field}
+                error={Boolean(errors.name)}
+                helperText={errors.name.message}
+              />
             )}
           />
           <Grid container direction={'row'}>
@@ -148,6 +183,8 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
                   label="Power rating"
                   variant="standard"
                   type="number"
+                  error={Boolean(errors.powerRating)}
+                  helperText={errors.powerRating.message}
                   {...field}
                 />
               )}
@@ -249,6 +286,6 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
           </Fab>
         </Grid>
       </form>
-    </Box>
+    </Paper>
   );
 };

@@ -9,6 +9,7 @@ export type W40KUnit = {
   lang: string;
   name: string;
   powerRating: number;
+  battlefieldRole: string;
   commandPoints: number;
   version: string;
   detail: string;
