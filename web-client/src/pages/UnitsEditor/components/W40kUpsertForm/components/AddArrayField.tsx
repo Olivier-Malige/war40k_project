@@ -53,7 +53,7 @@ export const AddArrayField: FC<Props> = memo(
           sx={{ height: '30px' }}
           onClick={() => append(emptyFieldValues)}
           color={'primary'}
-          variant={'outlined'}
+          variant={'contained'}
           aria-label="add"
         >
           <Add fontSize={'small'} />
@@ -63,7 +63,7 @@ export const AddArrayField: FC<Props> = memo(
             sx={{ height: '30px', ml: 2 }}
             onClick={() => remove(fields.length - 1)}
             color={'warning'}
-            variant={'outlined'}
+            variant={'contained'}
             aria-label="remove"
           >
             <Remove fontSize={'small'} />

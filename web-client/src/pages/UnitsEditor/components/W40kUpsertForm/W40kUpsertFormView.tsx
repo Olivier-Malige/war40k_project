@@ -155,6 +155,8 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
                   margin={'dense'}
                   label="Detail"
                   variant="standard"
+                  multiline
+                  rows={4}
                   {...field}
                 />
               )}
@@ -191,25 +193,24 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
                 </TextField>
               )}
             />
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  margin={'dense'}
+                  label="Description"
+                  multiline
+                  rows={7}
+                  variant="standard"
+                  {...field}
+                />
+              )}
+            />
           </Grid>
         </Box>
 
         <Grid container direction="column">
-          <Controller
-            name="description"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                sx={{ width: '100%' }}
-                margin={'dense'}
-                label="Description"
-                multiline
-                rows={6}
-                variant="standard"
-                {...field}
-              />
-            )}
-          />
           <Box sx={{ display: 'flex', mt: 5 }}>
             <Grid container direction="column">
               <AddArrayField

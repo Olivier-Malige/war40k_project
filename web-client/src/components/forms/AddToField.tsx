@@ -1,7 +1,7 @@
 import React, { FC, memo } from 'react';
 
-import { Add, DeleteForever } from '@mui/icons-material';
-import { Button, Chip, Stack, TextField, Typography } from '@mui/material';
+import { Add, DeleteForever, Remove } from '@mui/icons-material';
+import { Button, Chip, Grid, Stack, TextField, Typography } from '@mui/material';
 
 import { Box } from '@mui/system';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
@@ -71,7 +71,16 @@ export const AddToField: FC<Props> = memo(
           </Typography>
         )}
 
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', justifyItems: 'center', alignItems: 'center' }}>
+          <Button
+            sx={{ height: '30px', mr: 2 }}
+            onClick={handleSubmit(handleAdd)}
+            color={'primary'}
+            variant={'contained'}
+            aria-label="handleAdd"
+          >
+            <Add fontSize={'small'} />
+          </Button>
           <Controller
             name="field1"
             control={localControl}
@@ -103,15 +112,6 @@ export const AddToField: FC<Props> = memo(
               )}
             />
           )}
-          <Button
-            sx={{ height: '30px' }}
-            onClick={handleSubmit(handleAdd)}
-            color={'primary'}
-            variant={'outlined'}
-            aria-label="handleAdd"
-          >
-            <Add fontSize={'small'} />
-          </Button>
         </Box>
         <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
           {display === 'chip' ? (
@@ -133,19 +133,25 @@ export const AddToField: FC<Props> = memo(
               ))}
             </>
           ) : (
-            <ul>
+            <Grid>
               {fields.map((values: any, index) => (
-                <li key={values.id} style={{ listStyleType: 'none' }}>
-                  <Button onClick={() => handleDelete(index)} sx={{ mr: 1 }}>
-                    <DeleteForever color={'warning'} />
+                <div key={values.id} style={{ listStyleType: 'none' }}>
+                  <Button
+                    sx={{ height: '30px', mr: 2, mt: 2 }}
+                    onClick={() => handleDelete(index)}
+                    color={'warning'}
+                    variant={'contained'}
+                    aria-label="remove"
+                  >
+                    <Remove fontSize={'small'} />
                   </Button>
                   {subFieldNames && (
                     <span style={{ fontWeight: 'bold' }}>{values[subFieldNames.subfield1]} :</span>
                   )}
                   <span>{subFieldNames ? values[subFieldNames.subfield2] : values.name}</span>
-                </li>
+                </div>
               ))}
-            </ul>
+            </Grid>
           )}
         </Stack>
       </div>
