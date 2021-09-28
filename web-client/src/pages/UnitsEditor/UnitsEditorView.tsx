@@ -27,7 +27,7 @@ export const UnitsEditorView: FC<Props> = ({
         justifyContent: 'center',
       }}
     >
-      {/* TODO  Put it in reusable component when selection is ready */}
+      {/* TODO Put it in a reusable component when selection is done */}
       <Grid container justifyContent={'center'} sx={{ mt: 2 }}>
         <Button
           variant={'outlined'}
@@ -42,10 +42,7 @@ export const UnitsEditorView: FC<Props> = ({
         >
           <img src={wh40kLogo} height="50" alt="wh40kLogo" />
         </Button>
-        <Button
-          sx={{ p: 1, cursor: 'pointer', backgroundColor: theme => theme.palette.background.paper }}
-          disabled
-        >
+        <Button sx={{ p: 1, backgroundColor: theme => theme.palette.background.paper }} disabled>
           <img src={whAosLogo} height="50" style={{ filter: 'grayscale(100%)' }} alt="whAos" />
         </Button>
       </Grid>

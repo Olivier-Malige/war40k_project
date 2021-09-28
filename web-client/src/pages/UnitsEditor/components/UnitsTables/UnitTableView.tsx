@@ -148,7 +148,7 @@ export const UnitTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow, Up
           <TableContainer
             sx={{
               height: '100%',
-              maxHeight: '65vh',
+              maxHeight: '60vh',
             }}
           >
             <Table
