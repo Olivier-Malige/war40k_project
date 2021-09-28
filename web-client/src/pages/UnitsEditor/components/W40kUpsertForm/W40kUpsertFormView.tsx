@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Fab, Grid, MenuItem, TextField } from '@mui/material';
+import { Fab, Grid, MenuItem, Paper, TextField } from '@mui/material';
 import * as yup from 'yup';
 import { Box } from '@mui/system';
 import { useForm, Controller } from 'react-hook-form';
@@ -85,7 +85,7 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
   console.log('form refresh');
   console.log(errors);
   return (
-    <Box sx={{ padding: 5 }}>
+    <Paper sx={{ padding: 5, backgroundColor: theme => theme.palette.background.default }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <SectionAccordion title={'Unit information'} defaultExpanded>
           <>
@@ -291,6 +291,6 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
           <SaveIcon fontSize={'large'} />
         </Fab>
       </form>
-    </Box>
+    </Paper>
   );
 };
