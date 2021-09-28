@@ -197,8 +197,8 @@ export const UnitTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow, Up
                             variant={'square'}
                             sx={{
                               ml: 2,
-                              width: 50,
-                              height: 50,
+                              width: dense ? 30 : 80,
+                              height: dense ? 30 : 80,
                             }}
                             src={row?.pictureUrl as string}
                           />
@@ -262,7 +262,7 @@ export const UnitTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow, Up
           >
             <FormControlLabel
               control={<Switch checked={dense} onChange={handleChangeDense} />}
-              label="Dense padding"
+              label="Dense"
             />
             <TablePagination
               rowsPerPageOptions={[5, 10, 20, 40]}

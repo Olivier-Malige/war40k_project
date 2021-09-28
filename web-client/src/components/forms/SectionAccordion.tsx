@@ -21,6 +21,7 @@ const SectionAccordion: FC<Props> = ({
       sx={{ mt: 1 }}
       disabled={disabled}
       defaultExpanded={defaultExpanded}
+      TransitionProps={{ unmountOnExit: true }}
     >
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant={'h6'}>{title}</Typography>

@@ -33,8 +33,6 @@ export const AddArrayToField: FC<Props> = memo(
       },
     });
 
-    console.log('AddToField Refresh');
-
     const handleAdd = data => {
       if (
         subFieldNames?.subfield1 &&

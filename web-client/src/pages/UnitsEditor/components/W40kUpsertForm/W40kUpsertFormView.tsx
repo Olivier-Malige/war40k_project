@@ -68,8 +68,8 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
       lang: data?.lang || 'fr_FR',
       name: data?.name || '',
       battlefieldRole: data?.battlefieldRole || '',
-      powerRating: data?.powerRating || 0,
-      commandPoints: data?.commandPoints || 0,
+      powerRating: data?.powerRating || null,
+      commandPoints: data?.commandPoints || null,
       version: data?.version || 'v9',
       detail: data?.detail || '',
       description: data?.description || '',
@@ -82,8 +82,6 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
     },
   });
 
-  console.log('form refresh');
-  console.log(errors);
   return (
     <Paper sx={{ padding: 5, backgroundColor: theme => theme.palette.background.default }}>
       <form onSubmit={handleSubmit(onSubmit)}>

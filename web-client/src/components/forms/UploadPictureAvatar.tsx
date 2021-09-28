@@ -18,7 +18,9 @@ const UploadPictureAvatar: FC<Props> = ({ setUrlValue, urlValue, storageNameRef 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   useEffect(() => {
-    setUrlValue(uploadedUrl);
+    if (uploadedUrl?.length > 1) {
+      setUrlValue(uploadedUrl);
+    }
   }, [uploadedUrl, setUrlValue]);
   return (
     <Avatar

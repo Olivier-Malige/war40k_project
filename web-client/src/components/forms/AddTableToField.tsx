@@ -13,7 +13,6 @@ type Props = {
 
 export const AddTableToField: FC<Props> = memo(
   ({ control, fieldName, fieldsConfig, emptyFieldValues }) => {
-    console.log('addArrayField refresh');
     const { fields, append, remove } = useFieldArray({
       control,
       name: fieldName,
