@@ -194,7 +194,7 @@ export const UnitTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow, Up
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           <Avatar
-                            variant={'square'}
+                            variant={'rounded'}
                             sx={{
                               ml: 2,
                               width: dense ? 30 : 80,
