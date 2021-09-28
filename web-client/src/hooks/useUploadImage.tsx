@@ -6,11 +6,13 @@ export const useUploadImage = () => {
   const [uploading, setUploading] = useState(false);
   const [uploadingError, setUploadingError] = useState(null);
 
-  const upload = async file => {
+  const upload = async (file, storageNameRef) => {
     try {
       setUploadingError(null);
       setUploading(true);
-      setUploadedUrl(await uploadImage(URL.createObjectURL(file), `${Date.now()}_${file.name}`));
+      setUploadedUrl(
+        await uploadImage(URL.createObjectURL(file), `${Date.now()}_${file.name}`, storageNameRef),
+      );
       setUploading(false);
     } catch (e) {
       setUploadingError(e);

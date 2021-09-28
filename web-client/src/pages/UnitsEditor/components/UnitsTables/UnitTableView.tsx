@@ -13,7 +13,6 @@ import {
   FormControlLabel,
   Fab,
   Grid,
-  CardMedia,
   Avatar,
 } from '@mui/material';
 import { Box } from '@mui/system';
@@ -195,19 +194,14 @@ export const UnitTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow, Up
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           <Avatar
+                            variant={'square'}
                             sx={{
                               ml: 2,
                               width: 50,
                               height: 50,
-                              bgcolor: theme => theme.palette.background.default,
                             }}
-                          >
-                            <CardMedia
-                              component="img"
-                              image={row?.pictureUrl as string}
-                              alt="Picture"
-                            />
-                          </Avatar>
+                            src={row?.pictureUrl as string}
+                          />
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           {row.name}

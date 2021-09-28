@@ -1,25 +1,23 @@
 import React, { FC, memo } from 'react';
 
 import { Add, Remove } from '@mui/icons-material';
-import { Button, Chip, Grid, Stack, TextField, Typography } from '@mui/material';
+import { Button, Chip, Grid, Stack, TextField } from '@mui/material';
 
 import { Box } from '@mui/system';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-
+import { v4 as uuidv4 } from 'uuid';
 type Props = {
   control: any;
   fieldName: string;
   label: string;
   label2?: string;
-  display?: 'chip' | 'li';
+  display?: 'chip' | 'text';
   subFieldNames?: { subfield1: string; subfield2: string };
-  title?: string;
 };
 
-// TODO this component need to be optimised or remake
-// eslint-disable-next-line react/display-name
-export const AddToField: FC<Props> = memo(
-  ({ control, fieldName, label, display, label2, subFieldNames, title }) => {
+// TODO this component need to be optimised or remake into 2 components
+export const AddArrayToField: FC<Props> = memo(
+  ({ control, fieldName, label, display, label2, subFieldNames }) => {
     const { fields, append, remove } = useFieldArray({
       control,
       name: fieldName,
@@ -35,7 +33,7 @@ export const AddToField: FC<Props> = memo(
       },
     });
 
-    console.log('AddToField Refresh' + title);
+    console.log('AddToField Refresh');
 
     const handleAdd = data => {
       if (
@@ -59,18 +57,7 @@ export const AddToField: FC<Props> = memo(
     };
 
     return (
-      <div>
-        {title && (
-          <Typography
-            sx={{
-              mt: 5,
-            }}
-            variant={'h6'}
-          >
-            {title}
-          </Typography>
-        )}
-
+      <Box sx={{ width: '100%' }}>
         <Box sx={{ display: 'flex', justifyItems: 'center', alignItems: 'center' }}>
           <Button
             sx={{ height: '30px', mr: 2 }}
@@ -117,25 +104,23 @@ export const AddToField: FC<Props> = memo(
           {display === 'chip' ? (
             <>
               {fields.map((values: any, index) => (
-                <>
-                  <Chip
-                    color={'primary'}
-                    key={values.id}
-                    label={
-                      subFieldNames
-                        ? `${values[subFieldNames.subfield1]} : ${values[subFieldNames.subfield2]} `
-                        : values.name
-                    }
-                    variant={'filled'}
-                    onDelete={() => handleDelete(index)}
-                  />
-                </>
+                <Chip
+                  color={'primary'}
+                  key={uuidv4()}
+                  label={
+                    subFieldNames
+                      ? `${values[subFieldNames.subfield1]} : ${values[subFieldNames.subfield2]} `
+                      : values.name
+                  }
+                  variant={'outlined'}
+                  onDelete={() => handleDelete(index)}
+                />
               ))}
             </>
           ) : (
             <Grid>
               {fields.map((values: any, index) => (
-                <div key={values.id} style={{ listStyleType: 'none' }}>
+                <div key={uuidv4()} style={{ listStyleType: 'none' }}>
                   <Button
                     sx={{ height: '30px', mr: 2, mt: 2 }}
                     onClick={() => handleDelete(index)}
@@ -154,7 +139,7 @@ export const AddToField: FC<Props> = memo(
             </Grid>
           )}
         </Stack>
-      </div>
+      </Box>
     );
   },
 );

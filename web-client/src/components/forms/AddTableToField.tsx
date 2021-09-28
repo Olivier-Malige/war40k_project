@@ -1,32 +1,27 @@
 import React, { FC, memo } from 'react';
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import { Button, Stack, TextField } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
-import { FieldConfig, W40KProfile, W40KWeapon } from '../types';
+import { FieldConfig } from '../../pages/UnitsEditor/components/W40kUpsertForm/types';
 import { useFieldArray, Controller } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 type Props = {
   control: any;
   fieldName: string;
-  title: string;
   fieldsConfig: FieldConfig[];
-  emptyFieldValues: W40KProfile | W40KWeapon;
+  emptyFieldValues: unknown;
 };
 
-// eslint-disable-next-line react/display-name
-export const AddArrayField: FC<Props> = memo(
-  ({ title, control, fieldName, fieldsConfig, emptyFieldValues }) => {
-    console.log('addArrayField refresh' + title);
+export const AddTableToField: FC<Props> = memo(
+  ({ control, fieldName, fieldsConfig, emptyFieldValues }) => {
+    console.log('addArrayField refresh');
     const { fields, append, remove } = useFieldArray({
       control,
       name: fieldName,
     });
     return (
       <div>
-        <Typography sx={{ mt: 5 }} variant={'h6'}>
-          {title}
-        </Typography>
         {fields.map((values, index) => (
-          <Stack key={values.id} spacing={2}>
+          <Stack key={uuidv4()} spacing={2}>
             <div>
               {fieldsConfig.map(fieldConfig => (
                 <Controller

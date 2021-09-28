@@ -2,7 +2,7 @@ export type FieldConfig = {
   name: string;
   type: 'number' | 'text';
   label: string;
-  width?: number;
+  width?: number | string;
 };
 
 export type W40KUnit = {

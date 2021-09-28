@@ -1,14 +1,13 @@
-import React, { FC, useEffect } from 'react';
-import { Avatar, Fab, Grid, MenuItem, TextField, Paper, CardMedia } from '@mui/material';
+import React, { FC } from 'react';
+import { Fab, Grid, MenuItem, TextField } from '@mui/material';
 import * as yup from 'yup';
 import { Box } from '@mui/system';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useDropzone } from 'react-dropzone';
+import { Save as SaveIcon } from '@mui/icons-material';
 
-import { Save as SaveIcon, AddAPhoto as AddAPhotoIcon } from '@mui/icons-material';
-
-import { AddToField } from 'src/components/forms/AddToField';
+import { AddArrayToField } from 'src/components/forms/AddArrayToField';
+import { AddTableToField } from 'src/components/forms/AddTableToField';
 import { W40KUpsertFormProps } from './types';
 import {
   emptyProfile,
@@ -16,9 +15,8 @@ import {
   profileFieldsConfig,
   weaponFieldsConfig,
 } from './config/filedsConfig';
-import { AddArrayField } from './components/AddArrayField';
-import { useUploadImage } from 'src/hooks/useUploadImage';
-import { LoadingSpinner } from 'src/components/LoadingSpinner';
+import UploadPictureAvatar from 'src/components/forms/UploadPictureAvatar';
+import SectionAccordion from '../../../../components/forms/SectionAccordion';
 
 const schema = yup
   .object()
@@ -26,7 +24,7 @@ const schema = yup
     name: yup.string().required('Name is required').nullable(),
     powerRating: yup.number().required('Power is required').nullable(),
     commandPoints: yup.number().nullable(),
-    pictureUrl: yup.string(),
+    pictureUrl: yup.string().nullable(),
     weapons: yup.array(
       yup.object({
         name: yup.string().nullable(),
@@ -66,15 +64,15 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      pictureUrl: data?.pictureUrl || null,
+      pictureUrl: data?.pictureUrl || '',
       lang: data?.lang || 'fr_FR',
-      name: data?.name || null,
-      battlefieldRole: data?.battlefieldRole || null,
-      powerRating: data?.powerRating || null,
-      commandPoints: data?.commandPoints || null,
+      name: data?.name || '',
+      battlefieldRole: data?.battlefieldRole || '',
+      powerRating: data?.powerRating || 0,
+      commandPoints: data?.commandPoints || 0,
       version: data?.version || 'v9',
-      detail: data?.detail || null,
-      description: data?.description || null,
+      detail: data?.detail || '',
+      description: data?.description || '',
       keywords: data?.keywords || [],
       factionKeywords: data?.factionKeywords || [],
       wargearOptions: data?.wargearOptions || [],
@@ -83,246 +81,216 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
       profiles: data?.profiles || [{ ...emptyProfile }],
     },
   });
-  const { uploadedUrl, uploading, upload } = useUploadImage();
-
-  const onDrop = async acceptedFiles => {
-    await upload(acceptedFiles[0]);
-  };
-
-  useEffect(() => {
-    setValue('pictureUrl', uploadedUrl);
-  }, [uploadedUrl, setValue]);
-
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   console.log('form refresh');
-
+  console.log(errors);
   return (
-    <Paper sx={{ padding: 5 }}>
+    <Box sx={{ padding: 5 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              margin={'dense'}
-              label="Name"
-              sx={{ width: '100%' }}
-              variant="standard"
-              {...field}
-              error={Boolean(errors.name)}
-              helperText={errors.name?.message}
-            />
-          )}
-        />
-        <Box sx={{ display: 'flex', mt: 5 }}>
-          <Grid container direction="column">
+        <SectionAccordion title={'Unit information'} defaultExpanded>
+          <>
             <Controller
-              name="battlefieldRole"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  select
-                  label={'Battlefield role'}
-                  margin={'dense'}
-                  variant="standard"
-                  {...field}
-                >
-                  <MenuItem value={'HQs'}>HQs</MenuItem>
-                  <MenuItem value={'Troops'}>Troops</MenuItem>
-                  <MenuItem value={'Elites'}>Elites</MenuItem>
-                  <MenuItem value={'Flyers'}>Flyers</MenuItem>
-                  <MenuItem value={'FastAttacks'}>Fast attacks</MenuItem>
-                  <MenuItem value={'HeavySupports'}>Heavy supports</MenuItem>
-                  <MenuItem value={'DedicatedTransports'}>Dedicated transports</MenuItem>
-                  <MenuItem value={'LordOfWars'}>Lord of wars</MenuItem>
-                </TextField>
-              )}
-            />
-            <Controller
-              name="powerRating"
+              name="name"
               control={control}
               render={({ field }) => (
                 <TextField
                   margin={'dense'}
-                  label="Power rating"
+                  label="Name"
+                  sx={{ width: '100%' }}
                   variant="standard"
-                  type="number"
-                  error={Boolean(errors.powerRating)}
-                  helperText={errors.powerRating?.message}
                   {...field}
+                  error={Boolean(errors.name)}
+                  helperText={errors.name?.message}
                 />
               )}
             />
-            <Controller
-              name="commandPoints"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  name={'commandPoints'}
-                  margin={'dense'}
-                  type={'number'}
-                  label="Command points"
-                  variant="standard"
-                  {...field}
+            <Box sx={{ display: 'flex', mt: 5 }}>
+              <Grid container direction="column">
+                <Controller
+                  name="battlefieldRole"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      select
+                      label={'Battlefield role'}
+                      margin={'dense'}
+                      variant="standard"
+                      {...field}
+                    >
+                      <MenuItem value={'HQs'}>HQs</MenuItem>
+                      <MenuItem value={'Troops'}>Troops</MenuItem>
+                      <MenuItem value={'Elites'}>Elites</MenuItem>
+                      <MenuItem value={'Flyers'}>Flyers</MenuItem>
+                      <MenuItem value={'FastAttacks'}>Fast attacks</MenuItem>
+                      <MenuItem value={'HeavySupports'}>Heavy supports</MenuItem>
+                      <MenuItem value={'DedicatedTransports'}>Dedicated transports</MenuItem>
+                      <MenuItem value={'LordOfWars'}>Lord of wars</MenuItem>
+                    </TextField>
+                  )}
                 />
-              )}
-            />
-            <Controller
-              name="detail"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  name={'detail'}
-                  margin={'dense'}
-                  label="Detail"
-                  variant="standard"
-                  multiline
-                  rows={4}
-                  {...field}
-                />
-              )}
-            />
-          </Grid>
-          <Grid container direction="column" alignContent={'center'}>
-            <Avatar
-              {...getRootProps()}
-              sx={{ width: 300, height: 300, bgcolor: theme => theme.palette.background.default }}
-            >
-              <>
-                <input {...getInputProps()} />
-                {uploading && <LoadingSpinner />}
-                {!uploading && (uploadedUrl || data?.pictureUrl) && (
-                  <CardMedia
-                    component="img"
-                    image={data?.pictureUrl || uploadedUrl}
-                    alt="Picture"
-                  />
-                )}
-                {!uploading && !data?.pictureUrl && !uploadedUrl && (
-                  <>
-                    <AddAPhotoIcon
-                      fontSize={'inherit'}
-                      sx={{ color: theme => theme.palette.secondary.main, transform: 'scale(6)' }}
+                <Controller
+                  name="powerRating"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      margin={'dense'}
+                      label="Power rating"
+                      variant="standard"
+                      type="number"
+                      error={Boolean(errors.powerRating)}
+                      helperText={errors.powerRating?.message}
+                      {...field}
                     />
-                  </>
-                )}
-              </>
-            </Avatar>
-          </Grid>
-          <Grid container direction="column">
-            <Controller
-              name="version"
-              control={control}
-              render={({ field }) => (
-                <TextField select margin={'dense'} label="Version" variant="standard" {...field}>
-                  <MenuItem value={'v8'}>v8</MenuItem>
-                  <MenuItem value={'v9'}>v9</MenuItem>
-                </TextField>
-              )}
-            />
-            <Controller
-              name="lang"
-              control={control}
-              render={({ field }) => (
-                <TextField select label={'Lang'} margin={'dense'} variant="standard" {...field}>
-                  <MenuItem value={'fr_FR'}>French</MenuItem>
-                  <MenuItem value={'en_GB'}>English</MenuItem>
-                </TextField>
-              )}
-            />
-            <Controller
-              name="description"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  margin={'dense'}
-                  label="Description"
-                  multiline
-                  rows={7}
-                  variant="standard"
-                  {...field}
+                  )}
                 />
-              )}
-            />
-          </Grid>
-        </Box>
+                <Controller
+                  name="commandPoints"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      name={'commandPoints'}
+                      margin={'dense'}
+                      type={'number'}
+                      label="Command points"
+                      variant="standard"
+                      {...field}
+                    />
+                  )}
+                />
+                <Controller
+                  name="detail"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      name={'detail'}
+                      margin={'dense'}
+                      label="Detail"
+                      variant="standard"
+                      multiline
+                      rows={4}
+                      {...field}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid container direction="column" alignContent={'center'}>
+                <UploadPictureAvatar
+                  setUrlValue={urlValue => setValue('pictureUrl', urlValue)}
+                  urlValue={data?.pictureUrl}
+                  storageNameRef={'/w40k/units/images/'}
+                />
+              </Grid>
+              <Grid container direction="column">
+                <Controller
+                  name="version"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      select
+                      margin={'dense'}
+                      label="Version"
+                      variant="standard"
+                      {...field}
+                    >
+                      <MenuItem value={'v8'}>v8</MenuItem>
+                      <MenuItem value={'v9'}>v9</MenuItem>
+                    </TextField>
+                  )}
+                />
+                <Controller
+                  name="lang"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField select label={'Lang'} margin={'dense'} variant="standard" {...field}>
+                      <MenuItem value={'fr_FR'}>French</MenuItem>
+                      <MenuItem value={'en_GB'}>English</MenuItem>
+                    </TextField>
+                  )}
+                />
+                <Controller
+                  name="description"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      margin={'dense'}
+                      label="Description"
+                      multiline
+                      rows={7}
+                      variant="standard"
+                      {...field}
+                    />
+                  )}
+                />
+              </Grid>
+            </Box>
+          </>
+        </SectionAccordion>
 
-        <Grid container direction="column">
-          <Box sx={{ display: 'flex', mt: 5 }}>
-            <Grid container direction="column">
-              <AddArrayField
-                fieldName={'profiles'}
-                title={'Profiles'}
-                control={control}
-                emptyFieldValues={{ ...emptyProfile }}
-                fieldsConfig={profileFieldsConfig}
-              />
-              <AddArrayField
-                fieldName={'weapons'}
-                title={'Weapons'}
-                control={control}
-                emptyFieldValues={{ ...emptyWeapon }}
-                fieldsConfig={weaponFieldsConfig}
-              />
-            </Grid>
+        <SectionAccordion title={'Profiles'}>
+          <AddTableToField
+            fieldName={'profiles'}
+            control={control}
+            emptyFieldValues={{ ...emptyProfile }}
+            fieldsConfig={profileFieldsConfig}
+          />
+        </SectionAccordion>
+        <SectionAccordion title={'Weapons'}>
+          <AddTableToField
+            fieldName={'weapons'}
+            control={control}
+            emptyFieldValues={{ ...emptyWeapon }}
+            fieldsConfig={weaponFieldsConfig}
+          />
+        </SectionAccordion>
 
-            <Grid container direction="column">
-              <AddToField
+        <SectionAccordion title={'Wargear options'}>
+          <AddArrayToField control={control} fieldName={'wargearOptions'} label={'Option'} />
+        </SectionAccordion>
+        <SectionAccordion title={'Abilities'}>
+          <AddArrayToField
+            control={control}
+            fieldName={'abilities'}
+            subFieldNames={{ subfield1: 'name', subfield2: 'rule' }}
+            label={'Name'}
+            label2={'Rule'}
+          />
+        </SectionAccordion>
+        <SectionAccordion title={'Keywords'}>
+          <Grid container direction={'row'} justifyContent={'space-between'} spacing={2}>
+            <Grid item xs={6}>
+              <AddArrayToField
                 control={control}
-                title={'Wargear options'}
-                fieldName={'wargearOptions'}
-                label={'Option'}
-              />
-              <AddToField
-                control={control}
-                title={'Abilities'}
-                fieldName={'abilities'}
-                subFieldNames={{ subfield1: 'name', subfield2: 'rule' }}
-                label={'Name'}
-                label2={'Rule'}
-              />
-              <AddToField
-                control={control}
-                title={'Faction keywords'}
                 fieldName={'factionKeywords'}
-                label={'Keyword name'}
-                display={'chip'}
-              />
-              <AddToField
-                control={control}
-                title={'Keywords'}
-                fieldName={'keywords'}
-                label={'Keyword name'}
+                label={'Faction keyword'}
                 display={'chip'}
               />
             </Grid>
-          </Box>
-        </Grid>
+            <Grid item xs={6}>
+              <AddArrayToField
+                control={control}
+                fieldName={'keywords'}
+                label={'Keyword'}
+                display={'chip'}
+              />
+            </Grid>
+          </Grid>
+        </SectionAccordion>
 
-        <Grid
+        <Fab
+          type={'submit'}
+          color="secondary"
+          size={'large'}
+          aria-label="save"
           sx={{
-            marginTop: theme => theme.spacing(3),
+            position: 'fixed',
+            padding: 3,
+            bottom: '50px',
+            right: '50px',
           }}
-          container
-          justifyContent={'center'}
         >
-          <Fab
-            type={'submit'}
-            color="secondary"
-            size={'large'}
-            aria-label="save"
-            sx={{
-              position: 'fixed',
-              padding: 3,
-              bottom: '50px',
-              right: '50px',
-            }}
-          >
-            <SaveIcon fontSize={'large'} />
-          </Fab>
-        </Grid>
+          <SaveIcon fontSize={'large'} />
+        </Fab>
       </form>
-    </Paper>
+    </Box>
   );
 };
