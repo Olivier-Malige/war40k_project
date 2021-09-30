@@ -5,6 +5,11 @@ export const cache: InMemoryCache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
+        userAuth: {
+          read() {
+            return userAuth();
+          },
+        },
         openSuccessMessage: {
           read() {
             return openSuccessMessage();
@@ -22,3 +27,4 @@ export const cache: InMemoryCache = new InMemoryCache({
 
 export const openSuccessMessage = makeVar<boolean>(false);
 export const openErrorMessage = makeVar<boolean>(false);
+export const userAuth = makeVar<boolean>(false);

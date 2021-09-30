@@ -8,12 +8,13 @@ import { DrawerListItem } from './types';
 type Props = {
   darkMode: boolean;
   setDarkMode: (value: boolean) => void;
+  isUserAuth: boolean;
 };
 
 const drawerListItems: DrawerListItem[] = [
   {
     name: 'Home',
-    routeName: routeNames.ROOT,
+    routeName: routeNames.HOME,
     icon: <Home sx={{ color: theme => theme.palette.secondary.main }} />,
   },
   {
@@ -23,7 +24,7 @@ const drawerListItems: DrawerListItem[] = [
   },
 ];
 
-export const AppBarContainer: React.FC<Props> = ({ darkMode, setDarkMode }) => {
+export const AppBarContainer: React.FC<Props> = ({ darkMode, setDarkMode, isUserAuth }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   return (
@@ -35,6 +36,7 @@ export const AppBarContainer: React.FC<Props> = ({ darkMode, setDarkMode }) => {
       openDrawer={openDrawer}
       setOpenDrawer={setOpenDrawer}
       drawerListItems={drawerListItems}
+      isUserAuth={isUserAuth}
     />
   );
 };

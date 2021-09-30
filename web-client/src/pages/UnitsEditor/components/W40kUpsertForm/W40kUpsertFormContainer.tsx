@@ -4,7 +4,7 @@ import { W40kUpsertFormView } from './W40kUpsertFormView';
 import { gql, useMutation, useLazyQuery } from '@apollo/client';
 import { GET_W40K_UNITS } from '../UnitsTables/War40kUnitsTableContainer';
 import { LoadingSpinner } from '../../../../components/LoadingSpinner';
-import { openSuccessMessage, openErrorMessage } from '../../../../App/cache';
+import { openSuccessMessage, openErrorMessage } from '../../../../GraphQL/cache';
 
 export type UpsertFormProps = {
   id?: string;

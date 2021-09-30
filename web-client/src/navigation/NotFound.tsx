@@ -6,7 +6,7 @@ import { routeNames } from './CONSTANTS';
 export const NotFound = () => {
   return (
     <>
-      <LinkRoute to={routeNames.ROOT}>Home</LinkRoute>
+      <LinkRoute to={routeNames.HOME}>Home</LinkRoute>
       <Typography variant="h2">404: page not found!</Typography>
     </>
   );

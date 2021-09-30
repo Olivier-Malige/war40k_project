@@ -16,7 +16,7 @@ import {
   weaponFieldsConfig,
 } from './config/filedsConfig';
 import UploadPictureAvatar from 'src/components/forms/UploadPictureAvatar';
-import SectionAccordion from '../../../../components/forms/SectionAccordion';
+import SectionAccordion from 'src/components/forms/SectionAccordion';
 
 const schema = yup
   .object()

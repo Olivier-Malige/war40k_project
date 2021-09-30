@@ -1,6 +1,6 @@
 import React from 'react';
 import { UnitsEditorView } from 'src/pages/UnitsEditor/UnitsEditorView';
-import { openSuccessMessage, openErrorMessage } from '../../App/cache';
+import { openSuccessMessage, openErrorMessage } from 'src/GraphQL/cache';
 import { gql, useQuery } from '@apollo/client';
 
 export const OPEN_SUCCESS_MESSAGE = gql`

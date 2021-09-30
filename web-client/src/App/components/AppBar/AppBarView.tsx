@@ -13,9 +13,10 @@ import {
   ListItemText,
   Divider,
 } from '@mui/material';
-import { Menu } from '@mui/icons-material';
+import { Logout, Menu } from '@mui/icons-material';
 import { DrawerListItem } from './types';
 import { LinkRoute } from '../../../components/LinkRoute';
+import { userSignOut } from '../../../services/firebase';
 
 type Props = {
   title: string;
@@ -25,6 +26,7 @@ type Props = {
   openDrawer: boolean;
   setOpenDrawer: (value: boolean) => void;
   drawerListItems: DrawerListItem[];
+  isUserAuth: boolean;
 };
 
 export const AppBarView: FC<Props> = ({
@@ -35,6 +37,7 @@ export const AppBarView: FC<Props> = ({
   setOpenDrawer,
   drawerListItems,
   version,
+  isUserAuth,
 }) => {
   const handleSetDarkMode = (value: ChangeEvent<HTMLInputElement>) => {
     setDarkMode(value.target.checked);
@@ -54,18 +57,20 @@ export const AppBarView: FC<Props> = ({
         }}
       >
         <Toolbar>
-          <IconButton
-            sx={{
-              marginRight: 2,
-            }}
-            onClick={() => setOpenDrawer(true)}
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            size="large"
-          >
-            <Menu />
-          </IconButton>
+          {isUserAuth && (
+            <IconButton
+              sx={{
+                marginRight: 2,
+              }}
+              onClick={() => setOpenDrawer(true)}
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              size="large"
+            >
+              <Menu />
+            </IconButton>
+          )}
           <Typography
             sx={{
               flexGrow: 1,
@@ -107,6 +112,23 @@ export const AppBarView: FC<Props> = ({
                 </ListItem>
               </LinkRoute>
             ))}
+            <Divider />
+            <ListItem
+              sx={{ cursor: 'pointer' }}
+              onClick={() => {
+                userSignOut();
+                setOpenDrawer(false);
+              }}
+            >
+              <ListItemIcon>
+                <Logout color={'warning'} />
+              </ListItemIcon>
+              <ListItemText>
+                <Typography variant="h6" color={'textPrimary'}>
+                  Sign out
+                </Typography>
+              </ListItemText>
+            </ListItem>
           </List>
         </Drawer>
       </AppBar>
