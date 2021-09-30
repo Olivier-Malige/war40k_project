@@ -1,7 +1,6 @@
 import { not, or, rule, shield } from 'graphql-shield';
 
 const isAuthenticated = rule({ cache: 'contextual' })(async (_parent, _args, ctx) => {
-  console.log(ctx);
   return ctx.user !== null;
 });
 
