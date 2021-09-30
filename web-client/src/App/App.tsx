@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ApolloClient, ApolloProvider } from '@apollo/client';
+import { ApolloClient, ApolloProvider, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -17,15 +18,28 @@ import { useUserAuth } from '../hooks/useAuth';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Grid } from '@mui/material';
 
-const client = new ApolloClient({
+const httpLink = createHttpLink({
   uri: 'http://localhost:4000/api',
-  cache,
-  typeDefs,
 });
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(false);
-  const { isUserAuth, authLoading } = useUserAuth();
+  const { isUserAuth, authLoading, user } = useUserAuth();
+
+  const authLink = setContext((_, { headers }) => {
+    return {
+      headers: {
+        ...headers,
+        authorization: user.accessToken ?? '',
+      },
+    };
+  });
+
+  const client = new ApolloClient({
+    link: authLink.concat(httpLink),
+    cache,
+    typeDefs,
+  });
 
   useEffect(() => {
     userAuth(isUserAuth);

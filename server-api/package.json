@@ -25,7 +25,6 @@
     "@types/nodemon": "^1.19.0",
     "@types/passport": "^1.0.6",
     "@types/passport-local": "^1.0.33",
-    "apollo-server-express": "^3.3.0",
     "apollo-server": "^3.3.0",
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.4.1",
@@ -33,15 +32,17 @@
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "firebase-admin": "^9.12.0",
     "graphql": "^15.5.3",
+    "graphql-middleware": "^6.1.7",
+    "graphql-shield": "^7.5.0",
+    "graphql-tools": "^8.2.0",
     "http-status-codes": "^2.1.4",
     "mongodb": "^4.1.1",
     "mongoose": "^5.13.9",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
-    "nodemon": "^2.0.12",
-    "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
+    "nodemon": "^2.0.12"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",

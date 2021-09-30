@@ -1,7 +1,7 @@
 import { config } from '../config/firebase';
 import { initializeApp } from 'firebase/app';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 const firebaseApp = initializeApp(config);
 
@@ -23,14 +23,6 @@ export const uploadImage = async (
   await uploadBytes(imageRef, blob, metadata);
   return getDownloadURL(imageRef);
 };
-
-// export const isUserAuth = () => {
-//   return onAuthStateChanged(auth, user => {
-//     console.log('isUserAuth');
-//     console.log(user);
-//     return user;
-//   });
-// };
 
 export const userSignOut = () => {
   signOut(auth);

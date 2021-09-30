@@ -5,7 +5,7 @@ import {
   findW40kUnit,
   updateW40kUnit,
   removeW40kUnits,
-} from '../queries/units.queries';
+} from '../database/queries/units.queries';
 import { W40KUnit, W40KUnitInput } from '../interfaces';
 import { dateScalar } from './scalars';
 
@@ -16,21 +16,21 @@ export const resolvers = {
     w40kUnits: (): Promise<Array<W40KUnit>> => {
       return findAllW40kUnits();
     },
-    w40kUnit: (_, { id }): Promise<W40KUnit> => {
+    w40kUnit: (_parent, { id }): Promise<W40KUnit> => {
       return findW40kUnit(id);
     },
-    searchW40kUnitsByName: (_, { name }): Promise<Array<W40KUnit>> => {
+    searchW40kUnitsByName: (_parent, { name }): Promise<Array<W40KUnit>> => {
       return searchW40kUnits(name);
     },
   },
   Mutation: {
-    createW40kUnit: (_, { input }) => {
+    createW40kUnit: (_parent, { input }) => {
       return createW40kUnit(input as W40KUnitInput);
     },
-    updateW40kUnit: (_, { id, input }) => {
+    updateW40kUnit: (_parent, { id, input }) => {
       return updateW40kUnit(id, input as W40KUnitInput);
     },
-    removeW40kUnits: (_, { id }) => {
+    removeW40kUnits: (_parent, { id }) => {
       return removeW40kUnits(id);
     },
   },

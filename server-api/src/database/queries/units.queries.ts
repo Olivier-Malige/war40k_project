@@ -1,5 +1,5 @@
-import { W40KUnit, W40KUnitInput } from '../interfaces';
-import { W40kUnits } from '../database';
+import { W40KUnit, W40KUnitInput } from '../../interfaces';
+import { W40kUnits } from '../index';
 
 export const createW40kUnit = async (input: W40KUnitInput): Promise<W40KUnit> => {
   try {
