@@ -15,7 +15,7 @@ export const createW40kUnit = async (input: W40KUnitInput): Promise<W40KUnit> =>
 
 export const findAllW40kUnits = async (): Promise<Array<W40KUnit>> => {
   try {
-    return await W40kUnits.find();
+    return (await W40kUnits.find()) || [];
   } catch (e) {
     throw e;
   }

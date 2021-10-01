@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Home, ImageAspectRatio } from '@mui/icons-material';
+import { Group, Home, ImageAspectRatio } from '@mui/icons-material';
 
-import { routeNames } from '../../../navigation/CONSTANTS';
+import { routeNames } from '../../../modules/navigation/CONSTANTS';
 import { AppBarView } from './AppBarView';
 import { DrawerListItem } from './types';
 
@@ -21,6 +21,11 @@ const drawerListItems: DrawerListItem[] = [
     name: 'Units editor',
     routeName: routeNames.UNITS_EDITOR,
     icon: <ImageAspectRatio sx={{ color: theme => theme.palette.secondary.main }} />,
+  },
+  {
+    name: 'Users',
+    routeName: routeNames.USERS,
+    icon: <Group sx={{ color: theme => theme.palette.secondary.main }} />,
   },
 ];
 

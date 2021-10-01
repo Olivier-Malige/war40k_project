@@ -1,22 +1,32 @@
 import { ApolloServer } from 'apollo-server';
 import { applyMiddleware } from 'graphql-middleware';
 import { makeExecutableSchema } from 'graphql-tools';
+import { merge } from 'lodash';
 
-import { resolvers } from './graphQl/resolvers';
-import { typeDefs } from './graphQl/schema';
+import {
+  typeDefs as Users,
+  resolvers as usersResolvers,
+  permission as usersPermission,
+} from './graphQl/schemas/users';
+
+import {
+  typeDefs as W40kUnits,
+  resolvers as w40kUnitsResolvers,
+  permission as w40kUnitsPermission,
+} from './graphQl/schemas/w40kUnits';
+
 import conf from './environment';
 const env = conf[process.env.NODE_ENV as 'development' | 'production'];
 import './database';
-import { verifyUserToken } from './firebase/auth';
-import { permissions } from './graphQl/permissions';
+import { verifyUserToken } from './firebase/users';
 
 const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers,
+  typeDefs: [Users, W40kUnits],
+  resolvers: merge(usersResolvers, w40kUnitsResolvers),
 });
 
 const server = new ApolloServer({
-  schema: applyMiddleware(schema, permissions),
+  schema: applyMiddleware(schema, usersPermission, w40kUnitsPermission),
   context: async ({ req }) => {
     const token = req.headers.authorization || '';
     const user = await verifyUserToken(token);

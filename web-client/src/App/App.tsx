@@ -5,16 +5,16 @@ import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import { BrowserRouter } from 'react-router-dom';
-import RouterConfig from 'src/navigation/RouterConfig';
+import Router from 'src/modules/navigation/Router';
 import { light, dark } from 'src/styles/muiTheme';
 import AppBar from './components/AppBar';
-import { cache, userAuth } from '../GraphQL/cache';
+import { cache, userAuth } from '../graphQL/cache';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { typeDefs } from '../GraphQL/typeDefs';
-import { useUserAuth } from '../hooks/useAuth';
+import { typeDefs } from '../graphQL/typeDefs';
+import { useUserAuth } from '../modules/authentication/hooks/useAuth';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Grid } from '@mui/material';
 
@@ -60,7 +60,7 @@ const App: React.FC = () => {
           <ThemeProvider theme={darkMode ? { ...dark } : { ...light }}>
             <CssBaseline />
             <AppBar darkMode={darkMode} setDarkMode={setDarkMode} isUserAuth={isUserAuth} />
-            <RouterConfig />
+            <Router />
           </ThemeProvider>
         </StyledEngineProvider>
       </BrowserRouter>

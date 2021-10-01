@@ -1,4 +1,4 @@
-import { Order } from '../pages/UnitsEditor/components/UnitsTables/types';
+import { Order } from '../modules/unitsEditor/UnitsTables/types';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
