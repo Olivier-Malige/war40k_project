@@ -1,6 +1,6 @@
 import { ApolloServer } from 'apollo-server';
 import { applyMiddleware } from 'graphql-middleware';
-import { makeExecutableSchema } from 'graphql-tools';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 import { merge } from 'lodash';
 
 import {

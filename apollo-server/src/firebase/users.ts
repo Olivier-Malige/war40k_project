@@ -83,9 +83,9 @@ export const createUser = async (input: CreateUserInput): Promise<UserRecord> =>
   }
 };
 
-export const removeUser = async (id: string): Promise<boolean> => {
+export const deleteUsers = async (ids: string[]): Promise<boolean> => {
   try {
-    await admin.auth().deleteUser(id);
+    await admin.auth().deleteUsers(ids)
     return true;
   } catch (e) {
     console.error(e);

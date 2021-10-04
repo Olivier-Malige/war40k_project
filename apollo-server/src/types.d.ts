@@ -50,7 +50,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createUser?: Maybe<User>;
   createW40kUnit?: Maybe<W40kUnit>;
-  removeUser?: Maybe<Scalars['Boolean']>;
+  removeUsers?: Maybe<Scalars['Boolean']>;
   removeW40kUnits?: Maybe<Scalars['Boolean']>;
   updateUser?: Maybe<User>;
   updateW40kUnit?: Maybe<W40kUnit>;
@@ -67,7 +67,7 @@ export type MutationCreateW40kUnitArgs = {
 };
 
 
-export type MutationRemoveUserArgs = {
+export type MutationRemoveUsersArgs = {
   id?: Maybe<Scalars['ID']>;
 };
 

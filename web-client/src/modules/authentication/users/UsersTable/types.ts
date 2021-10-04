@@ -6,10 +6,9 @@ export type HeadCell = {
 };
 
 export type RowData = {
-  name: string;
+  displayName: string;
   id: string;
   email: string;
   role: string;
-  creationDate: Date;
-  lastUpdateDate: Date;
+  disabled: boolean;
 };

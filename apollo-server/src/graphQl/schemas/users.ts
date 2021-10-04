@@ -1,9 +1,9 @@
 import { gql } from 'apollo-server';
 import { not, or, shield } from 'graphql-shield';
-import { createUser, listUsers, removeUser, updateUser } from '../../firebase/users';
+import { createUser, listUsers, deleteUsers, updateUser } from '../../firebase/users';
 import { isAuthenticated } from '../permissions';
-import { IResolvers } from 'graphql-middleware/dist/types';
 import { CreateUserInput, UpdateUserInput, User } from '../../types';
+import {IResolvers} from "graphql-middleware/dist/types";
 
 export const typeDefs = gql`
   enum Roles {
@@ -15,7 +15,7 @@ export const typeDefs = gql`
   type User {
     displayName: String
     id: ID!
-    role: Roles!
+    role: Roles
     email: String!
     disabled: Boolean!
   }
@@ -42,7 +42,7 @@ export const typeDefs = gql`
   type Mutation {
     updateUser(input: UpdateUserInput): User
     createUser(input: CreateUserInput): User
-    removeUser(id: ID): Boolean
+    deleteUsers(id: [String!]!): Boolean
   }
 `;
 
@@ -92,8 +92,8 @@ export const resolvers: IResolvers = {
         id: user.uid,
       };
     },
-    removeUser: async (_parent, { id }: { id: string }): Promise<boolean> => {
-      return await removeUser(id);
+    deleteUsers: async (_parent, { id }: { id: string[] }): Promise<boolean> => {
+      return await deleteUsers(id)
     },
   },
 };
@@ -104,6 +104,6 @@ export const permission = shield({
   Mutation: {
     updateUser: or(isAuthenticated, not(isAuthenticated)),
     createUser: or(isAuthenticated, not(isAuthenticated)),
-    removeUser: or(isAuthenticated, not(isAuthenticated)),
+    deleteUsers: or(isAuthenticated, not(isAuthenticated)),
   },
 });

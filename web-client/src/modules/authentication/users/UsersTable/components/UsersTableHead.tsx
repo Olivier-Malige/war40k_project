@@ -17,11 +17,11 @@ type EnhancedTableProps = {
 };
 
 const headCells: HeadCell[] = [
-  { id: 'name', label: 'User name' },
+  { id: 'displayName', label: 'Display name' },
   { id: 'email', label: 'Email' },
   { id: 'role', label: 'Role' },
-  { id: 'creationDate', label: 'Creation date' },
-  { id: 'lastUpdateDate', label: 'Last update date' },
+  { id: 'disabled', label: 'Disabled' },
+  { id: 'id', label: 'ID' },
 ];
 
 export const UsersTableHead = (props: EnhancedTableProps) => {

@@ -20,23 +20,23 @@ import { UsersTableToolbar as TableToolbar } from './components/UsersTableToolba
 import { Order, RowData } from './types';
 
 import { getComparator, stableSort } from 'src/utils/sort';
+import { FullScreenDialog } from '../../../../components/FullScreenDialog';
 
 type Props = {
   tableTitle: string;
   rowsData: RowData[];
   onDeleteRow: (id: string[]) => void;
+  UpsertForm: FC<any>;
 };
 
-export const UsersTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow }) => {
+export const UsersTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow, UpsertForm }) => {
   const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<keyof RowData>('name');
+  const [orderBy, setOrderBy] = useState<keyof RowData>('email');
   const [selected, setSelected] = useState<string[]>([]);
   const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openUpsertModal, setOpenUpsertModal] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
-  const [isCopy, setIsCopy] = useState(false);
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof RowData) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -88,12 +88,6 @@ export const UsersTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow })
     setOpenUpsertModal(true);
   };
 
-  const handleCloseUpsertUnit = () => {
-    setOpenUpsertModal(false);
-    setIsUpdate(false);
-    setIsCopy(false);
-  };
-
   const handleDeleteRow = () => {
     onDeleteRow(selected);
     setSelected([]);
@@ -102,7 +96,10 @@ export const UsersTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow })
   const handleEdit = () => {
     setOpenUpsertModal(true);
     setIsUpdate(true);
-    setIsCopy(false);
+  };
+  const handleCloseUpsertForm = () => {
+    setOpenUpsertModal(false);
+    setIsUpdate(false);
   };
 
   return (
@@ -142,7 +139,6 @@ export const UsersTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow })
                 overflowY: 'scroll',
               }}
               aria-labelledby="tableTitle"
-              size={dense ? 'small' : 'medium'}
               aria-label="enhanced table"
             >
               <TableHeader
@@ -177,7 +173,7 @@ export const UsersTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow })
                           />
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
-                          {row.name}
+                          {row.displayName}
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           {row.email}
@@ -186,16 +182,16 @@ export const UsersTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow })
                           {row.role}
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
-                          {new Date(row.creationDate).toLocaleDateString()}
+                          <Checkbox checked={Boolean(row.disabled)} />
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
-                          {row.lastUpdateDate && new Date(row.lastUpdateDate).toLocaleDateString()}
+                          {row.id}
                         </TableCell>
                       </TableRow>
                     );
                   })}
                 {emptyRows > 0 && (
-                  <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                  <TableRow>
                     <TableCell colSpan={6} />
                   </TableRow>
                 )}
@@ -236,6 +232,13 @@ export const UsersTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow })
           </Grid>
         </div>
       </Paper>
+      <FullScreenDialog
+        title={isUpdate ? 'Update user' : 'Create a new user'}
+        handleClose={handleCloseUpsertForm}
+        open={openUpsertModal}
+      >
+        <UpsertForm onSubmit={handleCloseUpsertForm} id={isUpdate ? selected[0] : undefined} />
+      </FullScreenDialog>
     </Box>
   );
 };

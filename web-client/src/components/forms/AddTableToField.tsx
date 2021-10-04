@@ -1,7 +1,7 @@
 import React, { FC, memo } from 'react';
 import { Button, Stack, TextField } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
-import { FieldConfig } from '../../modules/unitsEditor/W40kUpsertForm/types';
+import { FieldConfig } from '../../modules/unitsEditor/UnitsTables/components/W40kUpsertForm/types';
 import { useFieldArray, Controller } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 type Props = {

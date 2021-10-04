@@ -24,7 +24,7 @@ import { Order, RowData } from './types';
 
 import { getComparator, stableSort } from 'src/utils/sort';
 import { FullScreenDialog } from '../../../components/FullScreenDialog';
-import { UpsertFormProps } from '../W40kUpsertForm/W40kUpsertFormContainer';
+import { UpsertFormProps } from './components/W40kUpsertForm/W40kUpsertFormContainer';
 
 type Props = {
   tableTitle: string;

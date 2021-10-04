@@ -2,9 +2,9 @@ import React, { FC, useEffect } from 'react';
 
 import { W40kUpsertFormView } from './W40kUpsertFormView';
 import { gql, useMutation, useLazyQuery } from '@apollo/client';
-import { GET_W40K_UNITS } from '../UnitsTables/War40kUnitsTableContainer';
-import { LoadingSpinner } from '../../../components/LoadingSpinner';
-import { openSuccessMessage, openErrorMessage } from '../../../graphQL/cache';
+import { GET_W40K_UNITS } from '../../War40kUnitsTableContainer';
+import { LoadingSpinner } from '../../../../../components/LoadingSpinner';
+import { openSuccessMessage, openErrorMessage } from '../../../../../graphQL/cache';
 
 export type UpsertFormProps = {
   id?: string;

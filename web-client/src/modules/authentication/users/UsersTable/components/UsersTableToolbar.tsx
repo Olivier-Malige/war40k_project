@@ -90,7 +90,7 @@ export const UsersTableToolbar = ({
         handleClose={handleCloseConfirmDelete}
         handleOk={handleConfirmDelete}
       >
-        <div>Please confirm the deletions of {numSelected} unit(s). </div>
+        <div>Please confirm the deletions of {numSelected} item(s). </div>
       </ConfirmDialog>
     </>
   );

@@ -16,9 +16,9 @@ services:
   apollo-server:
     build:
       dockerfile: Dockerfile
-      context: ./server-api
+      context: ./apollo-server
     volumes:
-      - ./server-api:/app
+      - ./apollo-server:/app
 
   web-client:
     stdin_open: true
