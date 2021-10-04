@@ -4,8 +4,8 @@ services:
 
   nginx:
     depends_on:
-      - api
-      - client
+      - apollo-server
+      - web-client
     restart: always
     build:
       dockerfile: Dockerfile
@@ -13,14 +13,14 @@ services:
     ports:
       - "4000:80"
 
-  api:
+  apollo-server:
     build:
       dockerfile: Dockerfile
       context: ./server-api
     volumes:
       - ./server-api:/app
 
-  client:
+  web-client:
     stdin_open: true
     environment:
       - CHOKIDAR_USEPOLLING=true

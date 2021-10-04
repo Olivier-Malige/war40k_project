@@ -19,7 +19,7 @@ import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Grid } from '@mui/material';
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/api',
+  uri: 'http://localhost:4000/graphql',
 });
 
 const App: React.FC = () => {
