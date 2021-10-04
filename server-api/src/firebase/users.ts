@@ -1,8 +1,8 @@
 import admin, { auth } from 'firebase-admin';
 
 import conf from '../environment';
-import { UserInput } from '../interfaces';
 import UserRecord = auth.UserRecord;
+import { CreateUserInput, UpdateUserInput } from '../types';
 const env = conf[process.env.NODE_ENV as 'development' | 'production'];
 
 const params = {
@@ -51,24 +51,24 @@ export const listUsers = async (): Promise<admin.auth.ListUsersResult> => {
   }
 };
 
-export const updateUser = async (id: string, input: UserInput): Promise<UserRecord | string> => {
+export const updateUser = async (input: UpdateUserInput): Promise<UserRecord> => {
   try {
-    const user = await admin.auth().updateUser(id, {
+    await admin.auth().updateUser(input.id, {
       email: input.email,
       displayName: input.displayName,
       password: input.password,
       disabled: input.disabled,
     });
     if (input.role) {
-      await setCustomClaim(user.uid, input.role);
+      await setCustomClaim(input.id, input.role);
     }
-    return await admin.auth().getUser(user.uid);
+    return await admin.auth().getUser(input.id);
   } catch (e) {
     console.error(e);
     return e;
   }
 };
-export const createUser = async (input: UserInput): Promise<UserRecord | string> => {
+export const createUser = async (input: CreateUserInput): Promise<UserRecord> => {
   try {
     const user = await admin.auth().createUser({
       email: input.email,

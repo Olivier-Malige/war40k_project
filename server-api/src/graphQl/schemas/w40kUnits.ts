@@ -9,10 +9,10 @@ import {
   updateW40kUnit,
   removeW40kUnits,
 } from '../../database/queries/units.queries';
-import { W40KUnit, W40KUnitInput } from '../../interfaces';
-import { dateScalar } from '../scalars';
 
 import { gql } from 'apollo-server';
+import { W40kUnit, W40kUnitInput } from '../../types';
+import { IResolvers } from 'graphql-middleware/dist/types';
 
 export const typeDefs = gql`
   scalar Date
@@ -165,25 +165,23 @@ export const typeDefs = gql`
   }
 `;
 
-export const resolvers = {
-  Date: dateScalar,
-
+export const resolvers: IResolvers = {
   Query: {
-    w40kUnits: (): Promise<Array<W40KUnit>> => {
+    w40kUnits: (): Promise<Array<W40kUnit>> => {
       return findAllW40kUnits();
     },
-    w40kUnit: (_parent, { id }: { id: string }): Promise<W40KUnit> => {
+    w40kUnit: (_parent, { id }: { id: string }): Promise<W40kUnit> => {
       return findW40kUnit(id);
     },
-    searchW40kUnitsByName: (_parent, { name }: { name: string }): Promise<Array<W40KUnit>> => {
+    searchW40kUnitsByName: (_parent, { name }: { name: string }): Promise<Array<W40kUnit>> => {
       return searchW40kUnits(name);
     },
   },
   Mutation: {
-    createW40kUnit: (_parent, { input }: { input: W40KUnitInput }) => {
+    createW40kUnit: (_parent, { input }: { input: W40kUnitInput }) => {
       return createW40kUnit(input);
     },
-    updateW40kUnit: (_parent, { id, input }: { id: string; input: W40KUnitInput }) => {
+    updateW40kUnit: (_parent, { id, input }: { id: string; input: W40kUnitInput }) => {
       return updateW40kUnit(id, input);
     },
     removeW40kUnits: (_parent, { id }: { id: string[] }) => {

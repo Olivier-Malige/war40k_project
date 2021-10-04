@@ -2,8 +2,8 @@ import { gql } from 'apollo-server';
 import { not, or, shield } from 'graphql-shield';
 import { createUser, listUsers, removeUser, updateUser } from '../../firebase/users';
 import { isAuthenticated } from '../permissions';
-import { User, UserInput } from '../../interfaces';
 import { IResolvers } from 'graphql-middleware/dist/types';
+import { CreateUserInput, UpdateUserInput, User } from '../../types';
 
 export const typeDefs = gql`
   enum Roles {
@@ -17,7 +17,7 @@ export const typeDefs = gql`
     id: ID!
     role: Roles!
     email: String!
-    disabled: String!
+    disabled: Boolean!
   }
 
   input UpdateUserInput {
@@ -60,8 +60,9 @@ export const resolvers: IResolvers = {
     },
   },
   Mutation: {
-    updateUser: async (_parent, { input }: { input: UserInput }) => {
-      const user = await updateUser(input.id, {
+    updateUser: async (_parent, { input }: { input: UpdateUserInput }) => {
+      const user = await updateUser({
+        id: input.id,
         email: input.email,
         displayName: input.displayName,
         role: input.role,
@@ -75,8 +76,8 @@ export const resolvers: IResolvers = {
         id: user.uid,
       };
     },
-    createUser: async (_parent, { input }: { input: UserInput }): Promise<User> => {
-      const result = await createUser({
+    createUser: async (_parent, { input }: { input: CreateUserInput }): Promise<User> => {
+      const user = await createUser({
         email: input.email,
         displayName: input.displayName,
         password: input.password,
@@ -84,11 +85,11 @@ export const resolvers: IResolvers = {
       });
 
       return {
-        displayName: result.displayName || '',
-        email: result.email,
-        disabled: result.disabled,
-        role: result.customClaims.role,
-        id: result.uid,
+        displayName: user.displayName || '',
+        email: user.email,
+        disabled: user.disabled,
+        role: user.customClaims.role,
+        id: user.uid,
       };
     },
     removeUser: async (_parent, { id }: { id: string }): Promise<boolean> => {
