@@ -6,13 +6,13 @@ import { merge } from 'lodash';
 import {
   typeDefs as Users,
   resolvers as usersResolvers,
-  permission as usersPermission,
+  // permission as usersPermission,
 } from './graphQl/schemas/users';
 
 import {
   typeDefs as W40kUnits,
   resolvers as w40kUnitsResolvers,
-  permission as w40kUnitsPermission,
+  // permission as w40kUnitsPermission,
 } from './graphQl/schemas/w40kUnits';
 
 import conf from './environment';
@@ -26,7 +26,7 @@ const schema = makeExecutableSchema({
 });
 
 const server = new ApolloServer({
-  schema: applyMiddleware(schema, usersPermission, w40kUnitsPermission),
+  schema: applyMiddleware(schema),
   context: async ({ req }) => {
     const token = req.headers.authorization || '';
     const user = await verifyUserToken(token);

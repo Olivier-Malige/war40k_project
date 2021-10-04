@@ -1,6 +1,8 @@
-import admin from 'firebase-admin';
+import admin, { auth } from 'firebase-admin';
 
 import conf from '../environment';
+import { UserInput } from '../interfaces';
+import UserRecord = auth.UserRecord;
 const env = conf[process.env.NODE_ENV as 'development' | 'production'];
 
 const params = {
@@ -19,6 +21,16 @@ const params = {
 admin.initializeApp({
   credential: admin.credential.cert(params),
 });
+
+const setCustomClaim = async (userID: string, role: string) => {
+  try {
+    return await admin.auth().setCustomUserClaims(userID, {
+      role: role,
+    });
+  } catch (e) {
+    throw Error(e);
+  }
+};
 
 export const verifyUserToken = async (idToken: string): Promise<admin.auth.DecodedIdToken> => {
   if (!idToken) return null;
@@ -39,24 +51,44 @@ export const listUsers = async (): Promise<admin.auth.ListUsersResult> => {
   }
 };
 
-export const updateUser = async (id, data) => {
+export const updateUser = async (id: string, input: UserInput): Promise<UserRecord | string> => {
   try {
     const user = await admin.auth().updateUser(id, {
-      email: data.email,
-      displayName: data.displayName,
+      email: input.email,
+      displayName: input.displayName,
+      password: input.password,
+      disabled: input.disabled,
     });
-    return user;
+    if (input.role) {
+      await setCustomClaim(user.uid, input.role);
+    }
+    return await admin.auth().getUser(user.uid);
   } catch (e) {
     console.error(e);
-    return null;
+    return e;
   }
 };
-export const createUser = async data => {
-  return data;
+export const createUser = async (input: UserInput): Promise<UserRecord | string> => {
+  try {
+    const user = await admin.auth().createUser({
+      email: input.email,
+      displayName: input.displayName,
+      password: input.password,
+    });
+    await setCustomClaim(user.uid, input.role);
+    return await admin.auth().getUser(user.uid);
+  } catch (e) {
+    console.error(e);
+    return e;
+  }
 };
-export const disableUser = async id => {
-  return id;
-};
-export const removeUser = async id => {
-  return id;
+
+export const removeUser = async (id: string): Promise<boolean> => {
+  try {
+    await admin.auth().deleteUser(id);
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
 };

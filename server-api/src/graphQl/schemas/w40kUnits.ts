@@ -172,21 +172,21 @@ export const resolvers = {
     w40kUnits: (): Promise<Array<W40KUnit>> => {
       return findAllW40kUnits();
     },
-    w40kUnit: (_parent, { id }): Promise<W40KUnit> => {
+    w40kUnit: (_parent, { id }: { id: string }): Promise<W40KUnit> => {
       return findW40kUnit(id);
     },
-    searchW40kUnitsByName: (_parent, { name }): Promise<Array<W40KUnit>> => {
+    searchW40kUnitsByName: (_parent, { name }: { name: string }): Promise<Array<W40KUnit>> => {
       return searchW40kUnits(name);
     },
   },
   Mutation: {
-    createW40kUnit: (_parent, { input }) => {
-      return createW40kUnit(input as W40KUnitInput);
+    createW40kUnit: (_parent, { input }: { input: W40KUnitInput }) => {
+      return createW40kUnit(input);
     },
-    updateW40kUnit: (_parent, { id, input }) => {
-      return updateW40kUnit(id, input as W40KUnitInput);
+    updateW40kUnit: (_parent, { id, input }: { id: string; input: W40KUnitInput }) => {
+      return updateW40kUnit(id, input);
     },
-    removeW40kUnits: (_parent, { id }) => {
+    removeW40kUnits: (_parent, { id }: { id: string[] }) => {
       return removeW40kUnits(id);
     },
   },
@@ -199,8 +199,8 @@ export const permission = shield({
     searchW40kUnitsByName: or(isAuthenticated, not(isAuthenticated)),
   },
   Mutation: {
-    // createW40kUnit: isAuthenticated,
-    // updateW40kUnit: isAuthenticated,
-    // removeW40kUnits: isAuthenticated,
+    createW40kUnit: isAuthenticated,
+    updateW40kUnit: isAuthenticated,
+    removeW40kUnits: isAuthenticated,
   },
 });
