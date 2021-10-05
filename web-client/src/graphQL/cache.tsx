@@ -10,6 +10,11 @@ export const cache: InMemoryCache = new InMemoryCache({
             return userAuth();
           },
         },
+        userRole: {
+          read() {
+            return userRole();
+          },
+        },
         openSuccessMessage: {
           read() {
             return openSuccessMessage();
@@ -28,3 +33,4 @@ export const cache: InMemoryCache = new InMemoryCache({
 export const openSuccessMessage = makeVar<boolean>(false);
 export const openErrorMessage = makeVar<boolean>(false);
 export const userAuth = makeVar<boolean>(false);
+export const userRole = makeVar<string>(null);

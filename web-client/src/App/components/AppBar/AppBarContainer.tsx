@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Group, Home, ImageAspectRatio } from '@mui/icons-material';
 
-import { routeNames } from '../../../modules/navigation/CONSTANTS';
+import { routeNames } from 'src/modules/navigation/CONSTANTS';
 import { AppBarView } from './AppBarView';
 import { DrawerListItem } from './types';
+import { useQuery } from '@apollo/client';
+import { USER_ROLE } from 'src/graphQL/queries/user';
+import { Roles } from 'src/modules/authentication/types';
 
 type Props = {
   darkMode: boolean;
@@ -11,27 +14,30 @@ type Props = {
   isUserAuth: boolean;
 };
 
-const drawerListItems: DrawerListItem[] = [
-  {
-    name: 'Home',
-    routeName: routeNames.HOME,
-    icon: <Home sx={{ color: theme => theme.palette.secondary.main }} />,
-  },
-  {
-    name: 'Units editor',
-    routeName: routeNames.UNITS_EDITOR,
-    icon: <ImageAspectRatio sx={{ color: theme => theme.palette.secondary.main }} />,
-  },
-  {
-    name: 'Users',
-    routeName: routeNames.USERS,
-    icon: <Group sx={{ color: theme => theme.palette.secondary.main }} />,
-  },
-];
-
 export const AppBarContainer: React.FC<Props> = ({ darkMode, setDarkMode, isUserAuth }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const { data } = useQuery(USER_ROLE);
 
+  const drawerListItems: DrawerListItem[] = [
+    {
+      name: 'Home',
+      routeName: routeNames.HOME,
+      icon: <Home sx={{ color: theme => theme.palette.secondary.main }} />,
+      show: true,
+    },
+    {
+      name: 'Units editor',
+      routeName: routeNames.UNITS_EDITOR,
+      icon: <ImageAspectRatio sx={{ color: theme => theme.palette.secondary.main }} />,
+      show: data?.userRole === Roles.CONTRIBUTOR || data?.userRole === Roles.ADMIN,
+    },
+    {
+      name: 'Users',
+      routeName: routeNames.USERS,
+      icon: <Group sx={{ color: theme => theme.palette.secondary.main }} />,
+      show: data?.userRole === Roles.ADMIN,
+    },
+  ];
   return (
     <AppBarView
       title={'Warhammer API builder'}

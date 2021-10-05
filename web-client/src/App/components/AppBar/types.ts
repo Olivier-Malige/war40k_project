@@ -4,4 +4,5 @@ export type DrawerListItem = {
   icon: ReactElement;
   routeName: string;
   name: string;
+  show: boolean;
 };

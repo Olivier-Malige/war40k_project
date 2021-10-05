@@ -96,22 +96,25 @@ export const AppBarView: FC<Props> = ({
               </ListItemText>
             </ListItem>
             <Divider />
-            {drawerListItems.map(listItem => (
-              <LinkRoute
-                to={listItem.routeName}
-                key={listItem.name}
-                onClick={() => setOpenDrawer(false)}
-              >
-                <ListItem>
-                  <ListItemIcon>{listItem.icon}</ListItemIcon>
-                  <ListItemText>
-                    <Typography variant="h6" color={'textPrimary'}>
-                      {listItem.name}
-                    </Typography>
-                  </ListItemText>
-                </ListItem>
-              </LinkRoute>
-            ))}
+            {drawerListItems.map(
+              listItem =>
+                listItem.show && (
+                  <LinkRoute
+                    to={listItem.routeName}
+                    key={listItem.name}
+                    onClick={() => setOpenDrawer(false)}
+                  >
+                    <ListItem>
+                      <ListItemIcon>{listItem.icon}</ListItemIcon>
+                      <ListItemText>
+                        <Typography variant="h6" color={'textPrimary'}>
+                          {listItem.name}
+                        </Typography>
+                      </ListItemText>
+                    </ListItem>
+                  </LinkRoute>
+                ),
+            )}
             <Divider />
             <ListItem
               sx={{ cursor: 'pointer' }}

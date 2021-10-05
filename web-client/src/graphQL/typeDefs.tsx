@@ -5,5 +5,6 @@ export const typeDefs = gql`
     openSuccessMessage: Boolean!
     openErrorMessage: Boolean!
     userAuth: Boolean!
+    userRole: Roles!
   }
 `;

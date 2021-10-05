@@ -5,3 +5,9 @@ export const USER_AUTH = gql`
     userAuth
   }
 `;
+
+export const USER_ROLE = gql`
+  query userRoe {
+    userRole
+  }
+`;

@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Router from 'src/modules/navigation/Router';
 import { light, dark } from 'src/styles/muiTheme';
 import AppBar from './components/AppBar';
-import { cache, userAuth } from '../graphQL/cache';
+import { cache, userAuth, userRole } from '../graphQL/cache';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -24,13 +24,13 @@ const httpLink = createHttpLink({
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(false);
-  const { isUserAuth, authLoading, user } = useUserAuth();
+  const { isUserAuth, authLoading, role, accessToken } = useUserAuth();
 
   const authLink = setContext((_, { headers }) => {
     return {
       headers: {
         ...headers,
-        authorization: user.accessToken ?? '',
+        authorization: accessToken ?? '',
       },
     };
   });
@@ -43,7 +43,8 @@ const App: React.FC = () => {
 
   useEffect(() => {
     userAuth(isUserAuth);
-  }, [isUserAuth]);
+    userRole(role);
+  }, [isUserAuth, role]);
 
   if (authLoading) {
     return (
@@ -55,10 +56,10 @@ const App: React.FC = () => {
 
   return (
     <ApolloProvider client={client}>
+      <CssBaseline />
       <BrowserRouter>
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={darkMode ? { ...dark } : { ...light }}>
-            <CssBaseline />
             <AppBar darkMode={darkMode} setDarkMode={setDarkMode} isUserAuth={isUserAuth} />
             <Router />
           </ThemeProvider>
