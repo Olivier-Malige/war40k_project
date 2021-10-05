@@ -1,7 +1,6 @@
 import { gql } from 'apollo-server';
-import { not, or, shield } from 'graphql-shield';
 import { createUser, listUsers, deleteUsers, updateUser, getUser } from '../../firebase/users';
-import { isAuthenticated } from '../permissions';
+import { isAdmin } from '../rules';
 import { CreateUserInput, UpdateUserInput, User } from '../../types';
 import { IResolvers } from 'graphql-middleware/dist/types';
 
@@ -108,13 +107,14 @@ export const resolvers: IResolvers = {
     },
   },
 };
-export const permission = shield({
+export const permissions = {
   Query: {
-    users: or(isAuthenticated, not(isAuthenticated)),
+    users: isAdmin,
+    user: isAdmin,
   },
   Mutation: {
-    updateUser: or(isAuthenticated, not(isAuthenticated)),
-    createUser: or(isAuthenticated, not(isAuthenticated)),
-    deleteUsers: or(isAuthenticated, not(isAuthenticated)),
+    updateUser: isAdmin,
+    createUser: isAdmin,
+    deleteUsers: isAdmin,
   },
-});
+};
