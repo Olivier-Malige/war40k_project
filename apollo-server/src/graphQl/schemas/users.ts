@@ -1,9 +1,9 @@
 import { gql } from 'apollo-server';
 import { not, or, shield } from 'graphql-shield';
-import { createUser, listUsers, deleteUsers, updateUser } from '../../firebase/users';
+import { createUser, listUsers, deleteUsers, updateUser, getUser } from '../../firebase/users';
 import { isAuthenticated } from '../permissions';
 import { CreateUserInput, UpdateUserInput, User } from '../../types';
-import {IResolvers} from "graphql-middleware/dist/types";
+import { IResolvers } from 'graphql-middleware/dist/types';
 
 export const typeDefs = gql`
   enum Roles {
@@ -21,7 +21,6 @@ export const typeDefs = gql`
   }
 
   input UpdateUserInput {
-    id: ID!
     displayName: String
     role: Roles
     email: String
@@ -34,13 +33,15 @@ export const typeDefs = gql`
     email: String!
     role: Roles!
     password: String!
+    disabled: Boolean!
   }
 
   type Query {
     users: [User]
+    user(id: ID): User
   }
   type Mutation {
-    updateUser(input: UpdateUserInput): User
+    updateUser(id: ID!, input: UpdateUserInput): User
     createUser(input: CreateUserInput): User
     deleteUsers(id: [String!]!): Boolean
   }
@@ -58,11 +59,21 @@ export const resolvers: IResolvers = {
         id: user.uid,
       }));
     },
+    user: async (_parent, { id }: { id: string }) => {
+      const user = await getUser(id);
+      return {
+        displayName: user.displayName || '',
+        email: user.email,
+        disabled: user.disabled,
+        role: user.customClaims?.role,
+        id: user.uid,
+      };
+    },
   },
   Mutation: {
-    updateUser: async (_parent, { input }: { input: UpdateUserInput }) => {
+    updateUser: async (_parent, { id, input }: { input: UpdateUserInput; id: string }) => {
       const user = await updateUser({
-        id: input.id,
+        id: id,
         email: input.email,
         displayName: input.displayName,
         role: input.role,
@@ -93,7 +104,7 @@ export const resolvers: IResolvers = {
       };
     },
     deleteUsers: async (_parent, { id }: { id: string[] }): Promise<boolean> => {
-      return await deleteUsers(id)
+      return await deleteUsers(id);
     },
   },
 };

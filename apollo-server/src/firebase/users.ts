@@ -51,6 +51,15 @@ export const listUsers = async (): Promise<admin.auth.ListUsersResult> => {
   }
 };
 
+export const getUser = async (id: string): Promise<auth.UserRecord> => {
+  try {
+    return await admin.auth().getUser(id);
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+};
+
 export const updateUser = async (input: UpdateUserInput): Promise<UserRecord> => {
   try {
     await admin.auth().updateUser(input.id, {
@@ -85,7 +94,7 @@ export const createUser = async (input: CreateUserInput): Promise<UserRecord> =>
 
 export const deleteUsers = async (ids: string[]): Promise<boolean> => {
   try {
-    await admin.auth().deleteUsers(ids)
+    await admin.auth().deleteUsers(ids);
     return true;
   } catch (e) {
     console.error(e);

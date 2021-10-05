@@ -5,7 +5,7 @@ import { RowData } from './types';
 import { UsersTableView } from './UsersTableView';
 import { LoadingSpinner } from 'src/components/LoadingSpinner';
 import UserUpsertForm from './components/UserUpsertForm';
-const GET_USERS = gql`
+export const GET_USERS = gql`
   query GetUsers {
     users {
       email

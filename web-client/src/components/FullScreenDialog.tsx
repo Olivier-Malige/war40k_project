@@ -32,7 +32,15 @@ export const FullScreenDialog: FC<Props> = ({ title, children, open, handleClose
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Box sx={{ height: 'calc(100% - 80px)', mt: 5 }}>{children}</Box>
+      <Box
+        sx={{
+          height: 'calc(100% - 40px)',
+          mt: 5,
+          backgroundColor: theme => theme.palette.background.default,
+        }}
+      >
+        {children}
+      </Box>
     </Dialog>
   );
 };
