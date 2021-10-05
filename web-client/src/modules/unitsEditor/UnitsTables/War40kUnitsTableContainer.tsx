@@ -34,7 +34,8 @@ const DELETE_UNITS = gql`
 
 export const War40kUnitsTableContainer: React.FC = () => {
   const { loading, error, data } = useQuery(GET_W40K_UNITS);
-  const [deleteUnits] = useMutation(DELETE_UNITS);
+  const [deleteUnits, { loading: loadingDeleteUnits, error: errorDeleteUnits }] =
+    useMutation(DELETE_UNITS);
 
   const [rowsData, setRowsData] = useState<RowData[]>([]);
 
@@ -54,8 +55,8 @@ export const War40kUnitsTableContainer: React.FC = () => {
     );
   }, [data]);
 
-  if (loading) return <LoadingSpinner />;
-  if (error) return <div>Errors : {error}</div>;
+  if (loading || loadingDeleteUnits) return <LoadingSpinner />;
+  if (error || errorDeleteUnits) return <div>Errors : {error || errorDeleteUnits}</div>;
 
   return (
     <UnitTableView

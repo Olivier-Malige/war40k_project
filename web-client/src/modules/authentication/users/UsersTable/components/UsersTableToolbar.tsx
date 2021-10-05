@@ -85,12 +85,12 @@ export const UsersTableToolbar = ({
         )}
       </Toolbar>
       <ConfirmDialog
-        title={'Delete unit(s)'}
+        title={'Delete user(s)'}
         open={openDeleteConfirm}
         handleClose={handleCloseConfirmDelete}
         handleOk={handleConfirmDelete}
       >
-        <div>Please confirm the deletions of {numSelected} item(s). </div>
+        <div>Please confirm the deletions of {numSelected} user(s). </div>
       </ConfirmDialog>
     </>
   );

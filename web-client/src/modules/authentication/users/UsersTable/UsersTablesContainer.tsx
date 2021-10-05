@@ -26,7 +26,8 @@ const DELETE_USERS = gql`
 export const UsersTablesContainer: React.FC = () => {
   const [rowsData, setRowsData] = useState<RowData[]>([]);
   const { loading, error, data } = useQuery(GET_USERS);
-  const [removeUsers] = useMutation(DELETE_USERS);
+  const [removeUsers, { loading: loadingDeleteUser, error: errorDeleteUser }] =
+    useMutation(DELETE_USERS);
 
   useEffect(() => {
     setRowsData(
@@ -40,8 +41,8 @@ export const UsersTablesContainer: React.FC = () => {
     );
   }, [data]);
 
-  if (loading) return <LoadingSpinner />;
-  if (error) return <div>Errors : {error}</div>;
+  if (loading || loadingDeleteUser) return <LoadingSpinner />;
+  if (error || errorDeleteUser) return <div>Errors : {error || errorDeleteUser}</div>;
 
   return (
     <UsersTableView
