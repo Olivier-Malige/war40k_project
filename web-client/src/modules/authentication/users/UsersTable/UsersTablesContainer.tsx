@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { gql, useMutation, useQuery } from '@apollo/client';
 
-import { RowData } from './types';
+import { UserRowData } from './types';
 import { UsersTableView } from './UsersTableView';
 import { LoadingSpinner } from 'src/components/LoadingSpinner';
 import UserUpsertForm from './components/UserUpsertForm';
@@ -26,20 +26,25 @@ const DELETE_USERS = gql`
 `;
 
 export const UsersTablesContainer: React.FC = () => {
-  const [rowsData, setRowsData] = useState<RowData[]>([]);
+  const [rowsData, setRowsData] = useState<UserRowData[]>([]);
   const { loading, error, data } = useQuery(GET_USERS);
   const [removeUsers, { loading: loadingDeleteUser, error: errorDeleteUser }] =
     useMutation(DELETE_USERS);
 
   useEffect(() => {
     setRowsData(
-      data?.users.map(user => ({
-        email: user.email,
-        id: user.id,
-        displayName: user.displayName,
-        role: user.role,
-        disabled: user.disabled,
-      })) ?? [],
+      data?.users.map(
+        (user: UserRowData) =>
+          ({
+            email: user.email,
+            id: user.id,
+            displayName: user.displayName,
+            role: user.role,
+            disabled: user.disabled,
+            lastSignInDate: user.lastSignInDate,
+            creationDate: user.creationDate,
+          } as UserRowData),
+      ) ?? [],
     );
   }, [data]);
 

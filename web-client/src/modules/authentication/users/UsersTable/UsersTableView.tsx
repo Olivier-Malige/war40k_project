@@ -17,28 +17,28 @@ import { Add as AddIcon } from '@mui/icons-material';
 
 import { UsersTableHead as TableHeader } from './components/UsersTableHead';
 import { UsersTableToolbar as TableToolbar } from './components/UsersTableToolbar';
-import { Order, RowData } from './types';
+import { Order, UserRowData } from './types';
 
 import { getComparator, stableSort } from 'src/utils/sort';
 import { FullScreenDialog } from '../../../../components/FullScreenDialog';
 
 type Props = {
   tableTitle: string;
-  rowsData: RowData[];
+  rowsData: UserRowData[];
   onDeleteRow: (id: string[]) => void;
   UpsertForm: FC<any>;
 };
 
 export const UsersTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow, UpsertForm }) => {
   const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<keyof RowData>('email');
+  const [orderBy, setOrderBy] = useState<keyof UserRowData>('email');
   const [selected, setSelected] = useState<string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openUpsertModal, setOpenUpsertModal] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof RowData) => {
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof UserRowData) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -185,7 +185,10 @@ export const UsersTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow, U
                           <Checkbox checked={Boolean(row.disabled)} />
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
-                          {row.id}
+                          {row.creationDate && new Date(row.creationDate).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          {row.lastSignInDate && new Date(row.lastSignInDate).toLocaleDateString()}
                         </TableCell>
                       </TableRow>
                     );

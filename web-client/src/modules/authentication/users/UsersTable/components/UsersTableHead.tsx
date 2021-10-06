@@ -5,11 +5,11 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Checkbox from '@mui/material/Checkbox';
 
-import { HeadCell, Order, RowData } from '../types';
+import { HeadCell, Order, UserRowData } from '../types';
 
 type EnhancedTableProps = {
   numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof RowData) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof UserRowData) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
@@ -21,12 +21,13 @@ const headCells: HeadCell[] = [
   { id: 'email', label: 'Email' },
   { id: 'role', label: 'Role' },
   { id: 'disabled', label: 'Disabled' },
-  { id: 'id', label: 'ID' },
+  { id: 'creationDate', label: 'Creation date' },
+  { id: 'lastSignInDate', label: 'Last signin date' },
 ];
 
 export const UsersTableHead = (props: EnhancedTableProps) => {
   const { onSelectAllClick, rowCount, numSelected, order, orderBy, onRequestSort } = props;
-  const createSortHandler = (property: keyof RowData) => (event: React.MouseEvent<unknown>) => {
+  const createSortHandler = (property: keyof UserRowData) => (event: React.MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
 
@@ -50,7 +51,7 @@ export const UsersTableHead = (props: EnhancedTableProps) => {
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id as keyof RowData)}
+              onClick={createSortHandler(headCell.id as keyof UserRowData)}
             >
               {headCell.label}
             </TableSortLabel>
