@@ -5,8 +5,9 @@ import { routeNames } from 'src/modules/navigation/CONSTANTS';
 import { AppBarView } from './AppBarView';
 import { DrawerListItem } from './types';
 import { useQuery } from '@apollo/client';
-import { USER_ROLE } from 'src/graphQL/queries/user';
+import { USER_ROLE } from 'src/graphQL/queries/client/user';
 import { Roles } from 'src/modules/authentication/types';
+import { useAuth } from 'src/modules/authentication/hooks/useAuth';
 
 type Props = {
   darkMode: boolean;
@@ -17,7 +18,7 @@ type Props = {
 export const AppBarContainer: React.FC<Props> = ({ darkMode, setDarkMode, isUserAuth }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const { data } = useQuery(USER_ROLE);
-
+  const { signOut } = useAuth();
   const drawerListItems: DrawerListItem[] = [
     {
       name: 'Home',
@@ -48,6 +49,7 @@ export const AppBarContainer: React.FC<Props> = ({ darkMode, setDarkMode, isUser
       setOpenDrawer={setOpenDrawer}
       drawerListItems={drawerListItems}
       isUserAuth={isUserAuth}
+      onSignOut={signOut}
     />
   );
 };

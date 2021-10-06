@@ -2,10 +2,10 @@ import React from 'react';
 import { Route, Switch } from 'react-router';
 import { routeNames } from './CONSTANTS';
 import { NotFoundPage } from './pages/NotFoundPage';
-import Authentication from 'src/modules/navigation/pages/Authentication';
+import { AuthPage } from 'src/modules/navigation/pages/AuthPage';
 import { HomePage } from 'src/modules/navigation/pages/HomePage';
 import { UsersPage } from 'src/modules/navigation/pages/UsersPage';
-import UnitsEditor from 'src/modules/navigation/pages/UnitsEditor';
+import { UnitsEditorPage } from 'src/modules/navigation/pages/UnitsEditorPage';
 import { ProtectedRoute } from './ProtectedRoute';
 import { Redirect } from 'react-router-dom';
 import { Box } from '@mui/system';
@@ -20,7 +20,7 @@ const Router: React.FC = () => {
       <Switch>
         <ProtectedRoute component={HomePage} redirectTo={routeNames.LOGIN} path={routeNames.HOME} />
         <ProtectedRoute
-          component={UnitsEditor}
+          component={UnitsEditorPage}
           redirectTo={routeNames.LOGIN}
           path={routeNames.UNITS_EDITOR}
         />
@@ -30,7 +30,7 @@ const Router: React.FC = () => {
           path={routeNames.USERS}
         />
         <Route path={routeNames.LOGIN}>
-          <Authentication />
+          <AuthPage />
         </Route>
         <Route path="/">
           <Redirect to={routeNames.HOME} />

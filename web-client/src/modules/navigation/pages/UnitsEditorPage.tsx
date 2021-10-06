@@ -1,23 +1,11 @@
 import React, { FC } from 'react';
 import { Button, Grid } from '@mui/material';
-import { War40kUnitsTable } from '../../../unitsEditor/UnitsTables';
-import { SnackBarAlert } from '../../../../components/SnackBarAlert';
+import { War40kUnitsTable } from '../../unitsEditor/UnitsTables';
 import { Box } from '@mui/system';
 import wh40kLogo from 'src/assets/logo_wh40k8ed.png';
 import whAosLogo from 'src/assets/logo_whAos.png';
 
-type Props = {
-  openSuccessMessage: boolean;
-  openErrorMessage: boolean;
-  handleCloseSuccessMessage: () => void;
-  handleCloseErrorMessage: () => void;
-};
-export const UnitsEditorView: FC<Props> = ({
-  openSuccessMessage,
-  openErrorMessage,
-  handleCloseSuccessMessage,
-  handleCloseErrorMessage,
-}) => {
+export const UnitsEditorPage: FC = ({}) => {
   return (
     <Box
       sx={{
@@ -48,20 +36,6 @@ export const UnitsEditorView: FC<Props> = ({
       </Grid>
 
       <War40kUnitsTable />
-      <SnackBarAlert
-        open={openSuccessMessage}
-        handleClose={handleCloseSuccessMessage}
-        severity={'success'}
-      >
-        <span>The operation was well done </span>
-      </SnackBarAlert>
-      <SnackBarAlert
-        open={openErrorMessage}
-        handleClose={handleCloseErrorMessage}
-        severity={'error'}
-      >
-        <span>An error has occurred </span>
-      </SnackBarAlert>
     </Box>
   );
 };

@@ -14,9 +14,10 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { typeDefs } from '../graphQL/typeDefs';
-import { useUserAuth } from '../modules/authentication/hooks/useAuth';
-import { LoadingSpinner } from '../components/LoadingSpinner';
+import { useCurrentUser } from 'src/modules/authentication/hooks/useCurrentUser';
+import { LoadingSpinner } from 'src/components/LoadingSpinner';
 import { Grid } from '@mui/material';
+import SnackMessages from './components/SnackMessages';
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql',
@@ -24,7 +25,7 @@ const httpLink = createHttpLink({
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(false);
-  const { isUserAuth, authLoading, role, accessToken } = useUserAuth();
+  const { user, isLoading, role, accessToken } = useCurrentUser();
 
   const authLink = setContext((_, { headers }) => {
     return {
@@ -42,11 +43,11 @@ const App: React.FC = () => {
   });
 
   useEffect(() => {
-    userAuth(isUserAuth);
+    userAuth(Boolean(user));
     userRole(role);
-  }, [isUserAuth, role]);
+  }, [user, role]);
 
-  if (authLoading) {
+  if (isLoading) {
     return (
       <Grid sx={{ height: '100vh' }} justifyContent={'center'} alignItems={'center'}>
         <LoadingSpinner size={100} />
@@ -60,8 +61,9 @@ const App: React.FC = () => {
       <BrowserRouter>
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={darkMode ? { ...dark } : { ...light }}>
-            <AppBar darkMode={darkMode} setDarkMode={setDarkMode} isUserAuth={isUserAuth} />
+            <AppBar darkMode={darkMode} setDarkMode={setDarkMode} isUserAuth={Boolean(user)} />
             <Router />
+            <SnackMessages />
           </ThemeProvider>
         </StyledEngineProvider>
       </BrowserRouter>

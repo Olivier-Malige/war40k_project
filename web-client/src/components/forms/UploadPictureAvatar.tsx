@@ -3,7 +3,7 @@ import { Avatar, CardMedia } from '@mui/material';
 import { LoadingSpinner } from '../LoadingSpinner';
 import { AddAPhoto as AddAPhotoIcon } from '@mui/icons-material';
 import { useDropzone } from 'react-dropzone';
-import { useUploadImage } from '../../modules/authentication/hooks/useUploadImage';
+import { useUploadImage } from '../../hooks/useUploadImage';
 
 type Props = {
   urlValue: string;

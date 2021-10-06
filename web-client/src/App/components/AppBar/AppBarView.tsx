@@ -16,7 +16,6 @@ import {
 import { Logout, Menu } from '@mui/icons-material';
 import { DrawerListItem } from './types';
 import { LinkRoute } from '../../../components/LinkRoute';
-import { userSignOut } from '../../../services/firebase';
 
 type Props = {
   title: string;
@@ -27,6 +26,7 @@ type Props = {
   setOpenDrawer: (value: boolean) => void;
   drawerListItems: DrawerListItem[];
   isUserAuth: boolean;
+  onSignOut: () => Promise<void>;
 };
 
 export const AppBarView: FC<Props> = ({
@@ -38,6 +38,7 @@ export const AppBarView: FC<Props> = ({
   drawerListItems,
   version,
   isUserAuth,
+  onSignOut,
 }) => {
   const handleSetDarkMode = (value: ChangeEvent<HTMLInputElement>) => {
     setDarkMode(value.target.checked);
@@ -119,7 +120,7 @@ export const AppBarView: FC<Props> = ({
             <ListItem
               sx={{ cursor: 'pointer' }}
               onClick={() => {
-                userSignOut();
+                onSignOut();
                 setOpenDrawer(false);
               }}
             >

@@ -152,13 +152,13 @@ export const typeDefs = gql`
     save: Int
   }
 
-  extend type Query {
+  type Query {
     w40kUnits: [W40kUnit]
     w40kUnit(id: String): W40kUnit
     searchW40kUnitsByName(name: String!): W40kUnit
   }
 
-  extend type Mutation {
+  type Mutation {
     createW40kUnit(input: W40kUnitInput!): W40kUnit
     updateW40kUnit(input: W40kUnitInput!, id: String!): W40kUnit
     removeW40kUnits(id: [String!]!): Boolean

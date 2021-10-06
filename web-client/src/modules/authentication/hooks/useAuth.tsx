@@ -1,47 +1,54 @@
-import { useState, useEffect } from 'react';
-import { initializeApp } from 'firebase/app';
+import { useState } from 'react';
 import { config } from 'src/config/firebase';
-import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
-import { Roles } from '../types';
+import { initializeApp } from 'firebase/app';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut as authSignOut,
+  UserCredential,
+} from 'firebase/auth';
+
 const firebaseApp = initializeApp(config);
 
 export const auth = getAuth(firebaseApp);
 
-export const useUserAuth = (): {
-  isUserAuth: boolean;
-  user: User;
-  authLoading: boolean;
-  role: Roles;
-  accessToken: string;
+export const useAuth = (): {
+  authSubmitting: boolean;
+  authError: string;
+  signIn: (email: string, password: string) => Promise<UserCredential>;
+  signOut: () => Promise<void>;
 } => {
-  const [isUserAuth, setIsUserAuth] = useState(false);
-  const [user, setUser] = useState<User>(null);
-  const [role, setRole] = useState<Roles>(null);
-  const [authLoading, setAuthLoading] = useState(false);
-  const [accessToken, setAccessToken] = useState(null);
+  const [authSubmitting, setAuthSubmitting] = useState(false);
+  const [authError, setAuthError] = useState(null);
 
-  useEffect(() => {
-    setAuthLoading(true);
-    const unSubscribe = onAuthStateChanged(auth, authUser => {
-      setIsUserAuth(Boolean(authUser));
-      setUser(authUser);
-      authUser.getIdTokenResult(true).then(idTokenResult => {
-        setRole(idTokenResult?.claims?.role as Roles);
-        setAccessToken(idTokenResult?.token);
-        setAuthLoading(false);
-      });
-    });
+  const signIn = async (email: string, password: string): Promise<UserCredential> => {
+    try {
+      setAuthError(null);
+      setAuthSubmitting(true);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      setAuthSubmitting(false);
+      return userCredential;
+    } catch (e) {
+      setAuthError(e);
+      setAuthSubmitting(false);
+    }
+  };
 
-    return () => {
-      unSubscribe();
-    };
-  }, []);
+  const signOut = async () => {
+    try {
+      setAuthSubmitting(true);
+      await authSignOut(auth);
+      setAuthSubmitting(false);
+    } catch (e) {
+      setAuthError(e);
+      setAuthSubmitting(false);
+    }
+  };
 
   return {
-    isUserAuth,
-    user,
-    authLoading,
-    role,
-    accessToken,
+    authSubmitting,
+    authError,
+    signIn,
+    signOut,
   };
 };

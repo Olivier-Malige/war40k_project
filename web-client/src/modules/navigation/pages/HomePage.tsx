@@ -4,7 +4,7 @@ import { PageLinkCard } from '../../../components/PageLinkCard';
 import { routeNames } from '../CONSTANTS';
 import { ImageAspectRatio } from '@mui/icons-material';
 import { useQuery } from '@apollo/client';
-import { USER_ROLE } from '../../../graphQL/queries/user';
+import { USER_ROLE } from '../../../graphQL/queries/client/user';
 import { Roles } from '../../authentication/types';
 
 export const HomePage: React.FC = () => {

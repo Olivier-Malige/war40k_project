@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { UsersTable } from '../../authentication/users/UsersTable';
+import { UsersTable } from 'src/modules/authentication/components/UsersTable';
 import { Box } from '@mui/system';
 
 export const UsersPage: FC = () => {
