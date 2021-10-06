@@ -35,6 +35,7 @@ export enum BattlefieldRoles {
 }
 
 export type CreateUserInput = {
+  disabled: Scalars['Boolean'];
   displayName?: Maybe<Scalars['String']>;
   email: Scalars['String'];
   password: Scalars['String'];
@@ -50,7 +51,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createUser?: Maybe<User>;
   createW40kUnit?: Maybe<W40kUnit>;
-  removeUsers?: Maybe<Scalars['Boolean']>;
+  deleteUsers?: Maybe<Scalars['Boolean']>;
   removeW40kUnits?: Maybe<Scalars['Boolean']>;
   updateUser?: Maybe<User>;
   updateW40kUnit?: Maybe<W40kUnit>;
@@ -67,8 +68,8 @@ export type MutationCreateW40kUnitArgs = {
 };
 
 
-export type MutationRemoveUsersArgs = {
-  id?: Maybe<Scalars['ID']>;
+export type MutationDeleteUsersArgs = {
+  id: Array<Scalars['String']>;
 };
 
 
@@ -78,6 +79,7 @@ export type MutationRemoveW40kUnitsArgs = {
 
 
 export type MutationUpdateUserArgs = {
+  id: Scalars['ID'];
   input?: Maybe<UpdateUserInput>;
 };
 
@@ -99,6 +101,7 @@ export type NameInput = {
 export type Query = {
   __typename?: 'Query';
   searchW40kUnitsByName?: Maybe<W40kUnit>;
+  user?: Maybe<User>;
   users?: Maybe<Array<Maybe<User>>>;
   w40kUnit?: Maybe<W40kUnit>;
   w40kUnits?: Maybe<Array<Maybe<W40kUnit>>>;
@@ -107,6 +110,11 @@ export type Query = {
 
 export type QuerySearchW40kUnitsByNameArgs = {
   name: Scalars['String'];
+};
+
+
+export type QueryUserArgs = {
+  id?: Maybe<Scalars['ID']>;
 };
 
 
@@ -124,17 +132,18 @@ export type UpdateUserInput = {
   disabled?: Maybe<Scalars['Boolean']>;
   displayName?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
   password?: Maybe<Scalars['String']>;
   role?: Maybe<Roles>;
 };
 
 export type User = {
   __typename?: 'User';
+  creationDate: Scalars['Date'];
   disabled: Scalars['Boolean'];
   displayName?: Maybe<Scalars['String']>;
   email: Scalars['String'];
   id: Scalars['ID'];
+  lastSignInDate: Scalars['Date'];
   role: Roles;
 };
 

@@ -3,6 +3,7 @@ import { createUser, listUsers, deleteUsers, updateUser, getUser } from '../../f
 import { isAdmin } from '../rules';
 import { CreateUserInput, UpdateUserInput, User } from '../../types';
 import { IResolvers } from 'graphql-middleware/dist/types';
+import { auth } from 'firebase-admin';
 
 export const typeDefs = gql`
   enum Roles {
@@ -14,9 +15,11 @@ export const typeDefs = gql`
   type User {
     displayName: String
     id: ID!
-    role: Roles
+    role: Roles!
     email: String!
     disabled: Boolean!
+    creationDate: Date!
+    lastSignInDate: Date!
   }
 
   input UpdateUserInput {
@@ -46,45 +49,42 @@ export const typeDefs = gql`
   }
 `;
 
+const userRecordToUser = (userRecord: auth.UserRecord): User => {
+  return {
+    displayName: userRecord.displayName || '',
+    email: userRecord.email,
+    disabled: userRecord.disabled,
+    role: userRecord.customClaims?.role,
+    id: userRecord.uid,
+    creationDate: userRecord.metadata.creationTime,
+    lastSignInDate: userRecord.metadata.lastSignInTime,
+  };
+};
+
 export const resolvers: IResolvers = {
   Query: {
     users: async () => {
       const result = await listUsers();
-      return result.users.map(user => ({
-        displayName: user.displayName || '',
-        email: user.email,
-        disabled: user.disabled,
-        role: user.customClaims?.role,
-        id: user.uid,
-      }));
+      return result.users.map(user => userRecordToUser(user));
     },
-    user: async (_parent, { id }: { id: string }) => {
+    user: async (_parent, { id }: { id: string }): Promise<User> => {
       const user = await getUser(id);
-      return {
-        displayName: user.displayName || '',
-        email: user.email,
-        disabled: user.disabled,
-        role: user.customClaims?.role,
-        id: user.uid,
-      };
+      return userRecordToUser(user);
     },
   },
   Mutation: {
-    updateUser: async (_parent, { id, input }: { input: UpdateUserInput; id: string }) => {
-      const user = await updateUser({
-        id: id,
+    updateUser: async (
+      _parent,
+      { id, input }: { input: UpdateUserInput; id: string },
+    ): Promise<User> => {
+      const user = await updateUser(id, {
         email: input.email,
         displayName: input.displayName,
         role: input.role,
         disabled: input.disabled,
+        password: input.password,
       });
-      return {
-        displayName: user.displayName || '',
-        email: user.email,
-        disabled: user.disabled,
-        role: user.customClaims?.role,
-        id: user.uid,
-      };
+      return userRecordToUser(user);
     },
     createUser: async (_parent, { input }: { input: CreateUserInput }): Promise<User> => {
       const user = await createUser({
@@ -92,21 +92,17 @@ export const resolvers: IResolvers = {
         displayName: input.displayName,
         password: input.password,
         role: input.role,
+        disabled: input.disabled,
       });
 
-      return {
-        displayName: user.displayName || '',
-        email: user.email,
-        disabled: user.disabled,
-        role: user.customClaims.role,
-        id: user.uid,
-      };
+      return userRecordToUser(user);
     },
     deleteUsers: async (_parent, { id }: { id: string[] }): Promise<boolean> => {
       return await deleteUsers(id);
     },
   },
 };
+
 export const permissions = {
   Query: {
     users: isAdmin,

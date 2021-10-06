@@ -13,6 +13,8 @@ export const GET_USERS = gql`
       displayName
       role
       disabled
+      lastSignInDate
+      creationDate
     }
   }
 `;

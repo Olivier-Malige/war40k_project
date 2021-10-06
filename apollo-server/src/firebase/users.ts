@@ -60,18 +60,18 @@ export const getUser = async (id: string): Promise<auth.UserRecord> => {
   }
 };
 
-export const updateUser = async (input: UpdateUserInput): Promise<UserRecord> => {
+export const updateUser = async (id: string, input: UpdateUserInput): Promise<UserRecord> => {
   try {
-    await admin.auth().updateUser(input.id, {
+    await admin.auth().updateUser(id, {
       email: input.email,
       displayName: input.displayName,
       password: input.password,
       disabled: input.disabled,
     });
     if (input.role) {
-      await setCustomClaim(input.id, input.role);
+      await setCustomClaim(id, input.role);
     }
-    return await admin.auth().getUser(input.id);
+    return await admin.auth().getUser(id);
   } catch (e) {
     console.error(e);
     return e;
