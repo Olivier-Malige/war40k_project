@@ -5,13 +5,13 @@ import { gql, useQuery } from '@apollo/client';
 
 export const OPEN_SUCCESS_MESSAGE = gql`
   query openSuccessMessage {
-    openSuccessMessage
+    openSuccessMessage @client
   }
 `;
 
 export const OPEN_ERROR_MESSAGE = gql`
   query openErrorMessage {
-    openErrorMessage
+    openErrorMessage @client
   }
 `;
 export const UnitsEditorContainer: React.FC = () => {

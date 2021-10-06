@@ -13,7 +13,7 @@ export type UpsertFormProps = {
 };
 
 const CREATE_W40K_UNIT = gql`
-  mutation ($unitInput: W40kUnitInput!) {
+  mutation createW40kUnit($unitInput: W40kUnitInput!) {
     createW40kUnit(input: $unitInput) {
       id
     }
@@ -21,7 +21,7 @@ const CREATE_W40K_UNIT = gql`
 `;
 
 const UPDATE_W40K_UNIT = gql`
-  mutation ($unitInput: W40kUnitInput!, $id: String!) {
+  mutation updateW40kUnit($unitInput: W40kUnitInput!, $id: String!) {
     updateW40kUnit(id: $id, input: $unitInput) {
       id
     }
