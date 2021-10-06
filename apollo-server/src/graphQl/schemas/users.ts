@@ -38,11 +38,11 @@ export const typeDefs = gql`
     disabled: Boolean!
   }
 
-  type Query {
+  extend type Query {
     users: [User]
     user(id: ID): User
   }
-  type Mutation {
+  extend type Mutation {
     updateUser(id: ID!, input: UpdateUserInput): User
     createUser(input: CreateUserInput): User
     deleteUsers(id: [String!]!): Boolean
