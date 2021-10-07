@@ -84,10 +84,8 @@ const GET_W40K_UNIT = gql`
 `;
 
 export const W40KUpsertFormContainer: FC<UpsertFormProps> = ({ id, onSubmit, isCopy }) => {
-  const [createUnit, { error: createError, loading: createLoading }] =
-    useMutation(CREATE_W40K_UNIT);
-  const [updateUnit, { error: updateError, loading: updateLoading }] =
-    useMutation(UPDATE_W40K_UNIT);
+  const [createUnit, { loading: createLoading }] = useMutation(CREATE_W40K_UNIT);
+  const [updateUnit, { loading: updateLoading }] = useMutation(UPDATE_W40K_UNIT);
   const [getUnit, { loading, data }] = useLazyQuery(GET_W40K_UNIT, {
     fetchPolicy: 'no-cache',
   });
@@ -101,18 +99,25 @@ export const W40KUpsertFormContainer: FC<UpsertFormProps> = ({ id, onSubmit, isC
   }, [id, getUnit]);
 
   const handleSubmit = async values => {
+    const errors = [];
     if (id && data && !isCopy) {
-      await updateUnit({
+      const result = await updateUnit({
         variables: { unitInput: values, id },
         refetchQueries: [GET_W40K_UNITS],
       });
+      if (result.errors) {
+        errors.push(result.errors);
+      }
     } else {
-      await createUnit({
+      const result = await createUnit({
         variables: { unitInput: values },
         refetchQueries: [GET_W40K_UNITS],
       });
+      if (result.errors) {
+        errors.push(result.errors);
+      }
     }
-    if (!createError && !updateError) {
+    if (errors.length === 0) {
       onSubmit && onSubmit();
       openSuccessMessage(true);
     } else {

@@ -10,6 +10,7 @@ import {
   TableCellConfig,
   CrudTableTexts,
 } from 'src/shared/components/CrudTable/types';
+import { openErrorMessage } from 'src/graphQL/cache';
 export const GET_USERS = gql`
   query GetUsers {
     users {
@@ -53,8 +54,11 @@ export const UsersTable: React.FC = () => {
     );
   }, [data]);
 
+  useEffect(() => {
+    openErrorMessage(true);
+  }, [error, errorDeleteUser]);
+
   if (loading || loadingDeleteUser) return <LoadingSpinner />;
-  if (error || errorDeleteUser) return <div>Errors : {error || errorDeleteUser}</div>;
 
   const tableCells: TableCellConfig[] = [
     {

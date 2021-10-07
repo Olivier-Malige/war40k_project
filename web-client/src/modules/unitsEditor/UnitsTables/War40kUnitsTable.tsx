@@ -10,6 +10,7 @@ import {
   RowCellsType,
   TableCellConfig,
 } from 'src/shared/components/CrudTable/types';
+import { openErrorMessage } from 'src/graphQL/cache';
 
 export const GET_W40K_UNITS = gql`
   query GetW40kUnits {
@@ -60,8 +61,11 @@ export const War40kUnitsTable: React.FC = () => {
     );
   }, [data]);
 
+  useEffect(() => {
+    openErrorMessage(true);
+  }, [error, errorDeleteUnits]);
+
   if (loading || loadingDeleteUnits) return <LoadingSpinner />;
-  if (error || errorDeleteUnits) return <div>Errors : {error || errorDeleteUnits}</div>;
 
   const tableCells: TableCellConfig[] = [
     {

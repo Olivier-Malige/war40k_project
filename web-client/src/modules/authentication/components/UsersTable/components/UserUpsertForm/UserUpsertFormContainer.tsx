@@ -36,9 +36,9 @@ const UPDATE_USER = gql`
 `;
 
 export const UserUpsertFormContainer: FC<UpsertFormProps> = ({ id, onSubmit }) => {
-  const [createUser, { error: createError, loading: createLoading }] = useMutation(CREATE_USER);
-  const [updateUser, { error: updateError, loading: updateLoading }] = useMutation(UPDATE_USER);
-  const [getUser, { loading, data }] = useLazyQuery(GET_USER, {
+  const [createUser, { loading: createLoading }] = useMutation(CREATE_USER);
+  const [updateUser, { loading: updateLoading }] = useMutation(UPDATE_USER);
+  const [getUser, { loading, data, error }] = useLazyQuery(GET_USER, {
     fetchPolicy: 'no-cache',
   });
 
@@ -50,19 +50,26 @@ export const UserUpsertFormContainer: FC<UpsertFormProps> = ({ id, onSubmit }) =
     }
   }, [id, getUser]);
 
+  useEffect(() => {
+    openErrorMessage(true);
+  }, [error]);
+
   const handleSubmit = async values => {
+    const errors = [];
     if (id && data) {
-      await updateUser({
+      const result = await updateUser({
         variables: { input: values, id },
         refetchQueries: [GET_USERS],
       });
+      if (result.errors) errors.push(result.errors);
     } else {
-      await createUser({
+      const result = await createUser({
         variables: { input: values },
         refetchQueries: [GET_USERS],
       });
+      if (result.errors) errors.push(result.errors);
     }
-    if (!createError && !updateError) {
+    if (errors.length === 0) {
       onSubmit && onSubmit();
       openSuccessMessage(true);
     } else {

@@ -40,6 +40,10 @@ const App: React.FC = () => {
     link: authLink.concat(httpLink),
     cache,
     typeDefs,
+    defaultOptions: {
+      mutate: { errorPolicy: 'all' },
+      query: { errorPolicy: 'all' },
+    },
   });
 
   useEffect(() => {
