@@ -2,9 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { gql, useMutation, useQuery } from '@apollo/client';
 
 import { RowData } from './types';
-import { UnitTableView } from './UnitTableView';
 import W40kUpsertForm from './components/W40kUpsertForm';
 import { LoadingSpinner } from 'src/shared/components/LoadingSpinner';
+import { CrudTable } from 'src/shared/components/CrudTable/CrudTable';
+import {
+  CrudTableTexts,
+  RowCellsType,
+  TableCellConfig,
+} from 'src/shared/components/CrudTable/types';
 
 export const GET_W40K_UNITS = gql`
   query GetW40kUnits {
@@ -32,7 +37,7 @@ const DELETE_UNITS = gql`
   }
 `;
 
-export const War40kUnitsTableContainer: React.FC = () => {
+export const War40kUnitsTable: React.FC = () => {
   const { loading, error, data } = useQuery(GET_W40K_UNITS);
   const [deleteUnits, { loading: loadingDeleteUnits, error: errorDeleteUnits }] =
     useMutation(DELETE_UNITS);
@@ -58,14 +63,66 @@ export const War40kUnitsTableContainer: React.FC = () => {
   if (loading || loadingDeleteUnits) return <LoadingSpinner />;
   if (error || errorDeleteUnits) return <div>Errors : {error || errorDeleteUnits}</div>;
 
+  const tableCells: TableCellConfig[] = [
+    {
+      rowType: RowCellsType.imageUrl,
+      id: 'pictureUrl',
+      label: 'Picture',
+    },
+    {
+      rowType: RowCellsType.value,
+      id: 'name',
+      label: 'Name',
+    },
+    {
+      rowType: RowCellsType.value,
+      id: 'lang',
+      label: 'Lang',
+    },
+    {
+      rowType: RowCellsType.boolean,
+      id: 'version',
+      label: 'Versopn',
+    },
+    {
+      rowType: RowCellsType.value,
+      id: 'keywords',
+      label: 'Keywords',
+    },
+    {
+      rowType: RowCellsType.value,
+      id: 'factionKeywords',
+      label: 'Faction Keywords',
+    },
+    {
+      rowType: RowCellsType.date,
+      id: 'creationDate',
+      label: 'Creation date',
+    },
+    {
+      rowType: RowCellsType.date,
+      id: 'lastUpdateDate',
+      label: 'Last update date',
+    },
+  ];
+
+  const w40kUnitTableTexts: CrudTableTexts = {
+    tableTitle: 'Warhammer 4000 units',
+    updateTitle: 'Update unit',
+    createTile: 'Create a new unit',
+    deleteRowElement: 'unit(s)',
+  };
+
   return (
-    <UnitTableView
-      tableTitle="Warhammer 4000 units"
+    <CrudTable
+      texts={w40kUnitTableTexts}
       rowsData={rowsData}
       onDeleteRow={id =>
         deleteUnits({ variables: { unitsID: id }, refetchQueries: [GET_W40K_UNITS] })
       }
       UpsertForm={W40kUpsertForm}
+      tableCells={tableCells}
+      canCopy
     />
   );
 };

@@ -6,6 +6,7 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import CopyIcon from '@mui/icons-material/FileCopy';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { ConfirmDialog } from 'src/shared/components/ConfirmDialog';
 import { alpha } from '@mui/material';
@@ -16,6 +17,8 @@ type UnitTableToolBarProps = {
   deleteRowElementName: string;
   onDelete: () => void;
   onEdit: () => void;
+  onCopy: () => void;
+  canCopy: boolean;
 };
 
 export const CrudTableToolsBar: FC<UnitTableToolBarProps> = ({
@@ -24,6 +27,8 @@ export const CrudTableToolsBar: FC<UnitTableToolBarProps> = ({
   deleteRowElementName,
   onDelete,
   onEdit,
+  onCopy,
+  canCopy,
 }: UnitTableToolBarProps) => {
   const [openDeleteConfirm, setOpenDeleteConfirm] = useState(false);
 
@@ -70,6 +75,13 @@ export const CrudTableToolsBar: FC<UnitTableToolBarProps> = ({
                     <EditIcon onClick={onEdit} />
                   </IconButton>
                 </Tooltip>
+                {canCopy && (
+                  <Tooltip title="Copy">
+                    <IconButton color={'secondary'} aria-label="Copy" size="large">
+                      <CopyIcon onClick={onCopy} />
+                    </IconButton>
+                  </Tooltip>
+                )}
               </>
             )}
             <Tooltip title="Delete">

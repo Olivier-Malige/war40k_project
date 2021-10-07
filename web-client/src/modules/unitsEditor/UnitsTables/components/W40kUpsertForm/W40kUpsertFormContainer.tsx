@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react';
 
 import { W40kUpsertFormView } from './W40kUpsertFormView';
 import { gql, useMutation, useLazyQuery } from '@apollo/client';
-import { GET_W40K_UNITS } from '../../War40kUnitsTableContainer';
+import { GET_W40K_UNITS } from '../../War40kUnitsTable';
 import { LoadingSpinner } from 'src/shared/components/LoadingSpinner';
 import { openSuccessMessage, openErrorMessage } from 'src/graphQL/cache';
 

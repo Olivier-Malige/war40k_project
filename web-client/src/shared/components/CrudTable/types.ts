@@ -3,7 +3,7 @@ export type Order = 'asc' | 'desc';
 export enum RowCellsType {
   value,
   boolean,
-  image,
+  imageUrl,
   date,
 }
 
@@ -23,4 +23,5 @@ export type CrudTableTexts = {
 export type UpsertFormProps = {
   onSubmit: () => void;
   id?: string;
+  isCopy?: boolean;
 };

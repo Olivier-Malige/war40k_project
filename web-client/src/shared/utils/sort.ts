@@ -1,4 +1,4 @@
-import { Order } from '../../modules/unitsEditor/UnitsTables/types';
+import { Order } from '../components/CrudTable/types';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {

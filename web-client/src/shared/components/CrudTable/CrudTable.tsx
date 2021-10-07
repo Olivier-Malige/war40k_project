@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 import React, { FC, useState } from 'react';
 
 import {
@@ -11,6 +12,9 @@ import {
   Checkbox,
   Fab,
   Grid,
+  Avatar,
+  FormControlLabel,
+  Switch,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { Add as AddIcon } from '@mui/icons-material';
@@ -25,11 +29,12 @@ import { FullScreenDialog } from 'src/shared/components/FullScreenDialog';
 
 type Props = {
   tableCells: TableCellConfig[];
-  rowsData: { id: string; any }[];
+  rowsData: { id: string }[];
   onDeleteRow: (id: string[]) => void;
   UpsertForm: FC<UpsertFormProps>;
   texts: CrudTableTexts;
   initialSortOrderCell?: string;
+  canCopy?: boolean;
 };
 
 export const CrudTable: FC<Props> = ({
@@ -39,14 +44,17 @@ export const CrudTable: FC<Props> = ({
   tableCells,
   texts,
   initialSortOrderCell,
+  canCopy = false,
 }) => {
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState(initialSortOrderCell || null);
   const [selected, setSelected] = useState<string[]>([]);
   const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openUpsertModal, setOpenUpsertModal] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
+  const [isCopy, setIsCopy] = useState(false);
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -94,8 +102,14 @@ export const CrudTable: FC<Props> = ({
     setPage(0);
   };
 
-  const handleOpenUpsertUnit = () => {
+  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDense(event.target.checked);
+  };
+
+  const handleOpenUpsertForm = () => {
     setOpenUpsertModal(true);
+    setIsUpdate(false);
+    setIsCopy(false);
   };
 
   const handleDeleteRow = () => {
@@ -106,12 +120,16 @@ export const CrudTable: FC<Props> = ({
   const handleEdit = () => {
     setOpenUpsertModal(true);
     setIsUpdate(true);
+    setIsCopy(false);
   };
   const handleCloseUpsertForm = () => {
     setOpenUpsertModal(false);
     setIsUpdate(false);
   };
-
+  const handleCopy = () => {
+    setOpenUpsertModal(true);
+    setIsCopy(true);
+  };
   return (
     <Box
       sx={{
@@ -136,6 +154,8 @@ export const CrudTable: FC<Props> = ({
             deleteRowElementName={texts.deleteRowElement}
             onDelete={handleDeleteRow}
             onEdit={handleEdit}
+            onCopy={handleCopy}
+            canCopy={canCopy}
           />
           <TableContainer
             sx={{
@@ -149,6 +169,7 @@ export const CrudTable: FC<Props> = ({
                 height: '100%',
                 overflowY: 'scroll',
               }}
+              size={dense ? 'small' : 'medium'}
             >
               <CrudTableHeader
                 numSelected={selected.length}
@@ -192,6 +213,18 @@ export const CrudTable: FC<Props> = ({
 
                             {cellValue.rowType === RowCellsType.boolean &&
                               (row[cellValue.id] ? 'true' : 'false')}
+
+                            {cellValue.rowType === RowCellsType.imageUrl && (
+                              <Avatar
+                                variant={'rounded'}
+                                sx={{
+                                  ml: 2,
+                                  width: dense ? 30 : 80,
+                                  height: dense ? 30 : 80,
+                                }}
+                                src={row[cellValue.id] as string}
+                              />
+                            )}
                           </TableCell>
                         ))}
                       </TableRow>
@@ -209,7 +242,7 @@ export const CrudTable: FC<Props> = ({
         <div>
           <Grid container justifyContent={'flex-end'}>
             <Fab
-              onClick={handleOpenUpsertUnit}
+              onClick={handleOpenUpsertForm}
               color="secondary"
               size={'large'}
               aria-label="add"
@@ -227,7 +260,10 @@ export const CrudTable: FC<Props> = ({
               padding: 2,
             }}
           >
-            <div></div>
+            <FormControlLabel
+              control={<Switch checked={dense} onChange={handleChangeDense} />}
+              label="Dense"
+            />
             <TablePagination
               rowsPerPageOptions={[5, 10, 20, 40]}
               component="div"
@@ -245,7 +281,11 @@ export const CrudTable: FC<Props> = ({
         handleClose={handleCloseUpsertForm}
         open={openUpsertModal}
       >
-        <UpsertForm onSubmit={handleCloseUpsertForm} id={isUpdate ? selected[0] : undefined} />
+        <UpsertForm
+          onSubmit={handleCloseUpsertForm}
+          isCopy={isCopy}
+          id={isUpdate || isCopy ? selected[0] : undefined}
+        />
       </FullScreenDialog>
     </Box>
   );

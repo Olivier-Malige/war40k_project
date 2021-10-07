@@ -1,1 +1,1 @@
-export { War40kUnitsTableContainer as War40kUnitsTable } from './War40kUnitsTableContainer';
+export { War40kUnitsTable } from './War40kUnitsTable';
