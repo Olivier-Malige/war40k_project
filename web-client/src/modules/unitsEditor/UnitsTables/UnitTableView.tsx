@@ -22,7 +22,7 @@ import { UnitTableToolbar } from './components/UnitTableToolbar';
 import { UnitTableHead } from './components/UnitTableHead';
 import { Order, RowData } from './types';
 
-import { getComparator, stableSort } from 'src/utils/sort';
+import { getComparator, stableSort } from 'src/shared/utils/sort';
 import { FullScreenDialog } from 'src/shared/components/FullScreenDialog';
 import { UpsertFormProps } from './components/W40kUpsertForm/W40kUpsertFormContainer';
 

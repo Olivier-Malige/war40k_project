@@ -1,4 +1,4 @@
-import { Order } from '../modules/unitsEditor/UnitsTables/types';
+import { Order } from '../../modules/unitsEditor/UnitsTables/types';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -19,7 +19,7 @@ export function getComparator<Key extends keyof any>(
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export function stableSort<T>(array: any[], comparator: (a: T, b: T) => number) {
+export function stableSort<T>(array: unknown[], comparator: (a: T, b: T) => number): T[] {
   const stabilizedThis = array.map((el, index) => [el, index] as unknown as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);

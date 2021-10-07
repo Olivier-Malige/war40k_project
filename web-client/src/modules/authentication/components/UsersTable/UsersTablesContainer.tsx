@@ -2,9 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { gql, useMutation, useQuery } from '@apollo/client';
 
 import { UserRowData } from './types';
-import { UsersTableView } from './UsersTableView';
 import { LoadingSpinner } from 'src/shared/components/LoadingSpinner';
+import { CrudTable } from 'src/shared/components/CrudTable/CrudTable';
 import UserUpsertForm from './components/UserUpsertForm';
+import {
+  RowCellsType,
+  TableCellConfig,
+  CrudTableTexts,
+} from 'src/shared/components/CrudTable/types';
 export const GET_USERS = gql`
   query GetUsers {
     users {
@@ -26,7 +31,7 @@ const DELETE_USERS = gql`
 `;
 
 export const UsersTablesContainer: React.FC = () => {
-  const [rowsData, setRowsData] = useState<UserRowData[]>([]);
+  const [rowsData, setRowsData] = useState([]);
   const { loading, error, data } = useQuery(GET_USERS);
   const [removeUsers, { loading: loadingDeleteUser, error: errorDeleteUser }] =
     useMutation(DELETE_USERS);
@@ -51,12 +56,54 @@ export const UsersTablesContainer: React.FC = () => {
   if (loading || loadingDeleteUser) return <LoadingSpinner />;
   if (error || errorDeleteUser) return <div>Errors : {error || errorDeleteUser}</div>;
 
+  const tableCells: TableCellConfig[] = [
+    {
+      rowType: RowCellsType.value,
+      id: 'displayName',
+      label: 'Display name',
+    },
+    {
+      rowType: RowCellsType.value,
+      id: 'email',
+      label: 'Email',
+    },
+    {
+      rowType: RowCellsType.value,
+      id: 'role',
+      label: 'Role',
+    },
+    {
+      rowType: RowCellsType.boolean,
+      id: 'disable',
+      label: 'Disable',
+    },
+    {
+      rowType: RowCellsType.date,
+      id: 'creationDate',
+      label: 'Creation date',
+    },
+    {
+      rowType: RowCellsType.date,
+      id: 'lastSignInDate',
+      label: 'Last signin date',
+    },
+  ];
+
+  const usersTableTexts: CrudTableTexts = {
+    tableTitle: 'Users',
+    updateTitle: 'Update user',
+    createTile: 'Create a new user',
+    deleteRowElement: 'user(s)',
+  };
+
   return (
-    <UsersTableView
-      tableTitle="Users"
+    <CrudTable
       rowsData={rowsData}
       onDeleteRow={id => removeUsers({ variables: { userIds: id }, refetchQueries: [GET_USERS] })}
       UpsertForm={UserUpsertForm}
+      tableCells={tableCells}
+      texts={usersTableTexts}
+      initialSortOrderCell="creationDate"
     />
   );
 };

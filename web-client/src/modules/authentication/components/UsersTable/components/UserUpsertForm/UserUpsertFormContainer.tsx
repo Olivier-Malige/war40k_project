@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, FC } from 'react';
 import { UserUpsertFormView } from './UserUpsertFormView';
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { LoadingSpinner } from 'src/shared/components/LoadingSpinner';
 
 import { openErrorMessage, openSuccessMessage } from 'src/graphQL/cache';
 import { GET_USERS } from '../../UsersTablesContainer';
+import { UpsertFormProps } from 'src/shared/components/CrudTable/types';
 
 const GET_USER = gql`
   query GetUser($id: ID!) {
@@ -34,7 +35,7 @@ const UPDATE_USER = gql`
   }
 `;
 
-export const UserUpsertFormContainer = ({ id, onSubmit }) => {
+export const UserUpsertFormContainer: FC<UpsertFormProps> = ({ id, onSubmit }) => {
   const [createUser, { error: createError, loading: createLoading }] = useMutation(CREATE_USER);
   const [updateUser, { error: updateError, loading: updateLoading }] = useMutation(UPDATE_USER);
   const [getUser, { loading, data }] = useLazyQuery(GET_USER, {

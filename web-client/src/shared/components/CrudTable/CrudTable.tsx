@@ -14,31 +14,41 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { Add as AddIcon } from '@mui/icons-material';
+import { v4 as uuidv4 } from 'uuid';
 
-import { UsersTableHead as TableHeader } from './components/UsersTableHead';
-import { UsersTableToolbar as TableToolbar } from './components/UsersTableToolbar';
-import { Order, UserRowData } from './types';
+import { CrudTableHeader } from './components/CrudTableHeader';
+import { CrudTableToolsBar } from './components/CrudTableToolsBar';
+import { RowCellsType, Order, TableCellConfig, CrudTableTexts, UpsertFormProps } from './types';
 
 import { getComparator, stableSort } from 'src/shared/utils/sort';
 import { FullScreenDialog } from 'src/shared/components/FullScreenDialog';
 
 type Props = {
-  tableTitle: string;
-  rowsData: UserRowData[];
+  tableCells: TableCellConfig[];
+  rowsData: { id: string; any }[];
   onDeleteRow: (id: string[]) => void;
-  UpsertForm: FC<any>;
+  UpsertForm: FC<UpsertFormProps>;
+  texts: CrudTableTexts;
+  initialSortOrderCell?: string;
 };
 
-export const UsersTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow, UpsertForm }) => {
+export const CrudTable: FC<Props> = ({
+  rowsData,
+  onDeleteRow,
+  UpsertForm,
+  tableCells,
+  texts,
+  initialSortOrderCell,
+}) => {
   const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<keyof UserRowData>('email');
+  const [orderBy, setOrderBy] = useState(initialSortOrderCell || null);
   const [selected, setSelected] = useState<string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openUpsertModal, setOpenUpsertModal] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof UserRowData) => {
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -120,9 +130,10 @@ export const UsersTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow, U
         }}
       >
         <div>
-          <TableToolbar
+          <CrudTableToolsBar
             numSelected={selected.length}
-            tableTitle={tableTitle}
+            tableTitle={texts.tableTitle}
+            deleteRowElementName={texts.deleteRowElement}
             onDelete={handleDeleteRow}
             onEdit={handleEdit}
           />
@@ -138,16 +149,15 @@ export const UsersTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow, U
                 height: '100%',
                 overflowY: 'scroll',
               }}
-              aria-labelledby="tableTitle"
-              aria-label="enhanced table"
             >
-              <TableHeader
+              <CrudTableHeader
                 numSelected={selected.length}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
                 rowCount={rowsData.length}
                 order={order}
                 orderBy={orderBy}
+                tableCells={tableCells}
               />
               <TableBody>
                 {stableSort(rowsData, getComparator(order, orderBy))
@@ -172,24 +182,18 @@ export const UsersTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow, U
                             inputProps={{ 'aria-labelledby': labelId as string }}
                           />
                         </TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          {row.displayName}
-                        </TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          {row.email}
-                        </TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          {row.role}
-                        </TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          <Checkbox checked={Boolean(row.disabled)} />
-                        </TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          {row.creationDate && new Date(row.creationDate).toLocaleDateString()}
-                        </TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          {row.lastSignInDate && new Date(row.lastSignInDate).toLocaleDateString()}
-                        </TableCell>
+                        {tableCells.map(cellValue => (
+                          <TableCell key={uuidv4()} component="th" scope="row" padding="none">
+                            {cellValue.rowType === RowCellsType.value && row[cellValue.id]}
+
+                            {cellValue.rowType === RowCellsType.date &&
+                              row[cellValue.id] &&
+                              new Date(row[cellValue.id]).toLocaleDateString()}
+
+                            {cellValue.rowType === RowCellsType.boolean &&
+                              (row[cellValue.id] ? 'true' : 'false')}
+                          </TableCell>
+                        ))}
                       </TableRow>
                     );
                   })}
@@ -223,6 +227,7 @@ export const UsersTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow, U
               padding: 2,
             }}
           >
+            <div></div>
             <TablePagination
               rowsPerPageOptions={[5, 10, 20, 40]}
               component="div"
@@ -236,7 +241,7 @@ export const UsersTableView: FC<Props> = ({ tableTitle, rowsData, onDeleteRow, U
         </div>
       </Paper>
       <FullScreenDialog
-        title={isUpdate ? 'Update user' : 'Create a new user'}
+        title={isUpdate ? texts.updateTitle : texts.createTile}
         handleClose={handleCloseUpsertForm}
         open={openUpsertModal}
       >
