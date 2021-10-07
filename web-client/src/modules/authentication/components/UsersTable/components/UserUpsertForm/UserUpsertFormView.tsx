@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -15,8 +15,15 @@ import {
   Typography,
 } from '@mui/material';
 import { Save as SaveIcon, Visibility, VisibilityOff } from '@mui/icons-material';
+import { UserRowData } from '../../types';
 
-export const UserUpsertFormView = ({ onSubmit, data, isUpdate }) => {
+type Props = {
+  onSubmit: (values: UserRowData) => Promise<void>;
+  data: UserRowData;
+  isUpdate: boolean;
+};
+
+export const UserUpsertFormView: FC<Props> = ({ onSubmit, data, isUpdate }) => {
   const schema = yup
     .object()
     .shape({
