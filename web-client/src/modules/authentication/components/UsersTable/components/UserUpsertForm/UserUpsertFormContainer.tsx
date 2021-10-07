@@ -4,7 +4,7 @@ import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { LoadingSpinner } from 'src/shared/components/LoadingSpinner';
 
 import { openErrorMessage, openSuccessMessage } from 'src/graphQL/cache';
-import { GET_USERS } from '../../UsersTablesContainer';
+import { GET_USERS } from '../../UsersTable';
 import { UpsertFormProps } from 'src/shared/components/CrudTable/types';
 
 const GET_USER = gql`

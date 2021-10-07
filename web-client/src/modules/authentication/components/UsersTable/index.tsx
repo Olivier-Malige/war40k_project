@@ -1,1 +1,1 @@
-export { UsersTablesContainer as UsersTable } from './UsersTablesContainer';
+export { UsersTable } from './UsersTable';

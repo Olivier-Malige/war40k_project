@@ -30,7 +30,7 @@ const DELETE_USERS = gql`
   }
 `;
 
-export const UsersTablesContainer: React.FC = () => {
+export const UsersTable: React.FC = () => {
   const [rowsData, setRowsData] = useState([]);
   const { loading, error, data } = useQuery(GET_USERS);
   const [removeUsers, { loading: loadingDeleteUser, error: errorDeleteUser }] =

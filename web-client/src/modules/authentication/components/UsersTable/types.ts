@@ -1,10 +1,3 @@
-export type Order = 'asc' | 'desc';
-
-export type HeadCell = {
-  id: string;
-  label: string;
-};
-
 export type UserRowData = {
   displayName: string;
   id: string;
