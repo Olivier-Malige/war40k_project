@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from 'react';
 
-import { Slide, Dialog, AppBar, Typography, Paper } from '@mui/material';
+import { Slide, Dialog, AppBar, Typography } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import { IconButton, Toolbar } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material/';

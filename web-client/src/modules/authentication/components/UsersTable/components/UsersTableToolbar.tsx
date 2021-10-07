@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import Toolbar from '@mui/material/Toolbar';
 
 import Typography from '@mui/material/Typography';
@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { ConfirmDialog } from 'src/components/ConfirmDialog';
+import { ConfirmDialog } from 'src/shared/components/ConfirmDialog';
 import { alpha } from '@mui/material';
 
 type UnitTableToolBarProps = {
@@ -17,7 +17,7 @@ type UnitTableToolBarProps = {
   onEdit: () => void;
 };
 
-export const UsersTableToolbar = ({
+export const UsersTableToolbar: FC<UnitTableToolBarProps> = ({
   numSelected,
   tableTitle,
   onDelete,

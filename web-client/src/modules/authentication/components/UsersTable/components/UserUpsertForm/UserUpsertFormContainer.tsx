@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { UserUpsertFormView } from './UserUpsertFormView';
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
-import { LoadingSpinner } from 'src/components/LoadingSpinner';
+import { LoadingSpinner } from 'src/shared/components/LoadingSpinner';
 
-import { openErrorMessage, openSuccessMessage } from '../../../../../../graphQL/cache';
+import { openErrorMessage, openSuccessMessage } from 'src/graphQL/cache';
 import { GET_USERS } from '../../UsersTablesContainer';
 
 const GET_USER = gql`

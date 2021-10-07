@@ -20,7 +20,7 @@ import { UsersTableToolbar as TableToolbar } from './components/UsersTableToolba
 import { Order, UserRowData } from './types';
 
 import { getComparator, stableSort } from 'src/utils/sort';
-import { FullScreenDialog } from '../../../../components/FullScreenDialog';
+import { FullScreenDialog } from 'src/shared/components/FullScreenDialog';
 
 type Props = {
   tableTitle: string;

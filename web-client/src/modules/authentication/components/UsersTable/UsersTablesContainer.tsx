@@ -3,7 +3,7 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 
 import { UserRowData } from './types';
 import { UsersTableView } from './UsersTableView';
-import { LoadingSpinner } from 'src/components/LoadingSpinner';
+import { LoadingSpinner } from 'src/shared/components/LoadingSpinner';
 import UserUpsertForm from './components/UserUpsertForm';
 export const GET_USERS = gql`
   query GetUsers {

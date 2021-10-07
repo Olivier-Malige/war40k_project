@@ -8,7 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import CopyIcon from '@mui/icons-material/FileCopy';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { ConfirmDialog } from 'src/components/ConfirmDialog';
+import { ConfirmDialog } from 'src/shared/components/ConfirmDialog';
 import { alpha } from '@mui/material';
 
 type UnitTableToolBarProps = {

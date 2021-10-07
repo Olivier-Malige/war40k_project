@@ -6,8 +6,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Save as SaveIcon } from '@mui/icons-material';
 
-import { AddArrayToField } from 'src/components/forms/AddArrayToField';
-import { AddTableToField } from 'src/components/forms/AddTableToField';
+import { AddArrayToField } from 'src/shared/components/forms/AddArrayToField';
+import { AddTableToField } from 'src/shared/components/forms/AddTableToField';
 import { W40KUpsertFormProps } from './types';
 import {
   emptyProfile,
@@ -15,8 +15,8 @@ import {
   profileFieldsConfig,
   weaponFieldsConfig,
 } from './config/filedsConfig';
-import UploadPictureAvatar from 'src/components/forms/UploadPictureAvatar';
-import SectionAccordion from 'src/components/forms/SectionAccordion';
+import UploadPictureAvatar from 'src/shared/components/forms/UploadPictureAvatar';
+import SectionAccordion from 'src/shared/components/forms/SectionAccordion';
 
 const schema = yup
   .object()

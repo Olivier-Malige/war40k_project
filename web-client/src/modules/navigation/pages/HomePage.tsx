@@ -1,10 +1,10 @@
 import React from 'react';
 import { Box, Container } from '@mui/material';
-import { PageLinkCard } from '../../../components/PageLinkCard';
+import { PageLinkCard } from 'src/shared/components/PageLinkCard';
 import { routeNames } from '../CONSTANTS';
 import { ImageAspectRatio } from '@mui/icons-material';
 import { useQuery } from '@apollo/client';
-import { USER_ROLE } from '../../../graphQL/queries/client/user';
+import { USER_ROLE } from 'src/graphQL/queries/client/user';
 import { Roles } from '../../authentication/types';
 
 export const HomePage: React.FC = () => {

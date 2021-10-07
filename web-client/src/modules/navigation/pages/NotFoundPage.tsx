@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography } from '@mui/material';
-import { LinkRoute } from 'src/components/LinkRoute';
+import { LinkRoute } from 'src/shared/components/LinkRoute';
 import { routeNames } from '../CONSTANTS';
 
 export const NotFoundPage = () => {

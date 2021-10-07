@@ -14,7 +14,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import WarningIcon from '@mui/icons-material/Warning';
 
-import { LoadingSpinner } from 'src/components/LoadingSpinner';
+import { LoadingSpinner } from 'src/shared/components/LoadingSpinner';
 
 const schema = yup
   .object()

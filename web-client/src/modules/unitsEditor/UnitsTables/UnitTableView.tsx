@@ -23,7 +23,7 @@ import { UnitTableHead } from './components/UnitTableHead';
 import { Order, RowData } from './types';
 
 import { getComparator, stableSort } from 'src/utils/sort';
-import { FullScreenDialog } from '../../../components/FullScreenDialog';
+import { FullScreenDialog } from 'src/shared/components/FullScreenDialog';
 import { UpsertFormProps } from './components/W40kUpsertForm/W40kUpsertFormContainer';
 
 type Props = {

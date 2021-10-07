@@ -15,7 +15,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { typeDefs } from '../graphQL/typeDefs';
 import { useCurrentUser } from 'src/modules/authentication/hooks/useCurrentUser';
-import { LoadingSpinner } from 'src/components/LoadingSpinner';
+import { LoadingSpinner } from 'src/shared/components/LoadingSpinner';
 import { Grid } from '@mui/material';
 import SnackMessages from './components/SnackMessages';
 

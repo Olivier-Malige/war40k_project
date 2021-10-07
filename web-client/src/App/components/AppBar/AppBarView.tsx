@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { Logout, Menu } from '@mui/icons-material';
 import { DrawerListItem } from './types';
-import { LinkRoute } from '../../../components/LinkRoute';
+import { LinkRoute } from 'src/shared/components/LinkRoute';
 
 type Props = {
   title: string;
