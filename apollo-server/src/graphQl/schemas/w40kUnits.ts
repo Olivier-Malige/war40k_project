@@ -36,6 +36,7 @@ export const typeDefs = gql`
   type W40kUnit {
     id: ID!
     pictureUrl: String
+    pictureRef: String
     creationDate: Date!
     lastUpdateDate: Date
     name: String!
@@ -106,6 +107,7 @@ export const typeDefs = gql`
   input W40kUnitInput {
     name: String!
     pictureUrl: String
+    pictureRef: String
     lang: Lang!
     version: String!
     description: String
@@ -152,13 +154,13 @@ export const typeDefs = gql`
     save: Int
   }
 
-  type Query {
+  extend type Query {
     w40kUnits: [W40kUnit]
     w40kUnit(id: String): W40kUnit
     searchW40kUnitsByName(name: String!): W40kUnit
   }
 
-  type Mutation {
+  extend type Mutation {
     createW40kUnit(input: W40kUnitInput!): W40kUnit
     updateW40kUnit(input: W40kUnitInput!, id: String!): W40kUnit
     removeW40kUnits(id: [String!]!): Boolean

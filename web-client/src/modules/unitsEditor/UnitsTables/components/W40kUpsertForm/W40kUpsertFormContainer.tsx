@@ -34,6 +34,7 @@ const GET_W40K_UNIT = gql`
       id
       battlefieldRole
       pictureUrl
+      pictureRef
       creationDate
       lastUpdateDate
       powerRating

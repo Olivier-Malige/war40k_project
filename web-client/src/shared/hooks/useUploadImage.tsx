@@ -1,6 +1,6 @@
 import { config } from 'src/config/firebase';
 import { useState } from 'react';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { initializeApp } from 'firebase/app';
 const firebaseApp = initializeApp(config);
 
@@ -11,29 +11,49 @@ const uploadImage = async (
   name: string,
   storageNameRef: string,
 ): Promise<string> => {
-  const wk40ImagesRef = ref(storage, storageNameRef);
+  const imagesRef = ref(storage, storageNameRef);
   const metadata = {
     contentType: 'image/jpeg',
   };
 
-  const imageRef = ref(wk40ImagesRef, name);
+  const imageRef = ref(imagesRef, name);
   const blob = await fetch(image).then(r => r.blob());
   await uploadBytes(imageRef, blob, metadata);
   return getDownloadURL(imageRef);
 };
 
-export const useUploadImage = () => {
-  const [uploadedUrl, setUploadedUrl] = useState(null);
+const deleteImage = async (imageRefName: string) => {
+  try {
+    await deleteObject(ref(storage, imageRefName));
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const useUploadImage = (): {
+  uploadedImageUrl: string;
+  uploadedImageRef: string;
+  uploading: boolean;
+  uploadingError: string;
+  upload: (file: File, storageNameRef: string, previousName: string) => Promise<void>;
+} => {
+  const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
+  const [uploadedImageRef, setUploadedImageRef] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadingError, setUploadingError] = useState(null);
 
-  const upload = async (file, storageNameRef) => {
+  const upload = async (file: File, storageNameRef: string, previousRef = null) => {
     try {
       setUploadingError(null);
       setUploading(true);
-      setUploadedUrl(
-        await uploadImage(URL.createObjectURL(file), `${Date.now()}_${file.name}`, storageNameRef),
-      );
+      const imageName = `${Date.now()}_${file.name}`;
+      const result = await uploadImage(URL.createObjectURL(file), imageName, storageNameRef);
+      if (uploadedImageRef || previousRef) {
+        await deleteImage(uploadedImageRef || previousRef);
+      }
+      setUploadedImageRef(`${storageNameRef}/${imageName}`);
+      setUploadedImageUrl(result);
+
       setUploading(false);
     } catch (e) {
       setUploadingError(e);
@@ -42,7 +62,8 @@ export const useUploadImage = () => {
   };
 
   return {
-    uploadedUrl,
+    uploadedImageUrl,
+    uploadedImageRef,
     uploading,
     uploadingError,
     upload,

@@ -7,14 +7,24 @@ import { useUploadImage } from 'src/shared/hooks/useUploadImage';
 
 type Props = {
   urlValue: string;
-  setUrlValue: (urlValue: string) => void;
+  setUrlValue: (value: string) => void;
+  refValue: string;
+  setRefValue: (value: string) => void;
   storageNameRef: string;
 };
-const UploadPictureAvatar: FC<Props> = ({ setUrlValue, urlValue, storageNameRef }) => {
+const UploadPictureAvatar: FC<Props> = ({
+  setUrlValue,
+  urlValue,
+  storageNameRef,
+  setRefValue,
+  refValue,
+}) => {
   const onDrop = async acceptedFiles => {
-    await upload(acceptedFiles[0], storageNameRef);
+    if (acceptedFiles.length > 0) {
+      await upload(acceptedFiles[0], storageNameRef, refValue);
+    }
   };
-  const { uploadedUrl, uploading, upload } = useUploadImage();
+  const { uploadedImageUrl, uploadedImageRef, uploading, upload } = useUploadImage();
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     maxFiles: 1,
@@ -22,10 +32,17 @@ const UploadPictureAvatar: FC<Props> = ({ setUrlValue, urlValue, storageNameRef 
   });
 
   useEffect(() => {
-    if (uploadedUrl?.length > 1) {
-      setUrlValue(uploadedUrl);
+    if (uploadedImageUrl?.length > 1) {
+      setUrlValue(uploadedImageUrl);
     }
-  }, [uploadedUrl, setUrlValue]);
+  }, [uploadedImageUrl, setUrlValue]);
+
+  useEffect(() => {
+    if (uploadedImageRef) {
+      setRefValue(uploadedImageRef);
+    }
+  }, [uploadedImageRef, setRefValue]);
+
   return (
     <Avatar
       {...getRootProps()}
@@ -39,10 +56,10 @@ const UploadPictureAvatar: FC<Props> = ({ setUrlValue, urlValue, storageNameRef 
       <>
         <input {...getInputProps()} />
         {uploading && <LoadingSpinner />}
-        {!uploading && (uploadedUrl || urlValue) && (
-          <CardMedia component="img" image={urlValue || uploadedUrl} alt="Picture" />
+        {!uploading && (uploadedImageUrl || urlValue) && (
+          <CardMedia component="img" image={uploadedImageUrl || urlValue} alt="Picture" />
         )}
-        {!uploading && !urlValue && !uploadedUrl && (
+        {!uploading && !urlValue && !uploadedImageUrl && (
           <>
             <AddAPhotoIcon
               fontSize={'inherit'}

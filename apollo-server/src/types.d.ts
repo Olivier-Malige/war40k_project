@@ -161,6 +161,7 @@ export type W40kUnit = {
   lang: Lang;
   lastUpdateDate?: Maybe<Scalars['Date']>;
   name: Scalars['String'];
+  pictureName?: Maybe<Scalars['String']>;
   pictureUrl?: Maybe<Scalars['String']>;
   powerRating: Scalars['Int'];
   profiles?: Maybe<Array<Maybe<W40kUnitProfile>>>;
@@ -180,6 +181,7 @@ export type W40kUnitInput = {
   keywords?: Maybe<Array<Maybe<NameInput>>>;
   lang: Lang;
   name: Scalars['String'];
+  pictureName?: Maybe<Scalars['String']>;
   pictureUrl?: Maybe<Scalars['String']>;
   powerRating: Scalars['Int'];
   profiles?: Maybe<Array<Maybe<W40kUnitProfileInput>>>;

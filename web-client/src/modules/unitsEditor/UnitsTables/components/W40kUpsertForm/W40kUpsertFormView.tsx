@@ -25,6 +25,7 @@ const schema = yup
     powerRating: yup.number().required('Power is required').nullable(),
     commandPoints: yup.number().nullable(),
     pictureUrl: yup.string().nullable(),
+    pictureRef: yup.string().nullable(),
     weapons: yup.array(
       yup.object({
         name: yup.string().nullable(),
@@ -65,6 +66,7 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
     resolver: yupResolver(schema),
     defaultValues: {
       pictureUrl: data?.pictureUrl || '',
+      pictureRef: data?.pictureRef || '',
       lang: data?.lang || 'fr_FR',
       name: data?.name || '',
       battlefieldRole: data?.battlefieldRole || '',
@@ -173,8 +175,10 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
               </Grid>
               <Grid container direction="column" alignContent={'center'}>
                 <UploadPictureAvatar
-                  setUrlValue={urlValue => setValue('pictureUrl', urlValue)}
+                  setUrlValue={value => setValue('pictureUrl', value)}
+                  setRefValue={value => setValue('pictureRef', value)}
                   urlValue={data?.pictureUrl}
+                  refValue={data?.pictureRef}
                   storageNameRef={'/w40k/units/images/'}
                 />
               </Grid>
