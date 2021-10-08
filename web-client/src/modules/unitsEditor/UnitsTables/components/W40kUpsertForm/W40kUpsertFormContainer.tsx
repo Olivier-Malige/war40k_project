@@ -5,12 +5,7 @@ import { gql, useMutation, useLazyQuery } from '@apollo/client';
 import { GET_W40K_UNITS } from '../../War40kUnitsTable';
 import { LoadingSpinner } from 'src/shared/components/LoadingSpinner';
 import { openSuccessMessage, openErrorMessage } from 'src/graphQL/cache';
-
-export type UpsertFormProps = {
-  id?: string;
-  onSubmit: () => void;
-  isCopy?: boolean;
-};
+import { UpsertFormProps } from '../../../../../shared/components/CrudTable/types';
 
 const CREATE_W40K_UNIT = gql`
   mutation createW40kUnit($unitInput: W40kUnitInput!) {
