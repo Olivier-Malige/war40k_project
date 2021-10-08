@@ -12,13 +12,10 @@ const uploadImage = async (
   storageNameRef: string,
 ): Promise<string> => {
   const imagesRef = ref(storage, storageNameRef);
-  const metadata = {
-    contentType: 'image/jpeg',
-  };
 
   const imageRef = ref(imagesRef, name);
   const blob = await fetch(image).then(r => r.blob());
-  await uploadBytes(imageRef, blob, metadata);
+  await uploadBytes(imageRef, blob);
   return getDownloadURL(imageRef);
 };
 

@@ -28,7 +28,7 @@ const UploadPictureAvatar: FC<Props> = ({
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     maxFiles: 1,
-    accept: 'image/jpeg',
+    accept: ['image/jpeg', 'image/png'],
   });
 
   useEffect(() => {
@@ -45,10 +45,12 @@ const UploadPictureAvatar: FC<Props> = ({
 
   return (
     <Avatar
+      variant={'rounded'}
       {...getRootProps()}
       sx={{
         width: 300,
-        height: 300,
+        minHeight: 300,
+        height: 'auto',
         cursor: 'pointer',
         bgcolor: theme => theme.palette.background.default,
       }}
