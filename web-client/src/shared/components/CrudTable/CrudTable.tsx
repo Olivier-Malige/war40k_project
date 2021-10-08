@@ -24,7 +24,7 @@ import { CrudTableHeader } from './components/CrudTableHeader';
 import { CrudTableToolsBar } from './components/CrudTableToolsBar';
 import { RowCellsType, Order, TableCellConfig, CrudTableTexts, UpsertFormProps } from './types';
 
-import { getComparator, stableSort } from 'src/shared/utils/sort';
+import { getComparator, stableSort } from 'src/shared/components/CrudTable/sort';
 import { FullScreenDialog } from 'src/shared/components/FullScreenDialog';
 
 type Props = {

@@ -55,7 +55,7 @@ export const UsersTable: React.FC = () => {
   }, [data]);
 
   useEffect(() => {
-    openErrorMessage(true);
+    if (error || errorDeleteUser) openErrorMessage(true);
   }, [error, errorDeleteUser]);
 
   if (loading || loadingDeleteUser) return <LoadingSpinner />;

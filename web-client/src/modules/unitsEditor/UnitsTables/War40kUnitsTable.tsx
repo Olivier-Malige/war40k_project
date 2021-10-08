@@ -62,7 +62,7 @@ export const War40kUnitsTable: React.FC = () => {
   }, [data]);
 
   useEffect(() => {
-    openErrorMessage(true);
+    if (error || errorDeleteUnits) openErrorMessage(true);
   }, [error, errorDeleteUnits]);
 
   if (loading || loadingDeleteUnits) return <LoadingSpinner />;
