@@ -1,10 +1,13 @@
 FROM node:14
-# Create app directory
-WORKDIR /app
-# Install app dependencies
-COPY package*.json ./
 
-RUN npm install --silent
+RUN mkdir -p /app
+WORKDIR /app
+
+ENV NODE_ENV=development
+COPY package.json /app
+
+RUN npm i
+COPY . /app
 # Copy app source code
 COPY . .
 

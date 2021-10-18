@@ -1,16 +1,12 @@
 FROM node:14
 
-# Create app directory
+RUN mkdir -p /app
 WORKDIR /app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-COPY package*.json ./
-
-RUN npm install
-
-# Bundle app source
-COPY . .
+ENV NODE_ENV=development
+COPY package.json /app/
+RUN  npm i -g nodemon && npm i
+COPY . /app
 
 EXPOSE 3001
 

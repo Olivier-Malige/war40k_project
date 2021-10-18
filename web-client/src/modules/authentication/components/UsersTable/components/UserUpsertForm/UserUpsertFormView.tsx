@@ -68,7 +68,12 @@ export const UserUpsertFormView: FC<Props> = ({ onSubmit, data, isUpdate }) => {
   return (
     <Container>
       <Paper sx={{ padding: 5, mt: 10 }}>
-        <form onSubmit={handleSubmit(data => onSubmit({ ...data, confirmPassword: undefined }))}>
+        <form
+          onSubmit={handleSubmit(async data => {
+            delete data.confirmPassword;
+            await onSubmit(data as unknown as UserRowData);
+          })}
+        >
           <Controller
             name="email"
             control={control}
