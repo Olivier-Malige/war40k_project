@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 
 import { RowData } from './types';
 import W40kUpsertForm from './components/W40kUpsertForm';
@@ -11,35 +11,10 @@ import {
   TableCellConfig,
 } from 'src/shared/components/CrudTable/types';
 import { openErrorMessage } from 'src/graphQL/cache';
-
-export const GET_W40K_UNITS = gql`
-  query GetW40kUnits {
-    w40kUnits {
-      id
-      pictureUrl
-      creationDate
-      lastUpdateDate
-      name
-      version
-      lang
-      factionKeywords {
-        name
-      }
-      keywords {
-        name
-      }
-    }
-  }
-`;
-
-const DELETE_UNITS = gql`
-  mutation DeleteUnits($unitsID: [String!]!) {
-    removeW40kUnits(id: $unitsID)
-  }
-`;
+import { DELETE_UNITS, GET_TABLE_W40K_UNITS } from 'src/graphQL/queries/server/w40kUnit';
 
 export const War40kUnitsTable: React.FC = () => {
-  const { loading, error, data } = useQuery(GET_W40K_UNITS);
+  const { loading, error, data } = useQuery(GET_TABLE_W40K_UNITS);
   const [deleteUnits, { loading: loadingDeleteUnits, error: errorDeleteUnits }] =
     useMutation(DELETE_UNITS);
 
@@ -48,13 +23,13 @@ export const War40kUnitsTable: React.FC = () => {
   useEffect(() => {
     setRowsData(
       data?.w40kUnits.map(unit => ({
-        pictureUrl: unit.pictureUrl,
+        pictureUrl: unit?.pictures?.main?.url,
         name: unit.name,
         id: unit.id,
         lang: unit.lang,
         version: unit.version,
-        keywords: unit.keywords.map(elem => elem.name),
-        factionKeywords: unit.factionKeywords.map(elem => elem.name),
+        keywords: unit.data.keywords.map(elem => elem.name),
+        factionKeywords: unit.data.factionKeywords.map(elem => elem.name),
         creationDate: unit.creationDate,
         lastUpdateDate: unit.lastUpdateDate,
       })) ?? [],
@@ -84,9 +59,9 @@ export const War40kUnitsTable: React.FC = () => {
       label: 'Lang',
     },
     {
-      rowType: RowCellsType.boolean,
+      rowType: RowCellsType.value,
       id: 'version',
-      label: 'Versopn',
+      label: 'Version',
     },
     {
       rowType: RowCellsType.value,
@@ -122,7 +97,7 @@ export const War40kUnitsTable: React.FC = () => {
       texts={w40kUnitTableTexts}
       rowsData={rowsData}
       onDeleteRow={id =>
-        deleteUnits({ variables: { unitsID: id }, refetchQueries: [GET_W40K_UNITS] })
+        deleteUnits({ variables: { unitsID: id }, refetchQueries: [GET_TABLE_W40K_UNITS] })
       }
       UpsertForm={W40kUpsertForm}
       tableCells={tableCells}

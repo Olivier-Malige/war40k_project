@@ -6,22 +6,31 @@ export type FieldConfig = {
 };
 
 export type W40KUnit = {
-  pictureUrl: string;
-  pictureRef: string;
+  pictures: {
+    main: {
+      url: string;
+      ref: string;
+    };
+  };
   lang: string;
   name: string;
-  powerRating: number;
-  battlefieldRole: string;
-  commandPoints: number;
   version: string;
-  detail: string;
-  description: string;
-  keywords: string[];
-  factionKeywords: string[];
-  wargearOptions: string[];
-  abilities: { name: string; rule: string }[];
-  weapons: W40KWeapon[];
-  profiles: W40KProfile[];
+  data: {
+    powerRating: number;
+    battlefieldRole: string;
+    commandPoints: number;
+    detail: string;
+    description: string;
+    keywords: string[];
+    factionKeywords: string[];
+    wargearOptions: string[];
+    abilities: { name: string; rule: string }[];
+    weapons: {
+      specialRule: string;
+      weapons: W40KWeapon[];
+    };
+    profiles: W40KProfile[];
+  };
 };
 
 export type W40KProfile = {
@@ -51,5 +60,5 @@ export type W40KWeapon = {
 
 export type W40KUpsertFormProps = {
   onSubmit: (values: W40KUnit) => void;
-  data?: W40KUnit;
+  w40kUnit?: W40KUnit;
 };

@@ -1,39 +1,11 @@
 import React, { useEffect, FC } from 'react';
 import { UserUpsertFormView } from './UserUpsertFormView';
-import { gql, useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { LoadingSpinner } from 'src/shared/components/LoadingSpinner';
 
 import { openErrorMessage, openSuccessMessage } from 'src/graphQL/cache';
-import { GET_USERS } from '../../UsersTable';
 import { UpsertFormProps } from 'src/shared/components/CrudTable/types';
-
-const GET_USER = gql`
-  query GetUser($id: ID!) {
-    user(id: $id) {
-      id
-      email
-      displayName
-      role
-      disabled
-    }
-  }
-`;
-
-const CREATE_USER = gql`
-  mutation CreateUser($input: CreateUserInput) {
-    createUser(input: $input) {
-      id
-    }
-  }
-`;
-
-const UPDATE_USER = gql`
-  mutation UpdateUser($input: UpdateUserInput, $id: ID!) {
-    updateUser(input: $input, id: $id) {
-      id
-    }
-  }
-`;
+import { CREATE_USER, GET_USER, GET_USERS, UPDATE_USER } from 'src/graphQL/queries/server/users';
 
 export const UserUpsertFormContainer: FC<UpsertFormProps> = ({ id, onSubmit }) => {
   const [createUser, { loading: createLoading }] = useMutation(CREATE_USER);

@@ -2,6 +2,8 @@ import { ApolloServer } from 'apollo-server';
 import { applyMiddleware } from 'graphql-middleware';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { merge } from 'lodash';
+import { shield } from 'graphql-shield';
+import { auth } from 'firebase-admin';
 
 import {
   typeDefs as Users,
@@ -19,7 +21,10 @@ import conf from './environment';
 const env = conf[process.env.NODE_ENV as 'development' | 'production'];
 import './database';
 import { verifyUserToken } from './firebase/users';
-import { shield } from 'graphql-shield';
+
+export type Context = {
+  user: auth.DecodedIdToken;
+};
 
 const schema = makeExecutableSchema({
   typeDefs: [Users, W40kUnits],

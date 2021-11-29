@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 
 import { UserRowData } from './types';
 import { LoadingSpinner } from 'src/shared/components/LoadingSpinner';
@@ -11,25 +11,7 @@ import {
   CrudTableTexts,
 } from 'src/shared/components/CrudTable/types';
 import { openErrorMessage } from 'src/graphQL/cache';
-export const GET_USERS = gql`
-  query GetUsers {
-    users {
-      email
-      id
-      displayName
-      role
-      disabled
-      lastSignInDate
-      creationDate
-    }
-  }
-`;
-
-const DELETE_USERS = gql`
-  mutation DeleteUsers($userIds: [String!]!) {
-    deleteUsers(id: $userIds)
-  }
-`;
+import { DELETE_USERS, GET_USERS } from 'src/graphQL/queries/server/users';
 
 export const UsersTable: React.FC = () => {
   const [rowsData, setRowsData] = useState([]);

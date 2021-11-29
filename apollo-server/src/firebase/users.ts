@@ -26,6 +26,7 @@ const setCustomClaim = async (userID: string, role: string) => {
   try {
     return await admin.auth().setCustomUserClaims(userID, {
       role: role,
+      // TODO Add groups
     });
   } catch (e) {
     throw Error(e);

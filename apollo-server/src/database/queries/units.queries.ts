@@ -1,11 +1,12 @@
 import { W40kUnits } from '../index';
 import { W40kUnit, W40kUnitInput } from '../../types';
 
-export const createW40kUnit = async (input: W40kUnitInput): Promise<W40kUnit> => {
+export const createW40kUnit = async (input: W40kUnitInput, ownerId: string): Promise<W40kUnit> => {
   try {
     const newW40kUnit = new W40kUnits({ ...input });
     newW40kUnit.id = newW40kUnit._id;
     newW40kUnit.creationDate = new Date();
+    newW40kUnit.ownerId = ownerId;
     await newW40kUnit.save();
     return newW40kUnit;
   } catch (e) {

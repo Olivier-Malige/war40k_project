@@ -22,41 +22,51 @@ const schema = yup
   .object()
   .shape({
     name: yup.string().required('Name is required').nullable(),
-    powerRating: yup.number().required('Power is required').nullable(),
-    commandPoints: yup.number().nullable(),
-    pictureUrl: yup.string().nullable(),
-    pictureRef: yup.string().nullable(),
-    weapons: yup.array(
-      yup.object({
-        name: yup.string().nullable(),
-        abilities: yup.string().nullable(),
-        type: yup.string().nullable(),
-        damage: yup.number().nullable(),
-        strength: yup.number().nullable(),
-        range: yup.number().nullable(),
-        armourPenetration: yup.number().nullable(),
+    version: yup.string(),
+    pictures: yup.object({
+      main: yup.object({
+        url: yup.string().nullable(),
+        ref: yup.string().nullable(),
       }),
-    ),
-    profiles: yup.array(
-      yup.object({
-        numberMin: yup.number().nullable(),
-        numberMax: yup.number().nullable(),
-        name: yup.string().nullable(),
-        move: yup.number().nullable(),
-        weaponSkill: yup.number().nullable(),
-        ballisticSkill: yup.number().nullable(),
-        strength: yup.number().nullable(),
-        toughness: yup.number().nullable(),
-        wounds: yup.number().nullable(),
-        attacks: yup.number().nullable(),
-        leadership: yup.number().nullable(),
-        save: yup.number().nullable(),
+    }),
+    data: yup.object({
+      powerRating: yup.number().nullable(),
+      commandPoints: yup.number().nullable(),
+      weapons: yup.object({
+        specialRule: yup.string().nullable(),
+        weapons: yup.array(
+          yup.object({
+            name: yup.string().nullable(),
+            abilities: yup.string().nullable(),
+            type: yup.string().nullable(),
+            damage: yup.number().nullable(),
+            strength: yup.number().nullable(),
+            range: yup.number().nullable(),
+            armourPenetration: yup.number().nullable(),
+          }),
+        ),
       }),
-    ),
+      profiles: yup.array(
+        yup.object({
+          numberMin: yup.number().nullable(),
+          numberMax: yup.number().nullable(),
+          name: yup.string().nullable(),
+          move: yup.string().nullable(),
+          weaponSkill: yup.string().nullable(),
+          ballisticSkill: yup.string().nullable(),
+          strength: yup.string().nullable(),
+          toughness: yup.string().nullable(),
+          wounds: yup.string().nullable(),
+          attacks: yup.string().nullable(),
+          leadership: yup.string().nullable(),
+          save: yup.string().nullable(),
+        }),
+      ),
+    }),
   })
   .required();
 
-export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) => {
+export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, w40kUnit }) => {
   const {
     handleSubmit,
     control,
@@ -65,22 +75,31 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      pictureUrl: data?.pictureUrl || '',
-      pictureRef: data?.pictureRef || '',
-      lang: data?.lang || 'fr_FR',
-      name: data?.name || '',
-      battlefieldRole: data?.battlefieldRole || '',
-      powerRating: data?.powerRating || null,
-      commandPoints: data?.commandPoints || null,
-      version: data?.version || 'v9',
-      detail: data?.detail || '',
-      description: data?.description || '',
-      keywords: data?.keywords || [],
-      factionKeywords: data?.factionKeywords || [],
-      wargearOptions: data?.wargearOptions || [],
-      abilities: data?.abilities || [],
-      weapons: data?.weapons || [],
-      profiles: data?.profiles || [{ ...emptyProfile }],
+      pictures: {
+        main: {
+          url: w40kUnit?.pictures?.main?.url || '',
+          ref: w40kUnit?.pictures?.main?.ref || '',
+        },
+      },
+      lang: w40kUnit?.lang || 'fr_FR',
+      name: w40kUnit?.name || '',
+      version: w40kUnit?.version || 'v9',
+      data: {
+        battlefieldRole: w40kUnit?.data?.battlefieldRole || 'Troops',
+        powerRating: w40kUnit?.data?.powerRating || null,
+        commandPoints: w40kUnit?.data?.commandPoints || null,
+        detail: w40kUnit?.data?.detail || '',
+        description: w40kUnit?.data?.description || '',
+        keywords: w40kUnit?.data?.keywords || [],
+        factionKeywords: w40kUnit?.data?.factionKeywords || [],
+        wargearOptions: w40kUnit?.data?.wargearOptions || [],
+        abilities: w40kUnit?.data?.abilities || [],
+        weapons: {
+          specialRule: w40kUnit?.data?.weapons?.specialRule || null,
+          weapons: w40kUnit?.data?.weapons?.weapons || [],
+        },
+        profiles: w40kUnit?.data?.profiles || [{ ...emptyProfile }],
+      },
     },
   });
 
@@ -107,7 +126,7 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
             <Box sx={{ display: 'flex', mt: 5 }}>
               <Grid container direction="column">
                 <Controller
-                  name="battlefieldRole"
+                  name="data.battlefieldRole"
                   control={control}
                   render={({ field }) => (
                     <TextField
@@ -129,7 +148,7 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
                   )}
                 />
                 <Controller
-                  name="powerRating"
+                  name="data.powerRating"
                   control={control}
                   render={({ field }) => (
                     <TextField
@@ -144,7 +163,7 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
                   )}
                 />
                 <Controller
-                  name="commandPoints"
+                  name="data.commandPoints"
                   control={control}
                   render={({ field }) => (
                     <TextField
@@ -158,7 +177,7 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
                   )}
                 />
                 <Controller
-                  name="detail"
+                  name="data.detail"
                   control={control}
                   render={({ field }) => (
                     <TextField
@@ -175,10 +194,10 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
               </Grid>
               <Grid container direction="column" alignContent={'center'}>
                 <UploadPictureAvatar
-                  setUrlValue={value => setValue('pictureUrl', value)}
-                  setRefValue={value => setValue('pictureRef', value)}
-                  urlValue={data?.pictureUrl}
-                  refValue={data?.pictureRef}
+                  setUrlValue={value => setValue('pictures.main.url', value)}
+                  setRefValue={value => setValue('pictures.main.ref', value)}
+                  urlValue={w40kUnit?.pictures?.main?.url}
+                  refValue={w40kUnit?.pictures?.main?.ref}
                   storageNameRef={'/w40k/units/images/'}
                 />
               </Grid>
@@ -210,7 +229,7 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
                   )}
                 />
                 <Controller
-                  name="description"
+                  name="data.description"
                   control={control}
                   render={({ field }) => (
                     <TextField
@@ -228,30 +247,30 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
           </>
         </SectionAccordion>
 
-        <SectionAccordion title={'Profiles'}>
+        <SectionAccordion title={'profiles'}>
           <AddTableToField
-            fieldName={'profiles'}
+            fieldName={'data.profiles'}
             control={control}
             emptyFieldValues={{ ...emptyProfile }}
             fieldsConfig={profileFieldsConfig}
           />
         </SectionAccordion>
-        <SectionAccordion title={'Weapons'}>
-          <AddTableToField
-            fieldName={'weapons'}
-            control={control}
-            emptyFieldValues={{ ...emptyWeapon }}
-            fieldsConfig={weaponFieldsConfig}
-          />
-        </SectionAccordion>
+        {/*<SectionAccordion title={'Weapons'}>*/}
+        {/*  <AddTableToField*/}
+        {/*    fieldName={'weapons'}*/}
+        {/*    control={control}*/}
+        {/*    emptyFieldValues={{ ...emptyWeapon }}*/}
+        {/*    fieldsConfig={weaponFieldsConfig}*/}
+        {/*  />*/}
+        {/*</SectionAccordion>*/}
 
         <SectionAccordion title={'Wargear options'}>
-          <AddArrayToField control={control} fieldName={'wargearOptions'} label={'Option'} />
+          <AddArrayToField control={control} fieldName={'data.wargearOptions'} label={'Option'} />
         </SectionAccordion>
         <SectionAccordion title={'Abilities'}>
           <AddArrayToField
             control={control}
-            fieldName={'abilities'}
+            fieldName={'data.abilities'}
             subFieldNames={{ subfield1: 'name', subfield2: 'rule' }}
             label={'Name'}
             label2={'Rule'}
@@ -262,7 +281,7 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, data }) 
             <Grid item xs={6}>
               <AddArrayToField
                 control={control}
-                fieldName={'factionKeywords'}
+                fieldName={'data.factionKeywords'}
                 label={'Faction keyword'}
                 display={'chip'}
               />

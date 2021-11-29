@@ -1,6 +1,6 @@
 import { connect, model } from 'mongoose';
 import conf from '../environment';
-import { unitSchema } from './models/unit.model';
+import { w40kUnitSchema } from './models/unit.model';
 import { W40kUnit } from '../types';
 
 const env = conf[process.env.NODE_ENV as 'development' | 'production'];
@@ -13,6 +13,6 @@ try {
   console.error('Error while connecting to DB');
 }
 
-const W40kUnits = model<W40kUnit>('W40KUnits', unitSchema);
+const W40kUnits = model<W40kUnit>('W40KUnits', w40kUnitSchema);
 
 export { W40kUnits };

@@ -13,6 +13,7 @@ import {
 import { gql } from 'apollo-server';
 import { W40kUnit, W40kUnitInput } from '../../types';
 import { IResolvers } from 'graphql-middleware/dist/types';
+import { Context } from '../../app';
 
 export const typeDefs = gql`
   scalar Date
@@ -35,49 +36,62 @@ export const typeDefs = gql`
 
   type W40kUnit {
     id: ID!
-    pictureUrl: String
-    pictureRef: String
+    ownerId: ID!
+    name: String!
+    version: String
     creationDate: Date!
     lastUpdateDate: Date
-    name: String!
-    description: String
     lang: Lang!
+    data: W40kUnitData
+    pictures: UnitPictures
+  }
+
+  type W40kUnitData {
+    description: String
     detail: String
     battlefieldRole: BattlefieldRoles
-    version: String
-    powerRating: Int!
+    powerRating: Int
     commandPoints: Int
     profiles: [W40kUnitProfile]
     profilesDetail: String
-    weapons: [Weapon]
+    weapons: Weapons
     wargearOptions: [Name]
     abilities: [Abilities]
     factionKeywords: [Name]
     keywords: [Name]
   }
 
+  type UnitPictures {
+    main: UnitPicture
+  }
+
+  type UnitPicture {
+    url: String
+    ref: String
+  }
+
   type W40kUnitProfile {
     numberMin: Int
     numberMax: Int
     name: String
-    move: Int
-    weaponSkill: Int
-    ballisticSkill: Int
-    strength: Int
-    toughness: Int
-    wounds: Int
-    attacks: Int
-    leadership: Int
-    save: Int
+    move: String
+    weaponSkill: String
+    ballisticSkill: String
+    strength: String
+    toughness: String
+    wounds: String
+    attacks: String
+    leadership: String
+    save: String
   }
 
   type Weapon {
     name: String
     range: Int
     type: String
-    strength: Int
-    armourPenetration: Int
-    damage: Int
+    strength: String
+    armourPenetration: String
+    damage: String
     abilities: String
   }
 
@@ -106,52 +120,64 @@ export const typeDefs = gql`
 
   input W40kUnitInput {
     name: String!
-    pictureUrl: String
-    pictureRef: String
     lang: Lang!
     version: String!
+    data: W40kUnitDataInput
+    pictures: PicturesInput
+  }
+
+  input PicturesInput {
+    main: PictureInput
+  }
+
+  input PictureInput {
+    url: String
+    ref: String
+  }
+
+  input W40kUnitDataInput {
     description: String
     detail: String
     profiles: [W40kUnitProfileInput]
     profilesDetail: String
-    powerRating: Int!
+    powerRating: Int
     commandPoints: Int
     battlefieldRole: BattlefieldRoles
     wargearOptions: [NameInput]
     abilities: [AbilitiesInput]
     factionKeywords: [NameInput]
     keywords: [NameInput]
-    weapons: [WeaponInput]
+    weapons: WeaponsInput
   }
 
   input WeaponInput {
     name: String
     range: Int
     type: String
-    strength: Int
-    armourPenetration: Int
-    damage: Int
+    strength: String
+    armourPenetration: String
+    damage: String
     abilities: String
   }
 
   input WeaponsInput {
-    rule: String
-    weapon: [WeaponInput]
+    specialRule: String
+    weapons: [WeaponInput]
   }
 
   input W40kUnitProfileInput {
     name: String
     numberMin: Int
     numberMax: Int
-    move: Int
-    weaponSkill: Int
-    ballisticSkill: Int
-    strength: Int
-    toughness: Int
-    wounds: Int
-    attacks: Int
-    leadership: Int
-    save: Int
+    move: String
+    weaponSkill: String
+    ballisticSkill: String
+    strength: String
+    toughness: String
+    wounds: String
+    attacks: String
+    leadership: String
+    save: String
   }
 
   extend type Query {
@@ -180,8 +206,8 @@ export const resolvers: IResolvers = {
     },
   },
   Mutation: {
-    createW40kUnit: (_parent, { input }: { input: W40kUnitInput }) => {
-      return createW40kUnit(input);
+    createW40kUnit: (_parent, { input }: { input: W40kUnitInput }, context: Context) => {
+      return createW40kUnit(input, context.user.uid);
     },
     updateW40kUnit: (_parent, { id, input }: { id: string; input: W40kUnitInput }) => {
       return updateW40kUnit(id, input);

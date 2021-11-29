@@ -98,6 +98,15 @@ export type NameInput = {
   name?: Maybe<Scalars['String']>;
 };
 
+export type PictureInput = {
+  firebaseStorageRef?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+};
+
+export type PicturesInput = {
+  main?: Maybe<PictureInput>;
+};
+
 export type Query = {
   __typename?: 'Query';
   searchW40kUnitsByName?: Maybe<W40kUnit>;
@@ -128,6 +137,17 @@ export enum Roles {
   Tester = 'tester'
 }
 
+export type UnitPicture = {
+  __typename?: 'UnitPicture';
+  firebaseStorageRef?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+};
+
+export type UnitPictures = {
+  __typename?: 'UnitPictures';
+  main?: Maybe<UnitPicture>;
+};
+
 export type UpdateUserInput = {
   disabled?: Maybe<Scalars['Boolean']>;
   displayName?: Maybe<Scalars['String']>;
@@ -149,29 +169,34 @@ export type User = {
 
 export type W40kUnit = {
   __typename?: 'W40kUnit';
-  abilities?: Maybe<Array<Maybe<Abilities>>>;
-  battlefieldRole?: Maybe<BattlefieldRoles>;
-  commandPoints?: Maybe<Scalars['Int']>;
   creationDate: Scalars['Date'];
-  description?: Maybe<Scalars['String']>;
-  detail?: Maybe<Scalars['String']>;
-  factionKeywords?: Maybe<Array<Maybe<Name>>>;
+  data?: Maybe<W40kUnitData>;
   id: Scalars['ID'];
-  keywords?: Maybe<Array<Maybe<Name>>>;
   lang: Lang;
   lastUpdateDate?: Maybe<Scalars['Date']>;
   name: Scalars['String'];
-  pictureName?: Maybe<Scalars['String']>;
-  pictureUrl?: Maybe<Scalars['String']>;
-  powerRating: Scalars['Int'];
-  profiles?: Maybe<Array<Maybe<W40kUnitProfile>>>;
-  profilesDetail?: Maybe<Scalars['String']>;
+  ownerId: Scalars['ID'];
+  pictures?: Maybe<UnitPictures>;
   version?: Maybe<Scalars['String']>;
-  wargearOptions?: Maybe<Array<Maybe<Name>>>;
-  weapons?: Maybe<Array<Maybe<Weapon>>>;
 };
 
-export type W40kUnitInput = {
+export type W40kUnitData = {
+  __typename?: 'W40kUnitData';
+  abilities?: Maybe<Array<Maybe<Abilities>>>;
+  battlefieldRole?: Maybe<BattlefieldRoles>;
+  commandPoints?: Maybe<Scalars['Int']>;
+  description?: Maybe<Scalars['String']>;
+  detail?: Maybe<Scalars['String']>;
+  factionKeywords?: Maybe<Array<Maybe<Name>>>;
+  keywords?: Maybe<Array<Maybe<Name>>>;
+  powerRating?: Maybe<Scalars['Int']>;
+  profiles?: Maybe<Array<Maybe<W40kUnitProfile>>>;
+  profilesDetail?: Maybe<Scalars['String']>;
+  wargearOptions?: Maybe<Array<Maybe<Name>>>;
+  weapons?: Maybe<Weapons>;
+};
+
+export type W40kUnitDataInput = {
   abilities?: Maybe<Array<Maybe<AbilitiesInput>>>;
   battlefieldRole?: Maybe<BattlefieldRoles>;
   commandPoints?: Maybe<Scalars['Int']>;
@@ -179,67 +204,70 @@ export type W40kUnitInput = {
   detail?: Maybe<Scalars['String']>;
   factionKeywords?: Maybe<Array<Maybe<NameInput>>>;
   keywords?: Maybe<Array<Maybe<NameInput>>>;
-  lang: Lang;
-  name: Scalars['String'];
-  pictureName?: Maybe<Scalars['String']>;
-  pictureUrl?: Maybe<Scalars['String']>;
-  powerRating: Scalars['Int'];
+  powerRating?: Maybe<Scalars['Int']>;
   profiles?: Maybe<Array<Maybe<W40kUnitProfileInput>>>;
   profilesDetail?: Maybe<Scalars['String']>;
-  version: Scalars['String'];
   wargearOptions?: Maybe<Array<Maybe<NameInput>>>;
-  weapons?: Maybe<Array<Maybe<WeaponInput>>>;
+  weapons?: Maybe<WeaponsInput>;
+};
+
+export type W40kUnitInput = {
+  data?: Maybe<W40kUnitDataInput>;
+  lang: Lang;
+  name: Scalars['String'];
+  pictures?: Maybe<PicturesInput>;
+  version: Scalars['String'];
 };
 
 export type W40kUnitProfile = {
   __typename?: 'W40kUnitProfile';
-  attacks?: Maybe<Scalars['Int']>;
-  ballisticSkill?: Maybe<Scalars['Int']>;
-  leadership?: Maybe<Scalars['Int']>;
-  move?: Maybe<Scalars['Int']>;
+  attacks?: Maybe<Scalars['String']>;
+  ballisticSkill?: Maybe<Scalars['String']>;
+  leadership?: Maybe<Scalars['String']>;
+  move?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   numberMax?: Maybe<Scalars['Int']>;
   numberMin?: Maybe<Scalars['Int']>;
-  save?: Maybe<Scalars['Int']>;
-  strength?: Maybe<Scalars['Int']>;
-  toughness?: Maybe<Scalars['Int']>;
-  weaponSkill?: Maybe<Scalars['Int']>;
-  wounds?: Maybe<Scalars['Int']>;
+  save?: Maybe<Scalars['String']>;
+  strength?: Maybe<Scalars['String']>;
+  toughness?: Maybe<Scalars['String']>;
+  weaponSkill?: Maybe<Scalars['String']>;
+  wounds?: Maybe<Scalars['String']>;
 };
 
 export type W40kUnitProfileInput = {
-  attacks?: Maybe<Scalars['Int']>;
-  ballisticSkill?: Maybe<Scalars['Int']>;
-  leadership?: Maybe<Scalars['Int']>;
-  move?: Maybe<Scalars['Int']>;
+  attacks?: Maybe<Scalars['String']>;
+  ballisticSkill?: Maybe<Scalars['String']>;
+  leadership?: Maybe<Scalars['String']>;
+  move?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   numberMax?: Maybe<Scalars['Int']>;
   numberMin?: Maybe<Scalars['Int']>;
-  save?: Maybe<Scalars['Int']>;
-  strength?: Maybe<Scalars['Int']>;
-  toughness?: Maybe<Scalars['Int']>;
-  weaponSkill?: Maybe<Scalars['Int']>;
-  wounds?: Maybe<Scalars['Int']>;
+  save?: Maybe<Scalars['String']>;
+  strength?: Maybe<Scalars['String']>;
+  toughness?: Maybe<Scalars['String']>;
+  weaponSkill?: Maybe<Scalars['String']>;
+  wounds?: Maybe<Scalars['String']>;
 };
 
 export type Weapon = {
   __typename?: 'Weapon';
   abilities?: Maybe<Scalars['String']>;
-  armourPenetration?: Maybe<Scalars['Int']>;
-  damage?: Maybe<Scalars['Int']>;
+  armourPenetration?: Maybe<Scalars['String']>;
+  damage?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   range?: Maybe<Scalars['Int']>;
-  strength?: Maybe<Scalars['Int']>;
+  strength?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
 };
 
 export type WeaponInput = {
   abilities?: Maybe<Scalars['String']>;
-  armourPenetration?: Maybe<Scalars['Int']>;
-  damage?: Maybe<Scalars['Int']>;
+  armourPenetration?: Maybe<Scalars['String']>;
+  damage?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   range?: Maybe<Scalars['Int']>;
-  strength?: Maybe<Scalars['Int']>;
+  strength?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
 };
 
@@ -250,6 +278,6 @@ export type Weapons = {
 };
 
 export type WeaponsInput = {
-  rule?: Maybe<Scalars['String']>;
-  weapon?: Maybe<Array<Maybe<WeaponInput>>>;
+  specialRule?: Maybe<Scalars['String']>;
+  weapons?: Maybe<Array<Maybe<WeaponInput>>>;
 };
