@@ -54,7 +54,8 @@ export const typeDefs = gql`
     commandPoints: Int
     profiles: [W40kUnitProfile]
     profilesDetail: String
-    weapons: Weapons
+    weapons: [Weapon]
+    specialWeapon: SpecialWeapon
     wargearOptions: [Name]
     abilities: [Abilities]
     factionKeywords: [Name]
@@ -95,8 +96,9 @@ export const typeDefs = gql`
     abilities: String
   }
 
-  type Weapons {
-    specialRule: String
+  type SpecialWeapon {
+    name: String
+    rule: String
     weapons: [Weapon]
   }
 
@@ -147,7 +149,8 @@ export const typeDefs = gql`
     abilities: [AbilitiesInput]
     factionKeywords: [NameInput]
     keywords: [NameInput]
-    weapons: WeaponsInput
+    weapons: [WeaponInput]
+    specialWeapon: specialWeaponInput
   }
 
   input WeaponInput {
@@ -160,8 +163,9 @@ export const typeDefs = gql`
     abilities: String
   }
 
-  input WeaponsInput {
-    specialRule: String
+  input specialWeaponInput {
+    name: String
+    rule: String
     weapons: [WeaponInput]
   }
 

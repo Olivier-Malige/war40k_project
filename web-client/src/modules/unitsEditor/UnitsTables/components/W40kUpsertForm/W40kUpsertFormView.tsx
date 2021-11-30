@@ -13,7 +13,8 @@ import {
   emptyProfile,
   emptyWeapon,
   profileFieldsConfig,
-  weaponFieldsConfig,
+  specialWeaponCommonFieldConfig,
+  weaponFieldConfig,
 } from './config/filedsConfig';
 import UploadPictureAvatar from 'src/shared/components/forms/UploadPictureAvatar';
 import SectionAccordion from 'src/shared/components/forms/SectionAccordion';
@@ -32,8 +33,21 @@ const schema = yup
     data: yup.object({
       powerRating: yup.number().nullable(),
       commandPoints: yup.number().nullable(),
-      weapons: yup.object({
-        specialRule: yup.string().nullable(),
+
+      weapons: yup.array(
+        yup.object({
+          name: yup.string().nullable(),
+          abilities: yup.string().nullable(),
+          type: yup.string().nullable(),
+          damage: yup.number().nullable(),
+          strength: yup.number().nullable(),
+          range: yup.number().nullable(),
+          armourPenetration: yup.number().nullable(),
+        }),
+      ),
+      specialWeapon: yup.object({
+        rule: yup.string().nullable(),
+        name: yup.string().nullable(),
         weapons: yup.array(
           yup.object({
             name: yup.string().nullable(),
@@ -46,6 +60,7 @@ const schema = yup
           }),
         ),
       }),
+
       profiles: yup.array(
         yup.object({
           numberMin: yup.number().nullable(),
@@ -94,15 +109,16 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, w40kUnit
         factionKeywords: w40kUnit?.data?.factionKeywords || [],
         wargearOptions: w40kUnit?.data?.wargearOptions || [],
         abilities: w40kUnit?.data?.abilities || [],
-        weapons: {
-          specialRule: w40kUnit?.data?.weapons?.specialRule || null,
-          weapons: w40kUnit?.data?.weapons?.weapons || [],
+        weapons: w40kUnit?.data?.weapons || [],
+        specialWeapon: w40kUnit?.data?.specialWeapon || {
+          rule: '',
+          name: '',
+          weapons: [],
         },
         profiles: w40kUnit?.data?.profiles || [{ ...emptyProfile }],
       },
     },
   });
-
   return (
     <Paper sx={{ padding: 5, backgroundColor: theme => theme.palette.background.default }}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -213,7 +229,6 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, w40kUnit
                       variant="standard"
                       {...field}
                     >
-                      <MenuItem value={'v8'}>v8</MenuItem>
                       <MenuItem value={'v9'}>v9</MenuItem>
                     </TextField>
                   )}
@@ -255,15 +270,24 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, w40kUnit
             fieldsConfig={profileFieldsConfig}
           />
         </SectionAccordion>
-        {/*<SectionAccordion title={'Weapons'}>*/}
-        {/*  <AddTableToField*/}
-        {/*    fieldName={'weapons'}*/}
-        {/*    control={control}*/}
-        {/*    emptyFieldValues={{ ...emptyWeapon }}*/}
-        {/*    fieldsConfig={weaponFieldsConfig}*/}
-        {/*  />*/}
-        {/*</SectionAccordion>*/}
-
+        <SectionAccordion title={'Weapons'}>
+          <AddTableToField
+            fieldName={'data.weapons'}
+            control={control}
+            emptyFieldValues={{ ...emptyWeapon }}
+            fieldsConfig={weaponFieldConfig}
+          />
+        </SectionAccordion>
+        <SectionAccordion title={'Special Weapons'}>
+          <AddTableToField
+            fieldName={'data.specialWeapon'}
+            subFieldName={'weapons'}
+            control={control}
+            emptyFieldValues={{ ...emptyWeapon }}
+            fieldsConfig={weaponFieldConfig}
+            commonFiledConfig={specialWeaponCommonFieldConfig}
+          />
+        </SectionAccordion>
         <SectionAccordion title={'Wargear options'}>
           <AddArrayToField control={control} fieldName={'data.wargearOptions'} label={'Option'} />
         </SectionAccordion>

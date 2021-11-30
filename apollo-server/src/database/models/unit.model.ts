@@ -18,6 +18,11 @@ export const w40kUnitSchema = new Schema({
     profiles: { type: Array },
     profilesDetail: { type: String },
     weapons: { type: Array },
+    specialWeapon: {
+      rule: { type: String },
+      name: { type: String },
+      weapons: { type: Array },
+    },
     wargearOptions: { type: [] },
     abilities: { type: [] },
     factionKeywords: { type: [] },

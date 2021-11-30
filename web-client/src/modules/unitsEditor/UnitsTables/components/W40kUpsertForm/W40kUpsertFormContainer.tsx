@@ -29,7 +29,7 @@ export const W40KUpsertFormContainer: FC<UpsertFormProps> = ({ id, onSubmit, isC
 
   const handleSubmit = async values => {
     const errors = [];
-
+    console.log(values);
     if (id && data && !isCopy) {
       const result = await updateUnit({
         variables: { unitInput: values, id },

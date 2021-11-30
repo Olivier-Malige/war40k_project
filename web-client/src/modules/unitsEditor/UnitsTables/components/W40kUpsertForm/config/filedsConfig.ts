@@ -89,7 +89,22 @@ export const emptyProfile: W40KProfile = {
   save: null,
 };
 
-export const weaponFieldsConfig: FieldConfig[] = [
+export const specialWeaponCommonFieldConfig: FieldConfig[] = [
+  {
+    name: 'name',
+    type: 'text',
+    label: 'Name',
+    width: 180,
+  },
+  {
+    name: 'rule',
+    type: 'text',
+    label: 'Rule',
+    width: '100%',
+  },
+];
+
+export const weaponFieldConfig: FieldConfig[] = [
   {
     name: 'name',
     type: 'text',
@@ -110,19 +125,19 @@ export const weaponFieldsConfig: FieldConfig[] = [
   },
   {
     name: 'strength',
-    type: 'number',
+    type: 'text',
     label: 'Strength',
     width: 70,
   },
   {
     name: 'armourPenetration',
-    type: 'number',
+    type: 'text',
     label: 'Armour penetration',
     width: 100,
   },
   {
     name: 'damage',
-    type: 'number',
+    type: 'text',
     label: 'Damage',
     width: 70,
   },

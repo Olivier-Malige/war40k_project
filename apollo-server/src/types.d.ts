@@ -99,7 +99,7 @@ export type NameInput = {
 };
 
 export type PictureInput = {
-  firebaseStorageRef?: Maybe<Scalars['String']>;
+  ref?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
 };
 
@@ -137,9 +137,16 @@ export enum Roles {
   Tester = 'tester'
 }
 
+export type SpecialWeapon = {
+  __typename?: 'SpecialWeapon';
+  name?: Maybe<Scalars['String']>;
+  rule?: Maybe<Scalars['String']>;
+  weapons?: Maybe<Array<Maybe<Weapon>>>;
+};
+
 export type UnitPicture = {
   __typename?: 'UnitPicture';
-  firebaseStorageRef?: Maybe<Scalars['String']>;
+  ref?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
 };
 
@@ -192,8 +199,9 @@ export type W40kUnitData = {
   powerRating?: Maybe<Scalars['Int']>;
   profiles?: Maybe<Array<Maybe<W40kUnitProfile>>>;
   profilesDetail?: Maybe<Scalars['String']>;
+  specialWeapon?: Maybe<SpecialWeapon>;
   wargearOptions?: Maybe<Array<Maybe<Name>>>;
-  weapons?: Maybe<Weapons>;
+  weapons?: Maybe<Array<Maybe<Weapon>>>;
 };
 
 export type W40kUnitDataInput = {
@@ -207,8 +215,9 @@ export type W40kUnitDataInput = {
   powerRating?: Maybe<Scalars['Int']>;
   profiles?: Maybe<Array<Maybe<W40kUnitProfileInput>>>;
   profilesDetail?: Maybe<Scalars['String']>;
+  specialWeapon?: Maybe<SpecialWeaponInput>;
   wargearOptions?: Maybe<Array<Maybe<NameInput>>>;
-  weapons?: Maybe<WeaponsInput>;
+  weapons?: Maybe<Array<Maybe<WeaponInput>>>;
 };
 
 export type W40kUnitInput = {
@@ -271,13 +280,8 @@ export type WeaponInput = {
   type?: Maybe<Scalars['String']>;
 };
 
-export type Weapons = {
-  __typename?: 'Weapons';
-  specialRule?: Maybe<Scalars['String']>;
-  weapons?: Maybe<Array<Maybe<Weapon>>>;
-};
-
-export type WeaponsInput = {
-  specialRule?: Maybe<Scalars['String']>;
+export type SpecialWeaponInput = {
+  name?: Maybe<Scalars['String']>;
+  rule?: Maybe<Scalars['String']>;
   weapons?: Maybe<Array<Maybe<WeaponInput>>>;
 };

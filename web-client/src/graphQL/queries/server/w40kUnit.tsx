@@ -35,7 +35,17 @@ export const GET_W40K_UNIT = gql`
           name
         }
         weapons {
-          specialRule
+          abilities
+          armourPenetration
+          damage
+          name
+          range
+          strength
+          type
+        }
+        specialWeapon {
+          rule
+          name
           weapons {
             abilities
             armourPenetration

@@ -25,8 +25,10 @@ export type W40KUnit = {
     factionKeywords: string[];
     wargearOptions: string[];
     abilities: { name: string; rule: string }[];
-    weapons: {
-      specialRule: string;
+    weapons: W40KWeapon[];
+    specialWeapon: {
+      name: string;
+      rule: string;
       weapons: W40KWeapon[];
     };
     profiles: W40KProfile[];
