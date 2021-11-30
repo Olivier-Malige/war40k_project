@@ -94,7 +94,7 @@ export const specialWeaponCommonFieldConfig: FieldConfig[] = [
     name: 'name',
     type: 'text',
     label: 'Name',
-    width: 180,
+    width: 350,
   },
   {
     name: 'rule',
@@ -109,11 +109,11 @@ export const weaponFieldConfig: FieldConfig[] = [
     name: 'name',
     type: 'text',
     label: 'Name',
-    width: 180,
+    width: 350,
   },
   {
     name: 'range',
-    type: 'number',
+    type: 'text',
     label: 'Range',
     width: 70,
   },
@@ -145,7 +145,7 @@ export const weaponFieldConfig: FieldConfig[] = [
     name: 'abilities',
     type: 'text',
     label: 'Abilities',
-    width: 300,
+    width: '100%',
   },
 ];
 

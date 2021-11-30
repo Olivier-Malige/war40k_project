@@ -26,12 +26,17 @@ export type W40KUnit = {
     wargearOptions: string[];
     abilities: { name: string; rule: string }[];
     weapons: W40KWeapon[];
+    anotherEquipment: {
+      name: string;
+      aptitude: string;
+    };
     specialWeapon: {
       name: string;
       rule: string;
       weapons: W40KWeapon[];
     };
     profiles: W40KProfile[];
+    profilesDetail: string;
   };
 };
 

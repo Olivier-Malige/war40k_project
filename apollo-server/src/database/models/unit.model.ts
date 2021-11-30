@@ -23,10 +23,11 @@ export const w40kUnitSchema = new Schema({
       name: { type: String },
       weapons: { type: Array },
     },
-    wargearOptions: { type: [] },
-    abilities: { type: [] },
-    factionKeywords: { type: [] },
-    keywords: { type: [] },
+    wargearOptions: { type: Array },
+    anotherEquipment: { type: Array },
+    abilities: { type: Array },
+    factionKeywords: { type: Array },
+    keywords: { type: Array },
   },
   pictures: {
     main: {

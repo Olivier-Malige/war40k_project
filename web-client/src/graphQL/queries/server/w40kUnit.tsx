@@ -21,6 +21,10 @@ export const GET_W40K_UNIT = gql`
         commandPoints
         detail
         description
+        anotherEquipment {
+          aptitude
+          name
+        }
         wargearOptions {
           name
         }
@@ -56,6 +60,7 @@ export const GET_W40K_UNIT = gql`
             type
           }
         }
+        profilesDetail
         profiles {
           attacks
           ballisticSkill

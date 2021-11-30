@@ -51,7 +51,7 @@ export const AddTableToField: FC<Props> = memo(
 
         {fields.map((values, index) => (
           <Stack key={uuidv4()} spacing={2}>
-            <div>
+            <Box sx={{ display: 'flex' }}>
               {fieldsConfig.map(fieldConfig => (
                 <Controller
                   key={uuidv4()}
@@ -73,7 +73,7 @@ export const AddTableToField: FC<Props> = memo(
                   )}
                 />
               ))}
-            </div>
+            </Box>
           </Stack>
         ))}
 

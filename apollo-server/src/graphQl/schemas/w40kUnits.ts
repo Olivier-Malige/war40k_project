@@ -56,6 +56,7 @@ export const typeDefs = gql`
     profilesDetail: String
     weapons: [Weapon]
     specialWeapon: SpecialWeapon
+    anotherEquipment: [Equipment]
     wargearOptions: [Name]
     abilities: [Abilities]
     factionKeywords: [Name]
@@ -88,7 +89,7 @@ export const typeDefs = gql`
 
   type Weapon {
     name: String
-    range: Int
+    range: String
     type: String
     strength: String
     armourPenetration: String
@@ -107,6 +108,11 @@ export const typeDefs = gql`
     rule: String!
   }
 
+  type Equipment {
+    name: String!
+    aptitude: String!
+  }
+
   type Name {
     name: String
   }
@@ -114,6 +120,10 @@ export const typeDefs = gql`
   input AbilitiesInput {
     name: String!
     rule: String!
+  }
+  input EquipmentInput {
+    name: String!
+    aptitude: String!
   }
 
   input NameInput {
@@ -151,11 +161,12 @@ export const typeDefs = gql`
     keywords: [NameInput]
     weapons: [WeaponInput]
     specialWeapon: specialWeaponInput
+    anotherEquipment: [EquipmentInput]
   }
 
   input WeaponInput {
     name: String
-    range: Int
+    range: String
     type: String
     strength: String
     armourPenetration: String

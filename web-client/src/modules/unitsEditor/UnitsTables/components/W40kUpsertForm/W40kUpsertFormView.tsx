@@ -33,16 +33,15 @@ const schema = yup
     data: yup.object({
       powerRating: yup.number().nullable(),
       commandPoints: yup.number().nullable(),
-
       weapons: yup.array(
         yup.object({
           name: yup.string().nullable(),
           abilities: yup.string().nullable(),
           type: yup.string().nullable(),
-          damage: yup.number().nullable(),
-          strength: yup.number().nullable(),
-          range: yup.number().nullable(),
-          armourPenetration: yup.number().nullable(),
+          damage: yup.string().nullable(),
+          strength: yup.string().nullable(),
+          range: yup.string().nullable(),
+          armourPenetration: yup.string().nullable(),
         }),
       ),
       specialWeapon: yup.object({
@@ -53,14 +52,14 @@ const schema = yup
             name: yup.string().nullable(),
             abilities: yup.string().nullable(),
             type: yup.string().nullable(),
-            damage: yup.number().nullable(),
-            strength: yup.number().nullable(),
-            range: yup.number().nullable(),
-            armourPenetration: yup.number().nullable(),
+            damage: yup.string().nullable(),
+            strength: yup.string().nullable(),
+            range: yup.string().nullable(),
+            armourPenetration: yup.string().nullable(),
           }),
         ),
       }),
-
+      profilesDetail: yup.string().nullable(),
       profiles: yup.array(
         yup.object({
           numberMin: yup.number().nullable(),
@@ -109,6 +108,7 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, w40kUnit
         factionKeywords: w40kUnit?.data?.factionKeywords || [],
         wargearOptions: w40kUnit?.data?.wargearOptions || [],
         abilities: w40kUnit?.data?.abilities || [],
+        anotherEquipment: w40kUnit?.data?.anotherEquipment || [],
         weapons: w40kUnit?.data?.weapons || [],
         specialWeapon: w40kUnit?.data?.specialWeapon || {
           rule: '',
@@ -116,6 +116,7 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, w40kUnit
           weapons: [],
         },
         profiles: w40kUnit?.data?.profiles || [{ ...emptyProfile }],
+        profilesDetail: w40kUnit?.data?.profilesDetail || '',
       },
     },
   });
@@ -262,13 +263,31 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, w40kUnit
           </>
         </SectionAccordion>
 
-        <SectionAccordion title={'profiles'}>
-          <AddTableToField
-            fieldName={'data.profiles'}
-            control={control}
-            emptyFieldValues={{ ...emptyProfile }}
-            fieldsConfig={profileFieldsConfig}
-          />
+        <SectionAccordion title={'Profiles'}>
+          <>
+            <AddTableToField
+              fieldName={'data.profiles'}
+              control={control}
+              emptyFieldValues={{ ...emptyProfile }}
+              fieldsConfig={profileFieldsConfig}
+            />
+            <Controller
+              name="data.profilesDetail"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  sx={{ width: '100%' }}
+                  name={'detail'}
+                  margin={'dense'}
+                  label="Detail"
+                  variant="standard"
+                  multiline
+                  rows={2}
+                  {...field}
+                />
+              )}
+            />
+          </>
         </SectionAccordion>
         <SectionAccordion title={'Weapons'}>
           <AddTableToField
@@ -300,6 +319,15 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, w40kUnit
             label2={'Rule'}
           />
         </SectionAccordion>
+        <SectionAccordion title={'Another equipment'}>
+          <AddArrayToField
+            control={control}
+            fieldName={'data.anotherEquipment'}
+            subFieldNames={{ subfield1: 'name', subfield2: 'aptitude' }}
+            label={'Name'}
+            label2={'Aptitude'}
+          />
+        </SectionAccordion>
         <SectionAccordion title={'Keywords'}>
           <Grid container direction={'row'} justifyContent={'space-between'} spacing={2}>
             <Grid item xs={6}>
@@ -313,7 +341,7 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, w40kUnit
             <Grid item xs={6}>
               <AddArrayToField
                 control={control}
-                fieldName={'keywords'}
+                fieldName={'data.keywords'}
                 label={'Keyword'}
                 display={'chip'}
               />
