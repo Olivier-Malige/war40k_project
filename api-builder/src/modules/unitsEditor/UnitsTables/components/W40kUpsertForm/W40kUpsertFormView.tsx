@@ -173,8 +173,6 @@ export const W40kUpsertFormView: FC<W40KUpsertFormProps> = ({ onSubmit, w40kUnit
                       label="Power rating"
                       variant="standard"
                       type="number"
-                      error={Boolean(errors.powerRating)}
-                      helperText={errors.powerRating?.message}
                       {...field}
                     />
                   )}

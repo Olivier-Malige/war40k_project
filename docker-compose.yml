@@ -5,7 +5,7 @@ services:
   nginx:
     depends_on:
       - apollo-server
-      - web-client
+      - api-builder
     restart: always
     build:
       dockerfile: Dockerfile
@@ -20,11 +20,11 @@ services:
     volumes:
       - ./apollo-server:/app
 
-  web-client:
+  api-builder:
     stdin_open: true
     build:
       dockerfile: Dockerfile
-      context: ./web-client
+      context: ./api-builder
     volumes:
-      - ./web-client:/app
+      - ./api-builder:/app
 

@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:16
 
 RUN mkdir -p /app
 WORKDIR /app
@@ -8,8 +8,6 @@ COPY package.json /app
 
 RUN npm i
 COPY . /app
-# Copy app source code
-COPY . .
 
 #Expose port and start application
 EXPOSE 3000
