@@ -1,6 +1,6 @@
 export const routeNames = {
-  HOME: '/home',
-  LOGIN: '/login',
-  UNITS_EDITOR: '/units-editor',
-  USERS: '/users',
+  HOME: '/api-builder/home',
+  LOGIN: '/api-builder/login',
+  UNITS_EDITOR: '/api-builder/units-editor',
+  USERS: '/api-builder/users',
 };
