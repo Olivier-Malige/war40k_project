@@ -1,5 +1,5 @@
 import { or } from 'graphql-shield';
-import { isAdmin, isAuthenticated, isContributor } from '../rules';
+import { isAdmin, isContributor } from '../rules';
 
 import {
   createW40kUnit,
@@ -235,9 +235,9 @@ export const resolvers: IResolvers = {
 
 export const permissions = {
   Query: {
-    w40kUnits: isAuthenticated,
-    w40kUnit: isAuthenticated,
-    searchW40kUnitsByName: isAuthenticated,
+    w40kUnits: true,
+    w40kUnit: true,
+    searchW40kUnitsByName: true,
   },
   Mutation: {
     createW40kUnit: or(isAdmin, isContributor),
