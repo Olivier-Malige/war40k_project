@@ -6,6 +6,7 @@ services:
     depends_on:
       - apollo-server
       - api-builder
+#      - web-client
     restart: always
     build:
       dockerfile: Dockerfile
@@ -28,3 +29,14 @@ services:
     volumes:
       - ./api-builder:/app
 
+#  web-client:
+#    stdin_open: true
+#    ports:
+#      - "8000:8000"
+#    depends_on:
+#      - apollo-server
+#    build:
+#      dockerfile: Dockerfile
+#      context: ./web-client
+#    volumes:
+#      - ./web-client:/app

@@ -23,6 +23,7 @@ const Layout = ({ children }: LayoutProps) => {
       site {
         siteMetadata {
           title
+          description
         }
       }
     }
@@ -38,6 +39,7 @@ const Layout = ({ children }: LayoutProps) => {
           padding: `0 1.0875rem 1.45rem`,
         }}
       >
+        {data.site.siteMetadata?.description}
         <main>{children}</main>
         <footer
           style={{
