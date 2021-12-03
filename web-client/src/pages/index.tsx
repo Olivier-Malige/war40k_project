@@ -1,5 +1,5 @@
 import * as React from "react"
-import { graphql, useStaticQuery } from "gatsby"
+import { graphql, Link, useStaticQuery } from "gatsby"
 import { StaticImage } from "gatsby-plugin-image"
 
 import Layout from "../components/layout"
@@ -16,7 +16,6 @@ const IndexPage = () => {
       }
     }
   `)
-  console.log(data)
   return (
     <Layout>
       <Seo title="Home" />
@@ -28,9 +27,13 @@ const IndexPage = () => {
         alt="A Gatsby astronaut"
         style={{ marginBottom: `1.45rem` }}
       />
-      {data.warApi?.w40kUnits?.map((unit: any) => (
-        <div key={unit.id}>{unit.name}</div>
-      ))}
+      <ul>
+        {data.warApi?.w40kUnits?.map((unit: any) => (
+          <li key={unit.id}>
+            <Link to={"warhammer4000/units/" + unit.name}>{unit.name}</Link>
+          </li>
+        ))}
+      </ul>
     </Layout>
   )
 }
