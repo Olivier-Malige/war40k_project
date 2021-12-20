@@ -1,0 +1,86 @@
+###############################################
+#                Global settings              #
+###############################################
+
+# Default image (when not specified in the job)
+image: exaprint/cdk-builder-docker:latest
+
+###############################################
+#                 Global rules                #
+###############################################
+
+# Note: other top level rules defined in included files will as well apply
+# To ensure maitainability it is encouraged to define all top level rules (and elements) in this file
+
+# workflow:
+#   rules:
+#     # We want to build *NO* job when a branch is pushed
+#     # See https://exaprint.atlassian.net/wiki/spaces/NP/pages/1528889385/Things+to+know+when+using+Gitlab+CI+includes#Known-%E2%80%9Cunexpected-behaviour%E2%80%9D-when-using-changes
+#     - if: $CI_COMMIT_BEFORE_SHA =~ /^0+$/ && $FORCE == "" && $DYNAMIC_ENV == ""
+#       when: never
+#     - when: always
+
+default:
+  tags:
+    - docker
+    - main
+
+###############################################
+#                Global stages                #
+###############################################
+
+# Note: other stages only defined in included files will be ignored
+stages:
+  - install
+  - build
+  - deploy
+
+install_exa-book:
+  
+  stage: install
+  script:
+    - npm install
+  cache:
+    key: exa-book-${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules
+
+install_infra-exa-book:
+  stage: install
+  script:
+    - cd infra
+    - npm i
+    - npm run build
+    - npm run cdk --version
+    - echo "$AWS_ACCESS_KEY_ID"
+    - npm run cdk deploy --verbose -- --require-approval never
+    
+
+#build the static site story-book
+build-deploy_story-book:
+  stage: build
+  script:
+    - npm run build-storybook
+    - aws s3 sync --quiet  --delete ./storybook-static s3://exaprint-stage-exa-book/prod
+  cache:
+    key: exa-book-${CI_COMMIT_REF_SLUG}
+    policy: pull
+    paths:
+      - node_modules
+
+
+#build the package library 
+build-deploy_exa-book-lib:
+  stage: build
+  script:
+    - npm run build
+    - npm config set -- '//gitlab.com/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken' "${CI_JOB_TOKEN}"
+    - npm config set -- '//gitlab.com/api/v4/packages/npm/:_authToken' "${CI_JOB_TOKEN}}"
+    - npm config set always-auth true
+    - NPM_TOKEN=${CI_JOB_TOKEN} npm publish
+  cache:
+    key: exa-book-${CI_COMMIT_REF_SLUG}
+    policy: pull
+    paths:
+      - node_modules
+ 

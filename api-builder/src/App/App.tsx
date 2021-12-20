@@ -18,7 +18,6 @@ import { useCurrentUser } from 'src/modules/authentication/hooks/useCurrentUser'
 import { LoadingSpinner } from 'src/shared/components/LoadingSpinner';
 import { Grid } from '@mui/material';
 import SnackMessages from './components/SnackMessages';
-
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql',
 });

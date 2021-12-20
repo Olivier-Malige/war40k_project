@@ -4,11 +4,13 @@ import { StaticImage } from "gatsby-plugin-image"
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
+import {HelloWorld} from 'warhammer-lib'
+
 
 const IndexPage = () => {
   const data = useStaticQuery(graphql`
     query w40kUnits {
-      warApi {
+        warApi {
         w40kUnits {
           id
           name
@@ -19,6 +21,7 @@ const IndexPage = () => {
   return (
     <Layout>
       <Seo title="Home" />
+        <HelloWorld name="Warhammer Forge"/>
       <StaticImage
         src="../images/gatsby-astronaut.png"
         width={300}
